@@ -2030,7 +2030,7 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
   margin-bottom: 2px;
 }
 .editorial-feature-copy h1 {
-  margin: -5px 0 -3px;
+  margin: -7px 0 -3px;
   font-size: calc(1.85rem * var(--body-text-scale));
   line-height: 1.08;
 }
