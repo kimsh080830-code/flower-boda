@@ -2012,3 +2012,72 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
 .dev-long-text-fixture{min-width:0;display:grid;gap:7px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
 .dev-long-text-fixture h3,.dev-long-text-fixture p{min-width:0;margin:0;overflow-wrap:anywhere;word-break:normal}.dev-long-text-fixture h3{font-size:.8rem}.dev-long-text-fixture p{font-size:var(--body-copy-size);line-height:1.55}.dev-long-scientific{font-style:italic}
 @media(max-width:359px){.dev-tools-state>div{grid-template-columns:76px minmax(0,1fr)}.dev-tools-actions .btn{font-size:.64rem;padding-inline:7px}}
+
+
+/* DEV · 홈 큰 카드 레이아웃 조정 */
+.editorial-feature {
+  margin-top: 2px;
+  border-radius: 18px;
+}
+.editorial-feature-image {
+  aspect-ratio: 16 / 10.8;
+}
+.editorial-feature-copy {
+  padding: 20px 18px 18px;
+}
+.editorial-feature-meta {
+  min-height: 28px;
+  margin-bottom: 10px;
+}
+.editorial-feature-copy h1 {
+  margin: 0;
+  font-size: calc(1.85rem * var(--body-text-scale));
+  line-height: 1.08;
+}
+.feature-description {
+  margin: 10px 0 0;
+  line-height: 1.58;
+}
+.feature-context {
+  margin: 16px 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.feature-context > div {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+.feature-context dt {
+  color: var(--muted);
+  font-size: calc(.68rem * var(--body-text-scale));
+  font-weight: 700;
+}
+.feature-context dd {
+  margin: 0;
+  color: var(--text);
+  font-size: calc(.79rem * var(--body-text-scale));
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.feature-actions {
+  margin-top: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.feature-actions .btn {
+  min-height: 50px;
+}
+@media (min-width: 480px) {
+  .editorial-feature-image {
+    aspect-ratio: 16 / 10.4;
+  }
+  .editorial-feature-copy {
+    padding: 22px 20px 20px;
+  }
+}
