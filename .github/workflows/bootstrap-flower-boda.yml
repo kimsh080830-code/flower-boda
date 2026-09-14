@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
     paths:
-      - ".upload/**"
+      - ".upload/READY"
 permissions:
   contents: write
 jobs:
@@ -17,7 +17,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .upload/part-* > /tmp/flower-boda.zip
+          cat .upload/part-* | base64 -d > /tmp/flower-boda.zip
           mkdir -p /tmp/flower-boda-unpack
           unzip -q /tmp/flower-boda.zip -d /tmp/flower-boda-unpack
           shopt -s dotglob nullglob
@@ -29,6 +29,8 @@ jobs:
           for item in "$src"/*; do
             cp -a "$item" .
           done
+          npm run check
+          npm run build
           rm -rf .upload
           rm -f .github/workflows/bootstrap-flower-boda.yml
           rmdir .github/workflows 2>/dev/null || true
