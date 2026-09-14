@@ -47,6 +47,51 @@ function renderRegionPicker(state, regions) {
   return control;
 }
 
+function renderFlowerWalk(state) {
+  const walk = getFlowerRelaySnapshot({
+    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage,
+    devScenario:APP_CONFIG.DEV_MODE ? state.devRelayScenario : ''
+  });
+  const action = walk.status==='before'
+    ? (walk.synthetic?'dev-noop':'relay-start')
+    : walk.status==='active'
+      ? (walk.synthetic?'dev-noop':'relay-continue')
+      : '';
+  const actionText = walk.status==='active' ? '이어 걷기' : '꽃길 시작';
+  const section = el('section',{className:'content-section flower-walk','aria-labelledby':'flower-walk-title'},[
+    el('div',{className:'flower-walk-heading'},[
+      el('div',{className:'flower-walk-heading-copy'},[
+        el('span',{className:'section-label',text:'꽃 산책'}),
+        el('h2',{id:'flower-walk-title',text:'오늘의 꽃길'})
+      ]),
+      walk.total ? el('span',{className:'flower-walk-count',text:`꽃 ${walk.total}종`}) : null
+    ]),
+    el('p',{className:'flower-walk-description',text:walk.total
+      ? `오늘 피는 꽃 ${walk.total}종을 이어서 찾아보는 산책이에요.`
+      : '오늘 피는 꽃을 따라 가볍게 걸어보세요.'})
+  ]);
+  if (!walk.total) {
+    section.append(emptyState('오늘은 추천할 꽃길 후보가 없어요.','도감에서 보기','go-current-season'));
+    return section;
+  }
+  section.append(el('div',{className:'flower-walk-targets','aria-label':'오늘의 꽃길 목표'},walk.targets.map((flower,index)=>[
+    el('article',{className:`flower-walk-target ${walk.completedFlowerIds.includes(flower.id)?'is-complete':''}`.trim()},[
+      el('span',{className:'flower-walk-thumb'},[
+        image(flower.image,`${primaryFlowerName(flower)} 참고 이미지`,'flower-walk-image',flower.localImage)
+      ]),
+      el('span',{className:'flower-walk-step',text:`${index+1}`,'aria-hidden':'true'}),
+      el('strong',{text:primaryFlowerName(flower)})
+    ])
+  ]).flat()));
+  section.append(el('div',{className:'flower-walk-footer'},[
+    el('p',{text:walk.status==='complete'
+      ? '오늘의 꽃길을 모두 걸었어요.'
+      : '사진으로 꽃을 확인하면 꽃 릴레이 진행도에도 함께 반영돼요.'}),
+    action ? button(actionText,action,{kind:'primary',extraClass:'flower-walk-start'}) : null
+  ]));
+  return section;
+}
+
 function renderFlowerRelay(state) {
   const relay = getFlowerRelaySnapshot({
     flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage,
@@ -159,6 +204,7 @@ function renderHome(state) {
     emptyState('오늘 개화 중인 꽃 후보가 없어요.','도감에서 보기','go-current-season')
   ]));
 
+  main.append(renderFlowerWalk(state));
   main.append(renderFlowerRelay(state));
 
   const bloomSection = el('section', { className: 'content-section' }, [
