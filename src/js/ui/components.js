@@ -84,18 +84,18 @@ function flowerListRow(flower, state, { compact = false, trailing = '' } = {}) {
   ]);
 }
 
-function flowerPoster(flower, state, { rail = false, showBloomFlow = true, showImage = true } = {}) {
+function flowerPoster(flower, state, { rail = false, showBloomFlow = true } = {}) {
   const bloom = getBloomStatus(flower.bloom, state.currentDate);
   const scientificName = flower.scientificName || flower.taxonomy?.acceptedName || '';
   return el('button', {
     type: 'button',
-    className: `flower-poster ${rail ? 'flower-poster-rail' : ''} ${showImage ? '' : 'flower-poster-no-image'}`.trim(),
+    className: `flower-poster ${rail ? 'flower-poster-rail' : ''}`,
     dataset: { action: 'open-flower', flowerId: flower.id },
     ariaLabel: `${primaryFlowerName(flower)} 상세 정보 보기`
   }, [
-    showImage ? el('span', { className: 'flower-poster-media' }, [
+    el('span', { className: 'flower-poster-media' }, [
       image(flower.image, `${primaryFlowerName(flower)} 참고 이미지`, 'flower-poster-image', flower.localImage)
-    ]) : null,
+    ]),
     el('span', { className: 'flower-poster-copy' }, [
       el('span', { className: 'flower-poster-title' }, [
         el('strong', { text: primaryFlowerName(flower) }),
