@@ -1,0 +1,52 @@
+{
+  "version": "V55",
+  "principles": {
+    "scope": "속씨식물의 실제 꽃만 포함하며 초본·관목·교목·덩굴·나무꽃을 동일한 도감 대상으로 취급한다.",
+    "excludedGroups": ["겉씨식물", "솔방울", "양치식물", "이끼", "꽃이 피지 않는 식물"],
+    "bloom": "bloom.start/end는 앱 운영용 예상 범위이며 실제 절대 개화일이 아니다.",
+    "bloomVariability": ["지역", "기온", "품종", "고도", "연도"],
+    "autoMerge": false,
+    "ambiguousValues": "추측 수정하지 않고 REVIEW_REQUIRED로 남긴다."
+  },
+  "duplicateComparisonFields": [
+    "id",
+    "scientificName",
+    "acceptedScientificName",
+    "synonym",
+    "taxonRank",
+    "taxonId"
+  ],
+  "duplicateStatuses": ["NEW", "DUPLICATE", "OVERLAP", "REVIEW_REQUIRED"],
+  "currentDataset": {
+    "total": 45,
+    "floweringPlantEligible": 45,
+    "excluded": []
+  },
+  "reviewRequired": [
+    {"id":"rose","nameKo":"장미","reason":"Rosa 속 여러 종·원예품종 통칭이라 단일 accepted taxon으로 자동 고정하지 않음."},
+    {"id":"cherry-blossom","nameKo":"벚꽃","reason":"여러 Prunus 계통의 꽃을 묶는 공통명 그룹이라 단일 species로 자동 병합하지 않음."},
+    {"id":"dandelion","nameKo":"민들레","reason":"Taraxacum spp. 다종 통칭이라 단일 accepted taxon을 결정하지 않음."},
+    {"id":"aster","nameKo":"아스타","reason":"원예 공통명이 여러 유사 분류군에 쓰이고 현재 레코드도 Symphyotrichum spp. 다종 통칭임."},
+    {"id":"daffodil","nameKo":"수선화","reason":"Narcissus spp. 여러 종·원예품종 통칭이라 단일 accepted taxon을 결정하지 않음."},
+    {"id":"lily","nameKo":"백합","reason":"Lilium spp. 여러 종·원예품종 통칭이라 단일 accepted taxon을 결정하지 않음."},
+    {"id":"plum-blossom-red","nameKo":"홍매화","reason":"Prunus mume의 붉은 꽃 재배품종군으로, species 레코드와 자동 병합하지 않음."},
+    {"id":"gerbera","nameKo":"거베라","reason":"현재 레코드는 Gerbera jamesonii 계통 원예 교잡군을 의미하므로 G. jamesonii 단일 species와 동일 taxon으로 단정하지 않음."},
+    {"id":"marigold","nameKo":"메리골드","reason":"Tagetes spp. 여러 종·원예품종 통칭이라 단일 accepted taxon을 결정하지 않음."}
+  ],
+  "targetedTaxonomyChecks": [
+    {"id":"forsythia","result":"Forsythia koreana accepted species 확인","action":"기존 값 유지"},
+    {"id":"gaura","result":"Oenothera lindheimeri accepted, Gaura lindheimeri synonym 확인","action":"accepted/synonym 검증 메타데이터에 반영"},
+    {"id":"verbena","result":"Glandularia × hybrida artificial hybrid, Verbena × hybrida synonym 확인","action":"accepted/synonym 검증 메타데이터에 반영"},
+    {"id":"chrysanthemum","result":"Chrysanthemum × morifolium accepted hybrid 확인","action":"기존 값 유지"},
+    {"id":"shasta-daisy","result":"Leucanthemum × superbum artificial hybrid 확인","action":"기존 값 유지"},
+    {"id":"hellebore","result":"Helleborus × hybridus artificial hybrid 확인","action":"기존 값 유지"},
+    {"id":"pansy","result":"Viola × wittrockiana artificial hybrid 확인","action":"기존 값 유지"},
+    {"id":"tulip","result":"Tulipa gesneriana accepted species 확인","action":"기존 값 유지"},
+    {"id":"gerbera","result":"Gerbera jamesonii accepted species 확인; 앱 레코드는 hybrids 범위","action":"자동 species 치환 금지, REVIEW_REQUIRED 유지"}
+  ],
+  "reproductiveData": {
+    "optional": true,
+    "supportedFields": ["flowerSex", "sexualSystem", "femaleFlowerFeatures", "maleFlowerFeatures", "femaleFlowerImage", "maleFlowerImage"],
+    "rule": "실제로 암꽃/수꽃 구분이 필요한 식물에서만 값을 추가하며 양성화 식물에 빈 암꽃/수꽃 필드를 강제로 만들지 않는다."
+  }
+}

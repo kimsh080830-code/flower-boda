@@ -1,0 +1,16 @@
+{
+  "name": "flower-boda",
+  "version": "61.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node audit-data.mjs && node build.mjs",
+    "start": "node server.mjs",
+    "check": "node --check server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "data:audit": "node audit-data.mjs"
+  }
+}

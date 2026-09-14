@@ -1,0 +1,281 @@
+{
+  "version": "V56",
+  "assets": [
+    {
+      "flowerId": "adonis",
+      "filename": "adonis-01.webp",
+      "path": "assets/flowers/adonis-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "aster",
+      "filename": "aster-01.webp",
+      "path": "assets/flowers/aster-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "azalea-korean",
+      "filename": "azalea-korean-01.webp",
+      "path": "assets/flowers/azalea-korean-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "balloon-flower",
+      "filename": "balloon-flower-01.webp",
+      "path": "assets/flowers/balloon-flower-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "camellia",
+      "filename": "camellia-01.webp",
+      "path": "assets/flowers/camellia-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "canola",
+      "filename": "canola-01.webp",
+      "path": "assets/flowers/canola-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "cherry-blossom",
+      "filename": "cherry-blossom-01.webp",
+      "path": "assets/flowers/cherry-blossom-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "chrysanthemum",
+      "filename": "chrysanthemum-01.webp",
+      "path": "assets/flowers/chrysanthemum-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "coreopsis",
+      "filename": "coreopsis-01.webp",
+      "path": "assets/flowers/coreopsis-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "cosmos",
+      "filename": "cosmos-01.webp",
+      "path": "assets/flowers/cosmos-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "crape-myrtle",
+      "filename": "crape-myrtle-01.webp",
+      "path": "assets/flowers/crape-myrtle-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "cyclamen",
+      "filename": "cyclamen-01.webp",
+      "path": "assets/flowers/cyclamen-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "daffodil",
+      "filename": "daffodil-01.webp",
+      "path": "assets/flowers/daffodil-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "dandelion",
+      "filename": "dandelion-01.webp",
+      "path": "assets/flowers/dandelion-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "forsythia",
+      "filename": "forsythia-01.webp",
+      "path": "assets/flowers/forsythia-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "gaura",
+      "filename": "gaura-01.webp",
+      "path": "assets/flowers/gaura-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "gerbera",
+      "filename": "gerbera-01.webp",
+      "path": "assets/flowers/gerbera-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "globe-amaranth",
+      "filename": "globe-amaranth-01.webp",
+      "path": "assets/flowers/globe-amaranth-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "hellebore",
+      "filename": "hellebore-01.webp",
+      "path": "assets/flowers/hellebore-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "hydrangea",
+      "filename": "hydrangea-01.webp",
+      "path": "assets/flowers/hydrangea-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "iris",
+      "filename": "iris-01.webp",
+      "path": "assets/flowers/iris-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "lavender",
+      "filename": "lavender-01.webp",
+      "path": "assets/flowers/lavender-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "lily",
+      "filename": "lily-01.webp",
+      "path": "assets/flowers/lily-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "lotus",
+      "filename": "lotus-01.webp",
+      "path": "assets/flowers/lotus-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "magnolia",
+      "filename": "magnolia-01.webp",
+      "path": "assets/flowers/magnolia-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "marigold",
+      "filename": "marigold-01.webp",
+      "path": "assets/flowers/marigold-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "morning-glory",
+      "filename": "morning-glory-01.webp",
+      "path": "assets/flowers/morning-glory-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "mugunghwa",
+      "filename": "mugunghwa-01.webp",
+      "path": "assets/flowers/mugunghwa-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "pansy",
+      "filename": "pansy-01.webp",
+      "path": "assets/flowers/pansy-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "peony",
+      "filename": "peony-01.webp",
+      "path": "assets/flowers/peony-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "plum-blossom-red",
+      "filename": "plum-blossom-red-01.webp",
+      "path": "assets/flowers/plum-blossom-red-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "poppy",
+      "filename": "poppy-01.webp",
+      "path": "assets/flowers/poppy-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "red-spider-lily",
+      "filename": "red-spider-lily-01.webp",
+      "path": "assets/flowers/red-spider-lily-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "rose",
+      "filename": "rose-01.webp",
+      "path": "assets/flowers/rose-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "royal-azalea",
+      "filename": "royal-azalea-01.webp",
+      "path": "assets/flowers/royal-azalea-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "salvia",
+      "filename": "salvia-01.webp",
+      "path": "assets/flowers/salvia-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "shasta-daisy",
+      "filename": "shasta-daisy-01.webp",
+      "path": "assets/flowers/shasta-daisy-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "silver-grass",
+      "filename": "silver-grass-01.webp",
+      "path": "assets/flowers/silver-grass-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "snowdrop",
+      "filename": "snowdrop-01.webp",
+      "path": "assets/flowers/snowdrop-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "sunflower",
+      "filename": "sunflower-01.webp",
+      "path": "assets/flowers/sunflower-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "trumpet-creeper",
+      "filename": "trumpet-creeper-01.webp",
+      "path": "assets/flowers/trumpet-creeper-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "tulip",
+      "filename": "tulip-01.webp",
+      "path": "assets/flowers/tulip-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "ume",
+      "filename": "ume-01.webp",
+      "path": "assets/flowers/ume-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "verbena",
+      "filename": "verbena-01.webp",
+      "path": "assets/flowers/verbena-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "zinnia",
+      "filename": "zinnia-01.webp",
+      "path": "assets/flowers/zinnia-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": null,
+      "filename": "flower-fallback-01.webp",
+      "path": "assets/flowers/flower-fallback-01.webp",
+      "role": "generic-fallback"
+    }
+  ]
+}

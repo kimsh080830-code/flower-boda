@@ -1,0 +1,101 @@
+{
+  "version": "V56",
+  "images": [
+    {
+      "flowerId": "sunflower",
+      "filename": "sunflower-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "Reji Jacob",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg",
+      "attributionRequired": false,
+      "storage": "remote-reference",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg"
+    },
+    {
+      "flowerId": "mugunghwa",
+      "filename": "mugunghwa-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "PapiPijuan",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hibiscus_syriacus_Flower.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attributionRequired": true,
+      "storage": "remote-reference",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hibiscus_syriacus_Flower.jpg/960px-Hibiscus_syriacus_Flower.jpg"
+    },
+    {
+      "flowerId": "rose",
+      "filename": "rose-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "Bontempi1953",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rose_double.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attributionRequired": true,
+      "storage": "remote-reference",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rose_double.jpg/1280px-Rose_double.jpg"
+    },
+    {
+      "flowerId": "tulip",
+      "filename": "tulip-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "DanilWikiUser",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:20260506_Tulip_closeup.jpg",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "storage": "remote-reference",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/20260506_Tulip_closeup.jpg"
+    },
+    {
+      "flowerId": "cosmos",
+      "filename": "cosmos-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "Joydeep",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cosmos_bipinnatus_pink,_Burdwan,_West_Bengal,_India_10_01_2013.jpg",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "attributionRequired": true,
+      "storage": "remote-reference",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg/960px-Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg"
+    },
+    {
+      "flowerId": "zinnia",
+      "filename": "zinnia-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "Sara Nabih",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zinnia_elegans_flower.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attributionRequired": true,
+      "storage": "remote-reference",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Zinnia_elegans_flower.jpg/960px-Zinnia_elegans_flower.jpg"
+    },
+    {
+      "flowerId": "crape-myrtle",
+      "filename": "crape-myrtle-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "Juan Carlos Fonseca Mata",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lagerstroemia_indica_4.jpg",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "attributionRequired": true,
+      "storage": "remote-reference",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lagerstroemia_indica_4.jpg/960px-Lagerstroemia_indica_4.jpg"
+    },
+    {
+      "flowerId": "hydrangea",
+      "filename": "hydrangea-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "Michele Dorsey Walfred",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "attributionRequired": true,
+      "storage": "remote-reference",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"
+    }
+  ]
+}
