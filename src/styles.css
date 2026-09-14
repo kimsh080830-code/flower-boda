@@ -2027,7 +2027,7 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
 }
 .editorial-feature-meta {
   min-height: 24px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 .editorial-feature-copy h1 {
   margin: 0;
