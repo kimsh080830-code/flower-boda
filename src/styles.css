@@ -2082,3 +2082,140 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
     padding: 22px 20px 20px;
   }
 }
+
+
+/* DEV · 오늘의 꽃길 / 꽃 산책 MVP */
+.flower-walk {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.flower-walk-heading {
+  min-width: 0;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.flower-walk-heading-copy {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+.flower-walk-heading h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: calc(1.15rem * var(--body-text-scale));
+  line-height: 1.2;
+  letter-spacing: -.025em;
+}
+.flower-walk-count {
+  flex: 0 0 auto;
+  padding-bottom: 2px;
+  color: var(--muted);
+  font-size: calc(.66rem * var(--body-text-scale));
+  font-weight: 700;
+}
+.flower-walk-description {
+  margin: 8px 0 14px;
+  color: var(--muted);
+  font-size: calc(.76rem * var(--body-text-scale));
+  line-height: 1.55;
+}
+.flower-walk-targets {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 10px;
+}
+.flower-walk-target {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+}
+.flower-walk-thumb {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 11px;
+  background: var(--surface-soft);
+  aspect-ratio: 4 / 3;
+}
+.flower-walk-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.flower-walk-step {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255,255,255,.9);
+  color: var(--ink);
+  font-size: .64rem;
+  font-weight: 800;
+}
+.flower-walk-target strong {
+  min-width: 0;
+  color: var(--ink);
+  font-size: calc(.76rem * var(--body-text-scale));
+  line-height: 1.35;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.flower-walk-target.is-complete .flower-walk-thumb {
+  opacity: .58;
+}
+.flower-walk-target.is-complete strong::after {
+  content: " · 완료";
+  color: var(--accent);
+  font-size: .66rem;
+  font-weight: 700;
+}
+.flower-walk-footer {
+  min-width: 0;
+  margin-top: 15px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+.flower-walk-footer p {
+  margin: 0;
+  color: var(--muted);
+  font-size: calc(.69rem * var(--body-text-scale));
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.flower-walk-start {
+  min-width: 116px;
+}
+[data-theme=dark] .flower-walk-step {
+  background: rgba(28,31,28,.88);
+}
+@media (max-width: 420px) {
+  .flower-walk {
+    padding: 16px;
+  }
+  .flower-walk-targets {
+    gap: 8px;
+  }
+  .flower-walk-footer {
+    grid-template-columns: 1fr;
+  }
+  .flower-walk-start {
+    width: 100%;
+  }
+}
