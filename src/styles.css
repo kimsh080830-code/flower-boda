@@ -2027,16 +2027,15 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
 }
 .editorial-feature-meta {
   min-height: 24px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 .editorial-feature-copy h1 {
-  margin: 0;
+  margin: -5px 0 -3px;
   font-size: calc(1.85rem * var(--body-text-scale));
   line-height: 1.08;
-  transform: translateY(-5px);
 }
 .feature-description {
-  margin: 10px 0 0;
+  margin: 5px 0 0;
   line-height: 1.58;
 }
 .feature-context {
