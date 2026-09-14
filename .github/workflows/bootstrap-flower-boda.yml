@@ -31,10 +31,7 @@ jobs:
           done
           npm run check
           npm run build
-          rm -rf .upload
-          rm -f .github/workflows/bootstrap-flower-boda.yml
-          rmdir .github/workflows 2>/dev/null || true
-          rmdir .github 2>/dev/null || true
+          rm -f .upload/part-*
       - name: Commit imported project
         shell: bash
         run: |
