@@ -1,0 +1,44 @@
+name: Bootstrap flower-boda
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".upload/**"
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reassemble and unpack project
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .upload/part-* > /tmp/flower-boda.zip
+          mkdir -p /tmp/flower-boda-unpack
+          unzip -q /tmp/flower-boda.zip -d /tmp/flower-boda-unpack
+          shopt -s dotglob nullglob
+          src="/tmp/flower-boda-unpack/flower-boda"
+          if [ ! -d "$src" ]; then
+            echo "Expected flower-boda/ root not found" >&2
+            exit 1
+          fi
+          for item in "$src"/*; do
+            cp -a "$item" .
+          done
+          rm -rf .upload
+          rm -f .github/workflows/bootstrap-flower-boda.yml
+          rmdir .github/workflows 2>/dev/null || true
+          rmdir .github 2>/dev/null || true
+      - name: Commit imported project
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: import flower-boda V61 baseline"
+          git push origin main
