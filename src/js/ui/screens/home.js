@@ -166,7 +166,7 @@ function renderHome(state) {
   ]);
   if (blooming.length) {
     const rail = el('div', { className: 'flower-rail' });
-    blooming.slice(0, 6).forEach((flower) => rail.append(flowerPoster(flower, state, { rail: true })));
+    blooming.slice(0, 6).forEach((flower) => rail.append(flowerPoster(flower, state, { rail: true, showBloomFlow: false })));
     bloomSection.append(rail);
   } else {
     bloomSection.append(emptyState('지금 시기에 맞는 꽃이 아직 없어요.', '도감에서 보기', 'go-current-season'));
