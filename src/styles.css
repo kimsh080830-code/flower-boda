@@ -2033,7 +2033,7 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
   margin: 0;
   font-size: calc(1.85rem * var(--body-text-scale));
   line-height: 1.08;
-  transform: translateY(-3px);
+  transform: translateY(-5px);
 }
 .feature-description {
   margin: 10px 0 0;
