@@ -31,10 +31,6 @@ function homeFeature(flower, state, featureDate=state.currentDate) {
     el('div',{},[el('dt',{text:'꽃말'}),el('dd',{text:flower.flowerLanguage?.meaning || '정보 없음'})]),
     el('div',{},[el('dt',{text:'볼 수 있는 곳'}),el('dd',{text:habitatSummary(flower)})])
    ]),
-   el('section',{className:'feature-identification','aria-labelledby':'feature-identification-title'},[
-    el('h2',{id:'feature-identification-title',text:'구별 특징'}),el('p',{text:identificationSummary(flower)})
-   ]),
-   bloomFlow(bloom),
    el('div',{className:'feature-actions'},[button('꽃 정보 보기','open-flower',{kind:'primary',data:{flowerId:flower.id}}),button('보러 갈 곳','candidate-events',{data:{flowerId:flower.id}})])
   ])
  ]);
