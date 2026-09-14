@@ -7,3 +7,5 @@
 
 [context.branch-deploy]
   command = "npm run build && rm -rf dist && mkdir dist && cp \"꽃을보다_V61_dev.html\" dist/index.html && cp -R assets dist/assets"
+
+# redeploy-theme-fix
