@@ -17,9 +17,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .upload/part-* | base64 -d > /tmp/flower-boda.zip
+          cat .upload/part-* | base64 -d > /tmp/flower-boda.tar.xz
+          echo "fffe55ec5008fcd7751b2320e070034db477ae5a1abd508bf3166ce02e54ee71  /tmp/flower-boda.tar.xz" | sha256sum -c -
           mkdir -p /tmp/flower-boda-unpack
-          unzip -q /tmp/flower-boda.zip -d /tmp/flower-boda-unpack
+          tar -xJf /tmp/flower-boda.tar.xz -C /tmp/flower-boda-unpack
           shopt -s dotglob nullglob
           src="/tmp/flower-boda-unpack/flower-boda"
           if [ ! -d "$src" ]; then
