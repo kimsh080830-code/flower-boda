@@ -120,6 +120,18 @@
       "attributionRequired": true,
       "storage": "remote-reference",
       "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg"
+    },
+    {
+      "flowerId": "cornelian-cherry",
+      "filename": "cornelian-cherry-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "Doctoroftcm",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cornus_officinalis.JPG",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "attributionRequired": true,
+      "storage": "remote-reference",
+      "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"
     }
   ]
 }
