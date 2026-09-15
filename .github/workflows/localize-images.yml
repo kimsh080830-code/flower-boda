@@ -28,27 +28,28 @@ jobs:
           from pathlib import Path
           from urllib.request import Request, urlopen
           from PIL import Image, ImageOps
-          import json, re
+          import json, re, time
 
           targets = {
-              "wintersweet": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg",
-              "sasanqua": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg",
-              "cornelian-cherry": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG",
-              "chinese-fringe-tree": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg",
-              "leopard-plant": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg",
+              "wintersweet": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Chimonanthus_praecox_(18248235374).jpg",
+              "sasanqua": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Camellia_sasanqua.jpg",
+              "cornelian-cherry": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Cornus_officinalis.JPG",
+              "chinese-fringe-tree": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Chionanthus_retusus.jpg",
+              "leopard-plant": "https://upload.wikimedia.org/wikipedia/commons/2/27/Farfugium_japonicum.jpg",
           }
 
           flower_dir = Path("assets/flowers")
           flower_dir.mkdir(parents=True, exist_ok=True)
 
           for flower_id, url in targets.items():
-              req = Request(url, headers={"User-Agent": "flower-boda/1.0 (GitHub Actions image localization)"})
+              req = Request(url, headers={"User-Agent": "flower-boda/1.0 (https://github.com/kimsh080830-code/flower-boda)"})
               with urlopen(req, timeout=60) as response:
                   payload = response.read()
               with Image.open(BytesIO(payload)) as image:
                   image = ImageOps.exif_transpose(image).convert("RGB")
                   image.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
                   image.save(flower_dir / f"{flower_id}-01.webp", "WEBP", quality=84, method=6)
+              time.sleep(3)
 
           manifest_path = Path("data/image-assets.json")
           manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
