@@ -170,12 +170,6 @@
       "role": "local-fallback"
     },
     {
-      "flowerId": "pansy",
-      "filename": "pansy-01.webp",
-      "path": "assets/flowers/pansy-01.webp",
-      "role": "local-fallback"
-    },
-    {
       "flowerId": "peony",
       "filename": "peony-01.webp",
       "path": "assets/flowers/peony-01.webp",
