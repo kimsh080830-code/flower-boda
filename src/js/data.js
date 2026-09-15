@@ -4,6 +4,11 @@ const img = (id) => __flowerAssets[id] || 'assets/flowers/flower-fallback-01.web
 const pendingImg = 'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%204%203%22%3E%3Crect%20width%3D%224%22%20height%3D%223%22%20fill%3D%22%23eceee9%22%2F%3E%3C%2Fsvg%3E';
 
 const REFERENCE_IMAGE_OVERRIDES = Object.freeze({
+  'chinese-fringe-tree': {
+    url: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg',
+    creator: 'Stickpen', license: 'CC0 1.0',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg'
+  },
   'cornelian-cherry': {
     url: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG',
     creator: 'Doctoroftcm', license: 'CC BY-SA 3.0',

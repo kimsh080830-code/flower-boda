@@ -132,6 +132,18 @@
       "attributionRequired": true,
       "storage": "remote-reference",
       "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"
+    },
+    {
+      "flowerId": "chinese-fringe-tree",
+      "filename": "chinese-fringe-tree-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "Stickpen",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "storage": "remote-reference",
+      "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"
     }
   ]
 }
