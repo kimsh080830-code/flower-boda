@@ -1,0 +1,111 @@
+name: Localize seasonal flower images
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: write
+
+jobs:
+  localize:
+    if: ${{ !contains(github.event.head_commit.message, '[localize-images]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dev
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      - name: Install Pillow
+        run: python3 -m pip install --disable-pip-version-check pillow
+
+      - name: Download and convert images
+        run: |
+          python3 - <<'PY'
+          from io import BytesIO
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+          from PIL import Image, ImageOps
+          import json, re
+
+          targets = {
+              "wintersweet": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg",
+              "sasanqua": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg",
+              "cornelian-cherry": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG",
+              "chinese-fringe-tree": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg",
+              "leopard-plant": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg",
+          }
+
+          flower_dir = Path("assets/flowers")
+          flower_dir.mkdir(parents=True, exist_ok=True)
+
+          for flower_id, url in targets.items():
+              req = Request(url, headers={"User-Agent": "flower-boda/1.0 (GitHub Actions image localization)"})
+              with urlopen(req, timeout=60) as response:
+                  payload = response.read()
+              with Image.open(BytesIO(payload)) as image:
+                  image = ImageOps.exif_transpose(image).convert("RGB")
+                  image.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
+                  image.save(flower_dir / f"{flower_id}-01.webp", "WEBP", quality=84, method=6)
+
+          manifest_path = Path("data/image-assets.json")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          existing = {row.get("flowerId") for row in manifest.get("assets", [])}
+          fallback_index = next(
+              (i for i, row in enumerate(manifest["assets"]) if row.get("role") == "generic-fallback"),
+              len(manifest["assets"])
+          )
+          additions = []
+          for flower_id in targets:
+              if flower_id not in existing:
+                  additions.append({
+                      "flowerId": flower_id,
+                      "filename": f"{flower_id}-01.webp",
+                      "path": f"assets/flowers/{flower_id}-01.webp",
+                      "role": "local-fallback"
+                  })
+          manifest["assets"][fallback_index:fallback_index] = additions
+          manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+          data_path = Path("src/js/data.js")
+          source = data_path.read_text(encoding="utf-8")
+          match = re.search(r"const __flowerAssets = (\{.*?\});\nconst img =", source, re.S)
+          if not match:
+              raise RuntimeError("flower asset map not found")
+          asset_map = json.loads(match.group(1))
+          for flower_id in targets:
+              asset_map[flower_id] = f"assets/flowers/{flower_id}-01.webp"
+          asset_map = dict(sorted(asset_map.items()))
+          replacement = "const __flowerAssets = " + json.dumps(asset_map, ensure_ascii=False, separators=(",", ":")) + ";\nconst img ="
+          source = source[:match.start()] + replacement + source[match.end():]
+
+          for flower_id in targets:
+              pattern = rf"(flower\(\{{id:'{re.escape(flower_id)}'[\s\S]*?)(,localImage:pendingImg)(\}}\))"
+              source, count = re.subn(pattern, r"\1\3", source, count=1)
+              if count != 1:
+                  raise RuntimeError(f"pending image override not found for {flower_id}")
+
+          if source.count("pendingImg") == 1 and "const pendingImg" in source:
+              source = re.sub(r"\nconst pendingImg = .*?;\n", "\n", source, count=1)
+
+          data_path.write_text(source, encoding="utf-8")
+          PY
+
+      - name: Verify data and build
+        run: npm run build
+
+      - name: Commit localized images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/flowers/wintersweet-01.webp \
+                  assets/flowers/sasanqua-01.webp \
+                  assets/flowers/cornelian-cherry-01.webp \
+                  assets/flowers/chinese-fringe-tree-01.webp \
+                  assets/flowers/leopard-plant-01.webp \
+                  data/image-assets.json \
+                  src/js/data.js
+          git commit -m "image: localize five seasonal flower photos [localize-images]"
+          git push origin HEAD:dev
