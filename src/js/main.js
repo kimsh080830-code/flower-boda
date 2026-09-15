@@ -11,7 +11,7 @@ const { hydrateReferenceImages } = __mods["js/imageService.js"];
 const { loadDiscoveries, loadFavorites, saveFavorites } = __mods["js/storage.js"];
 const { loadCollection,addObservation,updateObservation,deleteObservation,exportBackup,parseBackup,previewImport,importBackup,createThumbnail } = __mods["js/observations.js"];
 const { debounce } = __mods["js/searchUtils.js"];
-const { renderApp, updateEncyclopediaResults, updateEventResults, updateEventFlowerChoices } = __mods["js/ui.js"];
+const { renderApp, updateHomeSearchResults, updateEncyclopediaResults, updateEventResults, updateEventFlowerChoices } = __mods["js/ui.js"];
 
 const {loadSettings,saveSettings,loadRecent,rememberFlower,clearRecent,loadVisits,saveVisits,applyTheme,applyTextSize}=__mods['js/preferences.js'];
 const preferences = loadSettings();
@@ -651,11 +651,14 @@ async function loadEventData({ force = false } = {}) {
   }
 }
 
-const handleFlowerSearch = debounce((value) => {
-  state.searchQuery = value;
-  if(state.currentTab==='home') render();
+const updateFlowerSearchResults = debounce(() => {
+  if(state.currentTab==='home') updateHomeSearchResults(state);
   else updateEncyclopediaResults(state);
 }, 120);
+function handleFlowerSearch(value) {
+  state.searchQuery = value;
+  updateFlowerSearchResults();
+}
 
 const handleEventSearch = debounce((value) => {
   state.eventSearchQuery = value;

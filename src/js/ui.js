@@ -1,7 +1,7 @@
 __mods["js/ui.js"] = (() => {
 const { getFlowerById } = __mods["js/data.js"];
 const { el } = __mods["js/ui/dom.js"];
-const { renderHome, renderCapture, renderEvents, renderEncyclopedia, updateEncyclopediaResults, updateEventResults, updateEventFlowerChoices, renderFlowerDetail, renderEventDetail, renderAppHeader, renderBottomNav } = __mods["js/ui/screens.js"];
+const { renderHome, updateHomeSearchResults, renderCapture, renderEvents, renderEncyclopedia, updateEncyclopediaResults, updateEventResults, updateEventFlowerChoices, renderFlowerDetail, renderEventDetail, renderAppHeader, renderBottomNav } = __mods["js/ui/screens.js"];
 
 
 
@@ -188,5 +188,5 @@ function focusMain() {
   main.setAttribute('tabindex', '-1');
   main.focus({ preventScroll: true });
 }
-return { "renderApp": renderApp, "focusMain": focusMain, "updateEncyclopediaResults": updateEncyclopediaResults, "updateEventResults": updateEventResults, "updateEventFlowerChoices": updateEventFlowerChoices };
+return { "renderApp": renderApp, "focusMain": focusMain, "updateHomeSearchResults": updateHomeSearchResults, "updateEncyclopediaResults": updateEncyclopediaResults, "updateEventResults": updateEventResults, "updateEventFlowerChoices": updateEventFlowerChoices };
 })();

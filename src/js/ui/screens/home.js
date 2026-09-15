@@ -150,6 +150,36 @@ function renderFlowerRelay(state) {
   return section;
 }
 
+function updateHomeSearchResults(state, root = document) {
+  const results = root.querySelector('#home-search-results');
+  if (!results) return;
+  const query = normalizeSearch(state.searchQuery);
+  const searchBox = root.querySelector('.home-find-search');
+  const clearButton = searchBox?.querySelector('.search-clear');
+  searchBox?.classList.toggle('has-clear', Boolean(query));
+  if (query && !clearButton) {
+    searchBox.append(el('button', {
+      type: 'button', className: 'search-clear', text: '×',
+      dataset: { action: 'clear-flower-search' }, ariaLabel: '검색어 지우기'
+    }));
+  } else if (!query) {
+    clearButton?.remove();
+  }
+  results.replaceChildren();
+  results.hidden = !query;
+  if (!query) return;
+
+  const matches = FLOWERS.filter(flower => matchesFlowerSearch(flower, state.searchQuery));
+  results.append(sectionHeader('빠른 검색 결과', '도감에서 보기', 'go-encyclopedia', `${matches.length}종`));
+  if (matches.length) {
+    const grid = el('div', { className: 'flower-grid' });
+    matches.forEach(flower => grid.append(flowerPoster(flower, state)));
+    results.append(grid);
+  } else {
+    results.append(emptyState('검색 결과가 없어요.', '검색어 지우기', 'clear-flower-search'));
+  }
+}
+
 
 function renderHome(state) {
   const main = el('main', { className: 'screen home-screen', id: 'main-content' });
@@ -184,19 +214,8 @@ function renderHome(state) {
       el('span', { className: 'nav-icon nav-camera photo-search-icon', 'aria-hidden': 'true' })
     ])
   ]));
-
-  if(normalizeSearch(state.searchQuery)) {
-    const matches=FLOWERS.filter(flower=>matchesFlowerSearch(flower,state.searchQuery));
-    const searchSection=el('section',{id:'home-search-results',className:'content-section home-search-results'},[
-      sectionHeader('빠른 검색 결과','도감에서 보기','go-encyclopedia',`${matches.length}종`)
-    ]);
-    if(matches.length) {
-      const grid=el('div',{className:'flower-grid'});
-      matches.forEach(flower=>grid.append(flowerPoster(flower,state)));
-      searchSection.append(grid);
-    } else searchSection.append(emptyState('검색 결과가 없어요.','검색어 지우기','clear-flower-search'));
-    main.append(searchSection);
-  }
+  main.append(el('section', { id: 'home-search-results', className: 'content-section home-search-results', hidden: true }));
+  updateHomeSearchResults(state, main);
 
   if (representative) main.append(homeFeature(representative, state, featureDate));
   else main.append(el('section',{className:'content-section today-flower-empty'},[
@@ -248,5 +267,5 @@ function renderHome(state) {
   main.append(el('p', { className: 'weather-note', text: '개화 상태는 도감 시기 기준 예상이에요. 지역과 날씨에 따라 달라져요.' }));
   return main;
 }
-return { "renderHome": renderHome };
+return { "renderHome": renderHome, "updateHomeSearchResults": updateHomeSearchResults };
 })();
