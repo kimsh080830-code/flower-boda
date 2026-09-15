@@ -302,6 +302,15 @@
       "role": "local-fallback"
     },
     {
+      "flowerId": "red-clover",
+      "filename": "red-clover-01.webp",
+      "path": "assets/flowers/red-clover-01.webp",
+      "role": "local-fallback",
+      "source": "user-provided",
+      "author": "사용자 직접 촬영",
+      "license": "사용자 제공 사진"
+    },
+    {
       "flowerId": null,
       "filename": "flower-fallback-01.webp",
       "path": "assets/flowers/flower-fallback-01.webp",
