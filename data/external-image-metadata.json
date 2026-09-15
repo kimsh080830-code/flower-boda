@@ -144,6 +144,18 @@
       "attributionRequired": false,
       "storage": "remote-reference",
       "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"
+    },
+    {
+      "flowerId": "leopard-plant",
+      "filename": "leopard-plant-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "Juni",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Farfugium_japonicum.jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "attributionRequired": true,
+      "storage": "remote-reference",
+      "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg"
     }
   ]
 }
