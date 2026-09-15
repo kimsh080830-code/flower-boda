@@ -1982,6 +1982,11 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
   text-align: center;
   overflow-wrap: anywhere;
 }
+.pansy-color-placeholder {
+  display: block;
+  min-width: 0;
+  background: #2563eb;
+}
 .flower-poster-image.media-image-state { width: 100%; aspect-ratio: 4 / 5; }
 .flower-poster-rail .flower-poster-image.media-image-state { aspect-ratio: 5 / 4; }
 .species-thumb.media-image-state { width: 56px; height: 56px; padding: 5px; font-size: .58rem; }

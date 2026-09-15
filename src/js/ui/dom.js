@@ -44,6 +44,13 @@ function imageState(message, alt, className = '') {
 function image(src, alt, className = '', fallbackSrc = '') {
   const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
   const resolvedSrc = offline && fallbackSrc ? fallbackSrc : (src || fallbackSrc);
+  if (!resolvedSrc && /^팬지(?:\s|$)/.test(alt || '')) {
+    return el('span', {
+      className: `${className} pansy-color-placeholder`.trim(),
+      role: 'img',
+      ariaLabel: alt
+    });
+  }
   if (!resolvedSrc) return imageState('이미지가 없어요.', alt, className);
   const img = el('img', {
     src: resolvedSrc,
