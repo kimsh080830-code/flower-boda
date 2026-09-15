@@ -96,6 +96,18 @@
       "attributionRequired": true,
       "storage": "remote-reference",
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"
+    },
+    {
+      "flowerId": "wintersweet",
+      "filename": "wintersweet-reference-01.webp",
+      "source": "Wikimedia Commons",
+      "author": "M a n u e l",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+      "attributionRequired": true,
+      "storage": "remote-reference",
+      "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg"
     }
   ]
 }

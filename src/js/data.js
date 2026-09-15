@@ -4,6 +4,11 @@ const img = (id) => __flowerAssets[id] || 'assets/flowers/flower-fallback-01.web
 const pendingImg = 'data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%204%203%22%3E%3Crect%20width%3D%224%22%20height%3D%223%22%20fill%3D%22%23eceee9%22%2F%3E%3C%2Fsvg%3E';
 
 const REFERENCE_IMAGE_OVERRIDES = Object.freeze({
+  wintersweet: {
+    url: 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg',
+    creator: 'M a n u e l', license: 'CC BY 2.0',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg'
+  },
   sunflower: {
     url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg',
     creator: 'Reji Jacob', license: 'Public domain',
