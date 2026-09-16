@@ -12,9 +12,9 @@ function renderAppHeader(state) {
       }, [
         el('strong', { className: 'app-brand', text: '꽃을 보다' })
       ]),
-      el('button',{type:'button',className:'app-date-context',dataset:{action:'open-bloom-calendar'},ariaLabel:`개화 달력 열기, ${date.label}, ${date.solarTerm}`},[
+      el('button',{type:'button',className:'app-date-context',dataset:{action:'open-bloom-calendar'},ariaLabel:`개화 달력 열기, ${date.label}, ${date.season} · ${date.solarTerm}`},[
         el('time',{dateTime:date.day,text:date.label}),
-        el('small',{className:'app-season-context',text:date.solarTerm})
+        el('small',{className:'app-season-context',text:`${date.season} · ${date.solarTerm}`})
       ]),
       el('button',{type:'button',className:'settings-button',dataset:{action:'go-settings'},ariaLabel:'설정'},[el('span',{className:'settings-slider-icon','aria-hidden':'true'})])
     ])

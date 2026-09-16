@@ -31,10 +31,6 @@ function homeFeature(flower, state, featureDate=state.currentDate) {
     el('div',{},[el('dt',{text:'꽃말'}),el('dd',{text:flower.flowerLanguage?.meaning || '정보 없음'})]),
     el('div',{},[el('dt',{text:'볼 수 있는 곳'}),el('dd',{text:habitatSummary(flower)})])
    ]),
-   el('section',{className:'feature-identification','aria-labelledby':'feature-identification-title'},[
-    el('h2',{id:'feature-identification-title',text:'구별 특징'}),el('p',{text:identificationSummary(flower)})
-   ]),
-   bloomFlow(bloom),
    el('div',{className:'feature-actions'},[button('꽃 정보 보기','open-flower',{kind:'primary',data:{flowerId:flower.id}}),button('보러 갈 곳','candidate-events',{data:{flowerId:flower.id}})])
   ])
  ]);
@@ -49,6 +45,51 @@ function renderRegionPicker(state, regions) {
   const control = selectControl('탐색 지역', 'home-region-select', options, state.userRegion, 'set-home-region');
   control.classList.add('home-region-picker');
   return control;
+}
+
+function renderFlowerWalk(state) {
+  const walk = getFlowerRelaySnapshot({
+    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage,
+    devScenario:APP_CONFIG.DEV_MODE ? state.devRelayScenario : ''
+  });
+  const action = walk.status==='before'
+    ? (walk.synthetic?'dev-noop':'relay-start')
+    : walk.status==='active'
+      ? (walk.synthetic?'dev-noop':'relay-continue')
+      : '';
+  const actionText = walk.status==='active' ? '이어 걷기' : '꽃길 시작';
+  const section = el('section',{className:'content-section flower-walk','aria-labelledby':'flower-walk-title'},[
+    el('div',{className:'flower-walk-heading'},[
+      el('div',{className:'flower-walk-heading-copy'},[
+        el('span',{className:'section-label',text:'꽃 산책'}),
+        el('h2',{id:'flower-walk-title',text:'오늘의 꽃길'})
+      ]),
+      walk.total ? el('span',{className:'flower-walk-count',text:`꽃 ${walk.total}종`}) : null
+    ]),
+    el('p',{className:'flower-walk-description',text:walk.total
+      ? `오늘 피는 꽃 ${walk.total}종을 이어서 찾아보는 산책이에요.`
+      : '오늘 피는 꽃을 따라 가볍게 걸어보세요.'})
+  ]);
+  if (!walk.total) {
+    section.append(emptyState('오늘은 추천할 꽃길 후보가 없어요.','도감에서 보기','go-current-season'));
+    return section;
+  }
+  section.append(el('div',{className:'flower-walk-targets','aria-label':'오늘의 꽃길 목표'},walk.targets.map((flower,index)=>[
+    el('article',{className:`flower-walk-target ${walk.completedFlowerIds.includes(flower.id)?'is-complete':''}`.trim()},[
+      el('span',{className:'flower-walk-thumb'},[
+        image(flower.image,`${primaryFlowerName(flower)} 참고 이미지`,'flower-walk-image',flower.localImage)
+      ]),
+      el('span',{className:'flower-walk-step',text:`${index+1}`,'aria-hidden':'true'}),
+      el('strong',{text:primaryFlowerName(flower)})
+    ])
+  ]).flat()));
+  section.append(el('div',{className:'flower-walk-footer'},[
+    el('p',{text:walk.status==='complete'
+      ? '오늘의 꽃길을 모두 걸었어요.'
+      : '사진으로 꽃을 확인하면 꽃 릴레이 진행도에도 함께 반영돼요.'}),
+    action ? button(actionText,action,{kind:'primary',extraClass:'flower-walk-start'}) : null
+  ]));
+  return section;
 }
 
 function renderFlowerRelay(state) {
@@ -109,6 +150,36 @@ function renderFlowerRelay(state) {
   return section;
 }
 
+function updateHomeSearchResults(state, root = document) {
+  const results = root.querySelector('#home-search-results');
+  if (!results) return;
+  const query = normalizeSearch(state.searchQuery);
+  const searchBox = root.querySelector('.home-find-search');
+  const clearButton = searchBox?.querySelector('.search-clear');
+  searchBox?.classList.toggle('has-clear', Boolean(query));
+  if (query && !clearButton) {
+    searchBox.append(el('button', {
+      type: 'button', className: 'search-clear', text: '×',
+      dataset: { action: 'clear-flower-search' }, ariaLabel: '검색어 지우기'
+    }));
+  } else if (!query) {
+    clearButton?.remove();
+  }
+  results.replaceChildren();
+  results.hidden = !query;
+  if (!query) return;
+
+  const matches = FLOWERS.filter(flower => matchesFlowerSearch(flower, state.searchQuery));
+  results.append(sectionHeader('빠른 검색 결과', '도감에서 보기', 'go-encyclopedia', `${matches.length}종`));
+  if (matches.length) {
+    const grid = el('div', { className: 'flower-grid' });
+    matches.forEach(flower => grid.append(flowerPoster(flower, state, { showBloomFlow: false })));
+    results.append(grid);
+  } else {
+    results.append(emptyState('검색 결과가 없어요.', '검색어 지우기', 'clear-flower-search'));
+  }
+}
+
 
 function renderHome(state) {
   const main = el('main', { className: 'screen home-screen', id: 'main-content' });
@@ -143,19 +214,8 @@ function renderHome(state) {
       el('span', { className: 'nav-icon nav-camera photo-search-icon', 'aria-hidden': 'true' })
     ])
   ]));
-
-  if(normalizeSearch(state.searchQuery)) {
-    const matches=FLOWERS.filter(flower=>matchesFlowerSearch(flower,state.searchQuery));
-    const searchSection=el('section',{id:'home-search-results',className:'content-section home-search-results'},[
-      sectionHeader('빠른 검색 결과','도감에서 보기','go-encyclopedia',`${matches.length}종`)
-    ]);
-    if(matches.length) {
-      const grid=el('div',{className:'flower-grid'});
-      matches.forEach(flower=>grid.append(flowerPoster(flower,state)));
-      searchSection.append(grid);
-    } else searchSection.append(emptyState('검색 결과가 없어요.','검색어 지우기','clear-flower-search'));
-    main.append(searchSection);
-  }
+  main.append(el('section', { id: 'home-search-results', className: 'content-section home-search-results', hidden: true }));
+  updateHomeSearchResults(state, main);
 
   if (representative) main.append(homeFeature(representative, state, featureDate));
   else main.append(el('section',{className:'content-section today-flower-empty'},[
@@ -163,6 +223,7 @@ function renderHome(state) {
     emptyState('오늘 개화 중인 꽃 후보가 없어요.','도감에서 보기','go-current-season')
   ]));
 
+  main.append(renderFlowerWalk(state));
   main.append(renderFlowerRelay(state));
 
   const bloomSection = el('section', { className: 'content-section' }, [
@@ -170,7 +231,7 @@ function renderHome(state) {
   ]);
   if (blooming.length) {
     const rail = el('div', { className: 'flower-rail' });
-    blooming.slice(0, 6).forEach((flower) => rail.append(flowerPoster(flower, state, { rail: true })));
+    blooming.slice(0, 6).forEach((flower) => rail.append(flowerPoster(flower, state, { rail: true, showBloomFlow: false })));
     bloomSection.append(rail);
   } else {
     bloomSection.append(emptyState('지금 시기에 맞는 꽃이 아직 없어요.', '도감에서 보기', 'go-current-season'));
@@ -206,5 +267,5 @@ function renderHome(state) {
   main.append(el('p', { className: 'weather-note', text: '개화 상태는 도감 시기 기준 예상이에요. 지역과 날씨에 따라 달라져요.' }));
   return main;
 }
-return { "renderHome": renderHome };
+return { "renderHome": renderHome, "updateHomeSearchResults": updateHomeSearchResults };
 })();

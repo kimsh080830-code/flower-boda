@@ -170,12 +170,6 @@
       "role": "local-fallback"
     },
     {
-      "flowerId": "pansy",
-      "filename": "pansy-01.webp",
-      "path": "assets/flowers/pansy-01.webp",
-      "role": "local-fallback"
-    },
-    {
       "flowerId": "peony",
       "filename": "peony-01.webp",
       "path": "assets/flowers/peony-01.webp",
@@ -270,6 +264,45 @@
       "filename": "zinnia-01.webp",
       "path": "assets/flowers/zinnia-01.webp",
       "role": "local-fallback"
+    },
+    {
+      "flowerId": "wintersweet",
+      "filename": "wintersweet-01.webp",
+      "path": "assets/flowers/wintersweet-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "sasanqua",
+      "filename": "sasanqua-01.webp",
+      "path": "assets/flowers/sasanqua-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "cornelian-cherry",
+      "filename": "cornelian-cherry-01.webp",
+      "path": "assets/flowers/cornelian-cherry-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "chinese-fringe-tree",
+      "filename": "chinese-fringe-tree-01.webp",
+      "path": "assets/flowers/chinese-fringe-tree-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "leopard-plant",
+      "filename": "leopard-plant-01.webp",
+      "path": "assets/flowers/leopard-plant-01.webp",
+      "role": "local-fallback"
+    },
+    {
+      "flowerId": "red-clover",
+      "filename": "red-clover-01.webp",
+      "path": "assets/flowers/red-clover-01.webp",
+      "role": "local-fallback",
+      "source": "user-provided",
+      "author": "사용자 직접 촬영",
+      "license": "사용자 제공 사진"
     },
     {
       "flowerId": null,

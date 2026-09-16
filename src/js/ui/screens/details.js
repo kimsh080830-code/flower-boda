@@ -4,6 +4,28 @@ const { getRelatedEvents, canUseEventSchedule } = __mods["js/eventService.js"];
 const { el, button, image } = __mods["js/ui/dom.js"];
 const { statusBadge, sectionHeader, emptyState, primaryFlowerName, otherNameLine, eventListRow, renderSkeletonRows, detailLine, infoDisclosure, formatEventRange, eventVerificationText } = __mods["js/ui/components.js"];
 const { petalShapeValues } = __mods["js/flowerViewData.js"];
+function renderLookalikeCard(item) {
+  const children = [
+    el('div', { className: 'lookalike-heading' }, [
+      el('strong', { text: item.nameKo || '비슷한 식물' }),
+      item.scientificName ? el('span', { className: 'lookalike-scientific', text: item.scientificName }) : null
+    ].filter(Boolean)),
+    item.reason ? el('p', { className: 'lookalike-reason', text: `왜 비슷해요? ${item.reason}` }) : null
+  ].filter(Boolean);
+  if (Array.isArray(item.differences) && item.differences.length) {
+    children.push(el('ul', { className: 'lookalike-differences' }, item.differences.map((text) => el('li', { text }))));
+  }
+  if (item.tip) children.push(el('p', { className: 'lookalike-tip', text: `관찰 포인트 · ${item.tip}` }));
+  if (item.note) children.push(el('p', { className: 'lookalike-note', text: item.note }));
+  if (item.targetId) {
+    children.push(button(`${item.nameKo} 자세히 보기`, 'open-flower', {
+      kind: 'tertiary',
+      extraClass: 'lookalike-link',
+      data: { flowerId: item.targetId }
+    }));
+  }
+  return el('article', { className: 'lookalike-card' }, children);
+}
 function renderFlowerDetail(state, flower) {
   const bloom = getBloomStatus(flower.bloom, state.currentDate);
   const layer = el('section', {
@@ -95,6 +117,12 @@ function renderFlowerDetail(state, flower) {
   ] : [];
 
   if (identification.length) { const section=infoDisclosure('구별 특징',identification,true);section.classList.add('detail-identification');layer.append(section); }
+  const lookalikes = Array.isArray(flower.lookalikes) ? flower.lookalikes.filter((item) => item?.nameKo) : [];
+  if (lookalikes.length) {
+    layer.append(infoDisclosure('비슷한 식물과 구별법', [
+      el('div', { className: 'lookalike-list' }, lookalikes.map(renderLookalikeCard))
+    ], true));
+  }
   if (environment.length) layer.append(infoDisclosure('서식 환경', environment, true));
   if (flower.flowerLanguage?.meaning) {
     const language = flower.flowerLanguage;

@@ -54,6 +54,7 @@ function applyCachedImages(flowers, cache) {
   if (!cache || typeof cache !== 'object') return 0;
   let applied = 0;
   flowers.forEach((flower) => {
+    if (flower.id === 'pansy') return;
     if (flower.imageCredit?.curated) return;
     const item = cache[flower.id];
     if (!item?.url || !/^https:\/\//i.test(item.url)) return;
@@ -78,7 +79,7 @@ function buildTitleMap(payload, requestedTitles) {
 
 async function fetchPageImages(flowers, { signal } = {}) {
   const result = new Map();
-  const candidates = flowers.filter((flower) => !flower.imageCredit?.curated);
+  const candidates = flowers.filter((flower) => flower.id !== 'pansy' && !flower.imageCredit?.curated);
   for (const group of chunk(candidates)) {
     const titles = group.map((flower) => cleanScientificName(flower.scientificName || flower.nameEn)).filter(Boolean);
     if (!titles.length) continue;
