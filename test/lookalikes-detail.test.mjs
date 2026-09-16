@@ -156,3 +156,26 @@ test('seventh batch internal links resolve to registered flowers', () => {
     }
   }
 });
+
+
+test('final lookalike batch covers all remaining registered flowers', () => {
+  const flowers = loadFlowers();
+  const byId = new Map(flowers.map((flower) => [flower.id, flower]));
+  for (const id of ['poppy', 'gaura', 'adonis', 'hellebore', 'cyclamen', 'leopard-plant']) {
+    const flower = byId.get(id);
+    assert.ok(flower, `missing flower: ${id}`);
+    assert.ok(Array.isArray(flower.lookalikes) && flower.lookalikes.length > 0, `missing lookalikes: ${id}`);
+    for (const item of flower.lookalikes) {
+      assert.ok(item.nameKo && item.scientificName && item.reason && item.tip, `incomplete lookalike item: ${id}`);
+      assert.ok(Array.isArray(item.differences) && item.differences.length >= 2, `insufficient differences: ${id}`);
+    }
+  }
+});
+
+test('every registered flower has lookalike guidance', () => {
+  const flowers = loadFlowers();
+  assert.ok(flowers.length > 0);
+  for (const flower of flowers) {
+    assert.ok(Array.isArray(flower.lookalikes) && flower.lookalikes.length > 0, `missing lookalikes: ${flower.id}`);
+  }
+});
