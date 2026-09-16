@@ -114,3 +114,18 @@ test('peony links back to rose detail', () => {
   const peony = flowers.find((flower) => flower.id === 'peony');
   assert.ok(peony?.lookalikes?.some((item) => item.targetId === 'rose'));
 });
+
+
+test('sixth lookalike batch covers five more registered flowers', () => {
+  const flowers = loadFlowers();
+  const byId = new Map(flowers.map((flower) => [flower.id, flower]));
+  for (const id of ['magnolia', 'red-spider-lily', 'cornelian-cherry', 'silver-grass', 'lily']) {
+    const flower = byId.get(id);
+    assert.ok(flower, `missing flower: ${id}`);
+    assert.ok(Array.isArray(flower.lookalikes) && flower.lookalikes.length > 0, `missing lookalikes: ${id}`);
+    for (const item of flower.lookalikes) {
+      assert.ok(item.nameKo && item.scientificName && item.reason && item.tip, `incomplete lookalike item: ${id}`);
+      assert.ok(Array.isArray(item.differences) && item.differences.length >= 2, `insufficient differences: ${id}`);
+    }
+  }
+});
