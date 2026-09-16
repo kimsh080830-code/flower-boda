@@ -44,3 +44,21 @@ test('flower detail renders lookalike comparison section and internal navigation
   assert.match(detailsSource, /'open-flower'/);
   assert.match(detailsSource, /flowerId: item\.targetId/);
 });
+
+
+test('second lookalike batch covers five more registered flowers', () => {
+  const flowers = loadFlowers();
+  const byId = new Map(flowers.map((flower) => [flower.id, flower]));
+  for (const id of ['royal-azalea', 'sasanqua', 'globe-amaranth', 'cherry-blossom', 'lavender']) {
+    const flower = byId.get(id);
+    assert.ok(flower, `missing flower: ${id}`);
+    assert.ok(Array.isArray(flower.lookalikes) && flower.lookalikes.length > 0, `missing lookalikes: ${id}`);
+    assert.ok(flower.lookalikes.some((item) => item.targetId), `missing internal target: ${id}`);
+  }
+});
+
+test('red clover also links to globe amaranth', () => {
+  const flowers = loadFlowers();
+  const redClover = flowers.find((flower) => flower.id === 'red-clover');
+  assert.ok(redClover?.lookalikes?.some((item) => item.targetId === 'globe-amaranth'));
+});
