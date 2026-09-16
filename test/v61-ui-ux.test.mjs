@@ -81,3 +81,18 @@ test('V61 produces only the DEV bundle and adds no image or SVG asset', async ()
   assert.equal(assets.length, 46);
   assert.equal(assets.every((name) => name.endsWith('.webp')), true);
 });
+
+
+test('fresh botanical palette keeps shared UI colors centralized', () => {
+  assert.match(styles, /--bg:\s*#fafbf7;/);
+  assert.match(styles, /--surface-soft:\s*#f1f6ed;/);
+  assert.match(styles, /--surface-tint:\s*#eef5ea;/);
+  assert.match(styles, /--ink:\s*#263025;/);
+  assert.match(styles, /--text:\s*#2f392d;/);
+  assert.match(styles, /--muted:\s*#687562;/);
+  assert.match(styles, /--line:\s*#e1e9dd;/);
+  assert.match(styles, /--accent:\s*#6f8f62;/);
+  assert.match(styles, /--accent-strong:\s*#4f6f48;/);
+  assert.match(styles, /--accent-soft:\s*#e8f2e2;/);
+  assert.doesNotMatch(styles, /#713e50|#5e3242|#4f2938|rgba\(113,62,80/);
+});
