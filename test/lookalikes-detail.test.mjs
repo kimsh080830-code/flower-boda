@@ -93,3 +93,24 @@ test('cosmos and aster link to each other', () => {
   assert.ok(byId.get('cosmos')?.lookalikes?.some((item) => item.targetId === 'aster'));
   assert.ok(byId.get('aster')?.lookalikes?.some((item) => item.targetId === 'cosmos'));
 });
+
+
+test('fifth lookalike batch covers five more registered flowers', () => {
+  const flowers = loadFlowers();
+  const byId = new Map(flowers.map((flower) => [flower.id, flower]));
+  for (const id of ['mugunghwa', 'trumpet-creeper', 'hydrangea', 'lotus', 'peony']) {
+    const flower = byId.get(id);
+    assert.ok(flower, `missing flower: ${id}`);
+    assert.ok(Array.isArray(flower.lookalikes) && flower.lookalikes.length > 0, `missing lookalikes: ${id}`);
+    for (const item of flower.lookalikes) {
+      assert.ok(item.nameKo && item.scientificName && item.reason && item.tip, `incomplete lookalike item: ${id}`);
+      assert.ok(Array.isArray(item.differences) && item.differences.length >= 2, `insufficient differences: ${id}`);
+    }
+  }
+});
+
+test('peony links back to rose detail', () => {
+  const flowers = loadFlowers();
+  const peony = flowers.find((flower) => flower.id === 'peony');
+  assert.ok(peony?.lookalikes?.some((item) => item.targetId === 'rose'));
+});
