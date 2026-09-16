@@ -129,3 +129,30 @@ test('sixth lookalike batch covers five more registered flowers', () => {
     }
   }
 });
+
+
+test('seventh lookalike batch covers five more registered flowers', () => {
+  const flowers = loadFlowers();
+  const byId = new Map(flowers.map((flower) => [flower.id, flower]));
+  for (const id of ['crape-myrtle', 'verbena', 'plum-blossom-red', 'wintersweet', 'chinese-fringe-tree']) {
+    const flower = byId.get(id);
+    assert.ok(flower, `missing flower: ${id}`);
+    assert.ok(Array.isArray(flower.lookalikes) && flower.lookalikes.length > 0, `missing lookalikes: ${id}`);
+    for (const item of flower.lookalikes) {
+      assert.ok(item.nameKo && item.scientificName && item.reason && item.tip, `incomplete lookalike item: ${id}`);
+      assert.ok(Array.isArray(item.differences) && item.differences.length >= 2, `insufficient differences: ${id}`);
+    }
+  }
+});
+
+test('seventh batch internal links resolve to registered flowers', () => {
+  const flowers = loadFlowers();
+  const byId = new Map(flowers.map((flower) => [flower.id, flower]));
+  assert.ok(byId.get('plum-blossom-red')?.lookalikes?.some((item) => item.targetId === 'ume'));
+  assert.ok(byId.get('wintersweet')?.lookalikes?.some((item) => item.targetId === 'cornelian-cherry'));
+  for (const id of ['plum-blossom-red', 'wintersweet']) {
+    for (const item of byId.get(id).lookalikes.filter((entry) => entry.targetId)) {
+      assert.ok(byId.has(item.targetId), `missing target ${item.targetId} from ${id}`);
+    }
+  }
+});
