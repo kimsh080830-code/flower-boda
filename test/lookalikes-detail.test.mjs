@@ -74,3 +74,22 @@ test('third lookalike batch covers five more registered flowers', () => {
     assert.ok(flower.lookalikes.some((item) => item.targetId), `missing internal target: ${id}`);
   }
 });
+
+
+test('fourth lookalike batch covers five more registered flowers', () => {
+  const flowers = loadFlowers();
+  const byId = new Map(flowers.map((flower) => [flower.id, flower]));
+  for (const id of ['shasta-daisy', 'coreopsis', 'gerbera', 'cosmos', 'aster']) {
+    const flower = byId.get(id);
+    assert.ok(flower, `missing flower: ${id}`);
+    assert.ok(Array.isArray(flower.lookalikes) && flower.lookalikes.length > 0, `missing lookalikes: ${id}`);
+    assert.ok(flower.lookalikes.some((item) => item.targetId), `missing internal target: ${id}`);
+  }
+});
+
+test('cosmos and aster link to each other', () => {
+  const flowers = loadFlowers();
+  const byId = new Map(flowers.map((flower) => [flower.id, flower]));
+  assert.ok(byId.get('cosmos')?.lookalikes?.some((item) => item.targetId === 'aster'));
+  assert.ok(byId.get('aster')?.lookalikes?.some((item) => item.targetId === 'cosmos'));
+});
