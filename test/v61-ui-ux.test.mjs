@@ -96,3 +96,10 @@ test('fresh botanical palette keeps shared UI colors centralized', () => {
   assert.match(styles, /--accent-soft:\s*#e8f2e2;/);
   assert.doesNotMatch(styles, /#713e50|#5e3242|#4f2938|rgba\(113,62,80/);
 });
+
+
+test('bright botanical palette also aligns dark mode accents', () => {
+  assert.match(styles, /:root\[data-theme=dark\][^{]*\{[^}]*--accent:#9fc98d;[^}]*--accent-strong:#b0d89e;[^}]*--accent-soft:#31402f;/s);
+  assert.match(styles, /event-tab\[aria-pressed=true\][^\n]*background:var\(--accent-strong\)/);
+  assert.doesNotMatch(styles, /#dfaabc|#40323a|#352c31/);
+});

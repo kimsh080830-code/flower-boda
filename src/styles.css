@@ -1,19 +1,19 @@
 
 :root {
   color-scheme: light;
-  --bg: #fafbf7;
+  --bg: #fcfcf8;
   --surface: #ffffff;
-  --surface-soft: #f1f6ed;
-  --surface-tint: #eef5ea;
+  --surface-soft: #f4f8f0;
+  --surface-tint: #f0f7eb;
   --ink: #263025;
   --text: #2f392d;
   --muted: #687562;
   --muted-2: #879383;
-  --line: #e1e9dd;
-  --line-soft: #edf2e9;
-  --accent: #6f8f62;
-  --accent-strong: #4f6f48;
-  --accent-soft: #e8f2e2;
+  --line: #e3ebdf;
+  --line-soft: #f0f4ec;
+  --accent: #82aa70;
+  --accent-strong: #5a7f50;
+  --accent-soft: #edf6e7;
   --warning-bg: #fbf4df;
   --warning-text: #7a5c18;
   --error-bg: #faece8;
@@ -192,11 +192,11 @@ img { display: block; max-width: 100%; }
 .btn:active:not(:disabled) { transform: translateY(1px); }
 .btn:disabled { opacity: .42; cursor: not-allowed; }
 .btn-primary { background: var(--accent-strong); color: #fff; border-color: var(--accent-strong); }
-.btn-primary:hover:not(:disabled) { background: #435f3e; }
+.btn-primary:hover:not(:disabled) { background: #4f7247; }
 .btn-secondary { background: var(--surface); color: var(--text); border-color: var(--line); }
 .btn-secondary:hover:not(:disabled) { border-color: #cecac3; }
 .btn-tertiary { min-height: 40px; padding-inline: 7px; background: transparent; color: var(--accent-strong); }
-.btn-tertiary:hover:not(:disabled) { background: rgba(111,143,98,.08); }
+.btn-tertiary:hover:not(:disabled) { background: rgba(130,170,112,.10); }
 .btn-small { min-height: 34px; padding: 5px 6px; font-size: .72rem; }
 
 .home-find-panel {
@@ -523,7 +523,7 @@ img { display: block; max-width: 100%; }
   text-align: left;
   cursor: pointer;
 }
-.event-row:active { background: rgba(111,143,98,.055); }
+.event-row:active { background: rgba(130,170,112,.07); }
 .event-row-compact { min-height: 82px; }
 .event-date-block { min-width: 0; display: grid; justify-items: start; align-content: center; gap: 1px; }
 .event-month { color: var(--muted); font-size: .61rem; line-height: 1.15; font-weight: 700; }
@@ -1434,7 +1434,7 @@ body.is-modal-open { overflow: hidden; }
 .calendar-heading{display:flex;justify-content:space-between;align-items:center}.calendar-heading .btn{width:44px;min-height:44px}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}.calendar-weekday{text-align:center;color:var(--muted);font-size:.72rem;padding:8px 0}.calendar-day{min-width:0;height:44px;display:grid;place-items:center;border:0;border-radius:var(--radius-small);background:var(--surface-soft);font:inherit;font-size:.82rem;color:var(--text);cursor:pointer}.calendar-day[aria-pressed=true]{background:var(--accent-strong);color:white}.calendar-day.is-disabled{background:transparent;color:var(--muted-2);cursor:default;pointer-events:none}.visit-selection{font-size:.78rem}.event-calendar-section>.btn{width:100%;margin-top:8px;min-height:46px}
 button:not(:disabled){transition:transform .12s ease,background-color .16s ease,color .16s ease}button:active:not(:disabled){transform:translateY(1px)}.screen{animation:screen-enter .16s ease-out}.save-button[aria-pressed=true]{color:var(--accent-strong);background:var(--accent-soft)}@keyframes screen-enter{from{opacity:.75;transform:translateY(3px)}to{opacity:1;transform:none}}
 .section-action,.btn-small{min-height:44px}.detail-favorite-button{min-height:44px}.status{white-space:nowrap}button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-:root[data-theme=dark]{color-scheme:dark;--bg:#1c211e;--surface:#242b26;--surface-soft:#2c342e;--surface-tint:#352c31;--ink:#f2f1eb;--text:#e5e7df;--muted:#b4bcb1;--muted-2:#9da697;--line:#485048;--line-soft:#39423a;--accent:#dfaabc;--accent-strong:#dfaabc;--accent-soft:#40323a;--warning-bg:#393321;--warning-text:#f1d389;--error-bg:#3f2c29;--error-text:#f2b5a5}
+:root[data-theme=dark]{color-scheme:dark;--bg:#1c211e;--surface:#242b26;--surface-soft:#2c342e;--surface-tint:#303a31;--ink:#f2f1eb;--text:#e5e7df;--muted:#b4bcb1;--muted-2:#9da697;--line:#485048;--line-soft:#39423a;--accent:#9fc98d;--accent-strong:#b0d89e;--accent-soft:#31402f;--warning-bg:#393321;--warning-text:#f1d389;--error-bg:#3f2c29;--error-text:#f2b5a5}
 [data-theme=dark] .btn-primary,[data-theme=dark] .calendar-day[aria-pressed=true]{color:#251a20}[data-theme=dark] .app-header,[data-theme=dark] .bottom-nav,[data-theme=dark] .detail-layer,[data-theme=dark] .detail-topbar,[data-theme=dark] .photo-picker-panel{background:var(--bg)}[data-theme=dark] .status-in-season,[data-theme=dark] .status-ongoing{color:#a2c9ad}[data-theme=dark] .status-ending,[data-theme=dark] .status-soon{color:#e4c28d}
 @media(max-width:359px){.screen{padding-left:12px;padding-right:12px}.app-header-inner{padding:7px 12px}.feature-actions .btn{padding:9px 5px;font-size:.76rem}.editorial-feature-image{aspect-ratio:16/8}.setting-value{font-size:.62rem}.bloom-flow{gap:3px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
@@ -1468,8 +1468,8 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
 .lookalike-link{justify-self:start;margin-top:2px}
 .bloom-flow{gap:4px}.bloom-step{min-width:0}.bloom-step>span:last-child{white-space:nowrap}.bloom-flow.is-compact{gap:5px}
 .event-error-state{display:flex;align-items:flex-start;flex-wrap:wrap;gap:12px}.event-error-copy{flex:1 1 200px}.event-error-state .btn{margin:0;align-self:center}
-.event-tab[aria-pressed=true],.event-tab[aria-pressed=true]:hover{background:#6f8f62;border-color:#6f8f62;color:#fff}.event-tab[aria-pressed=false]{color:var(--text);background:transparent}.event-tab{min-height:44px}
-[data-theme=dark] .event-tab[aria-pressed=true],[data-theme=dark] .event-tab[aria-pressed=true]:hover{background:#dfaabc;border-color:#dfaabc;color:#251a20}
+.event-tab[aria-pressed=true],.event-tab[aria-pressed=true]:hover{background:var(--accent-strong);border-color:var(--accent-strong);color:#fff}.event-tab[aria-pressed=false]{color:var(--text);background:transparent}.event-tab{min-height:44px}
+[data-theme=dark] .event-tab[aria-pressed=true],[data-theme=dark] .event-tab[aria-pressed=true]:hover{background:#9fc98d;border-color:#9fc98d;color:#172116}
 [data-theme=dark] .favorite-filter-toggle.is-active{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 [data-theme=dark] .feature-description,[data-theme=dark] .detail-summary,[data-theme=dark] .detail-disclosure-body{color:var(--text)}
 [data-theme=dark] .status-off-season,[data-theme=dark] .status-ended,[data-theme=dark] .status-unknown,[data-theme=dark] .nav-item:not(.is-active),[data-theme=dark] .search-glyph{color:var(--muted)}
