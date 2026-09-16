@@ -14,3 +14,9 @@ test('home search updates results without replacing the composing input', () => 
   assert.match(home, /root\.querySelector\('#home-search-results'\)/);
   assert.match(home, /updateHomeSearchResults\(state, main\)/);
 });
+
+
+test('quick search cards hide the shared bloom-flow graphic but keep flower images', () => {
+  assert.match(home, /flowerPoster\(flower, state, \{ showBloomFlow: false \}\)/);
+  assert.doesNotMatch(home, /matches\.forEach\(flower => grid\.append\(flowerPoster\(flower, state\)\)\)/);
+});

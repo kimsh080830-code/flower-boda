@@ -173,7 +173,7 @@ function updateHomeSearchResults(state, root = document) {
   results.append(sectionHeader('빠른 검색 결과', '도감에서 보기', 'go-encyclopedia', `${matches.length}종`));
   if (matches.length) {
     const grid = el('div', { className: 'flower-grid' });
-    matches.forEach(flower => grid.append(flowerPoster(flower, state)));
+    matches.forEach(flower => grid.append(flowerPoster(flower, state, { showBloomFlow: false })));
     results.append(grid);
   } else {
     results.append(emptyState('검색 결과가 없어요.', '검색어 지우기', 'clear-flower-search'));
