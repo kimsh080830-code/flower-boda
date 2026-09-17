@@ -25,6 +25,7 @@
   "js/ui/screens/events.js",
   "js/calendar.js",
   "js/calendarPatch.js",
+  "js/calendarColorPatch.js",
   "js/ui/screens/details.js",
   "js/ui/screens/shell.js",
   "js/ui/screens.js",
