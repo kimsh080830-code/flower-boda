@@ -30,7 +30,7 @@ jobs:
           npm run build
           rm -rf dist
           mkdir -p dist
-          cp "꽃을보다_V61_dev.html" dist/index.html
+          cp "index.html" dist/index.html
           cp -R assets dist/assets
           touch dist/.nojekyll
 
