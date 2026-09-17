@@ -7,7 +7,9 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "node audit-data.mjs && node build.mjs",
+    "build": "node audit-data.mjs && node build.mjs --mode=dev",
+    "build:dev": "node audit-data.mjs && node build.mjs --mode=dev",
+    "build:prod": "node audit-data.mjs && node build.mjs --mode=prod",
     "start": "node server.mjs",
     "check": "node --check server.mjs",
     "test": "node --test test/*.test.mjs",

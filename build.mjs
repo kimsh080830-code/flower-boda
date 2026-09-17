@@ -4,6 +4,10 @@ import path from 'node:path';
 import vm from 'node:vm';
 const root=path.dirname(fileURLToPath(import.meta.url));
 const read=relative=>readFile(path.join(root,relative),'utf8');
+const args=process.argv.slice(2);
+const mode=args.length===0 ? 'dev' : args.length===1 ? args[0].replace(/^--mode=/,'') : '';
+if(!['dev','prod'].includes(mode)) throw new Error('Usage: node build.mjs [--mode=dev|--mode=prod]');
+const dev=mode==='dev';
 const order=JSON.parse(await read('src/modules.json'));
 const sourceModuleScripts='const __mods=Object.create(null);\n'+(await Promise.all(order.map(name=>read('src/'+name)))).join('\n');
 new vm.Script('"use strict";\n'+sourceModuleScripts);
@@ -25,9 +29,12 @@ const moduleScripts=await inlineLocalImages(sourceModuleScripts);
 new vm.Script('"use strict";\n'+moduleScripts);
 const styles=await read('src/styles.css');
 const template=await read('src/index.template.html');
-const buildHtml=(dev)=>{
-  const scripts='"use strict";\nglobalThis.__FLOWER_APP_DEV__='+String(dev)+';\nglobalThis.__FLOWER_APP_DEV_PAYLOAD__='+(dev?devPayload:'null')+';\n'+moduleScripts;
-  return template.replace('/* APP_STYLES */',()=>styles).replace('/* APP_SCRIPTS */',()=>scripts.replace(/<\/script/gi,'<\\/script'));
+const buildHtml=()=>{
+  const bootstrap='"use strict";\nglobalThis.__FLOWER_APP_DEV__='+String(dev)+';\n'+(dev?'globalThis.__FLOWER_APP_DEV_PAYLOAD__='+devPayload+';\n':'');
+  const scripts=bootstrap+moduleScripts;
+  const pageTemplate=dev?template:template.replace('Botanical V61 DEV</title>','Botanical V61</title>');
+  return pageTemplate.replace('/* APP_STYLES */',()=>styles).replace('/* APP_SCRIPTS */',()=>scripts.replace(/<\/script/gi,'<\\/script'));
 };
-await writeFile(path.join(root,'index.html'),buildHtml(true));
-console.log('V61 dev build complete: index.html');
+const output=dev?'index.html':'index.prod.html';
+await writeFile(path.join(root,output),buildHtml());
+console.log(`V61 ${mode} build complete: ${output}`);
