@@ -27,6 +27,7 @@
   "js/calendarPatch.js",
   "js/calendarColorPatch.js",
   "js/calendarTodayPatch.js",
+  "js/calendarWeekendPatch.js",
   "js/ui/screens/details.js",
   "js/ui/screens/shell.js",
   "js/ui/screens.js",
