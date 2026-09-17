@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout dev
         uses: actions/checkout@v4
+        with:
+          ref: dev
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -28,6 +30,21 @@ jobs:
       - name: Build
         run: |
           npm run build
+
+      - name: Commit generated index to dev
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "index.html unchanged"
+          else
+            git commit -m "build: generate index.html"
+            git push origin HEAD:dev
+          fi
+
+      - name: Prepare Pages artifact
+        run: |
           rm -rf dist
           mkdir -p dist
           cp "index.html" dist/index.html
