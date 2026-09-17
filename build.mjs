@@ -7,6 +7,15 @@ const read=relative=>readFile(path.join(root,relative),'utf8');
 const args=process.argv.slice(2);
 const mode=args.length===0 ? 'dev' : args.length===1 ? args[0].replace(/^--mode=/,'') : '';
 if(!['dev','prod'].includes(mode)) throw new Error('Usage: node build.mjs [--mode=dev|--mode=prod]');
+function assertGitHubActionsBranchMode(buildMode){
+  if(process.env.GITHUB_ACTIONS!=='true') return;
+  const branch=process.env.GITHUB_REF_NAME;
+  if(!branch) throw new Error('GitHub Actions build blocked: GITHUB_REF_NAME is missing.');
+  const expectedMode={dev:'dev',main:'prod'}[branch];
+  if(!expectedMode) throw new Error(`GitHub Actions build blocked: branch "${branch}" is not allowed. Only dev + build:dev and main + build:prod are allowed.`);
+  if(buildMode!==expectedMode) throw new Error(`GitHub Actions build blocked: branch "${branch}" requires build:${expectedMode}; received build:${buildMode}.`);
+}
+assertGitHubActionsBranchMode(mode);
 const dev=mode==='dev';
 const manifest=JSON.parse(await read('src/modules.json'));
 if(!Array.isArray(manifest.common) || !Array.isArray(manifest.dev)) throw new Error('src/modules.json must define common and dev arrays');
