@@ -1,0 +1,73 @@
+/* V61 DEV · 만개 달력 + 공통 날짜 셀 UI */
+.bloom-calendar-flower-heading{justify-content:flex-start}
+
+.bloom-calendar-day,
+.event-filter-calendar-day{
+  border-radius:var(--radius-small);
+}
+
+.bloom-calendar-day{
+  padding:0;
+  grid-template-rows:1fr;
+}
+
+.bloom-calendar-day.is-full-bloom{
+  background:var(--accent-soft);
+  color:var(--ink);
+}
+
+.bloom-calendar-day.is-full-bloom.has-flower-event{
+  background:
+    repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb,var(--accent-strong) 18%,transparent) 0,
+      color-mix(in srgb,var(--accent-strong) 18%,transparent) 2px,
+      transparent 2px,
+      transparent 6px
+    ),
+    var(--accent-soft);
+}
+
+.bloom-calendar-day.is-selected,
+.bloom-calendar-day.is-today.is-selected,
+.event-filter-calendar-day.is-selected{
+  border-radius:var(--radius-small);
+  box-shadow:inset 0 0 0 2px var(--ink);
+}
+
+.bloom-calendar-day.is-selected{
+  background:var(--surface-soft);
+}
+
+.bloom-calendar-day.is-full-bloom.is-selected{
+  background:var(--accent-soft);
+}
+
+.bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{
+  background:
+    repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb,var(--accent-strong) 18%,transparent) 0,
+      color-mix(in srgb,var(--accent-strong) 18%,transparent) 2px,
+      transparent 2px,
+      transparent 6px
+    ),
+    var(--accent-soft);
+}
+
+[data-theme=dark] .bloom-calendar-day.is-full-bloom{
+  background:var(--surface-tint);
+}
+
+[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event,
+[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{
+  background:
+    repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb,var(--accent) 20%,transparent) 0,
+      color-mix(in srgb,var(--accent) 20%,transparent) 2px,
+      transparent 2px,
+      transparent 6px
+    ),
+    var(--surface-tint);
+}
