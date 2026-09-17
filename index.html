@@ -2022,25 +2022,6 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
 }
 [data-bloom-calendar-swipe="true"], [data-event-calendar-swipe="true"] { overscroll-behavior-x: contain; }
 
-/* V57 · 통합 DEV 테스트 도구 (DEV 렌더링 전용) */
-.dev-tools-panel{margin:18px 0;padding:0;border:1px dashed var(--line);border-radius:12px;background:var(--surface-soft);color:var(--text)}
-.dev-tools-panel>summary{min-height:44px;padding:11px 13px;display:flex;align-items:center;font-size:.78rem;font-weight:800;cursor:pointer;color:var(--ink)}
-.dev-tools-body{padding:0 13px 13px;display:grid;gap:14px}
-.dev-tools-section{min-width:0;display:grid;gap:9px;padding-top:2px}
-.dev-tools-section+.dev-tools-section{padding-top:13px;border-top:1px solid var(--line)}
-.dev-tools-section h2{margin:0;font-size:.75rem;line-height:1.4;color:var(--ink)}
-.dev-tools-date{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.72rem;font-weight:700}
-.dev-tools-date input{min-width:0;min-height:38px;max-width:160px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font:inherit}
-.dev-tools-actions{display:flex;flex-wrap:wrap;gap:6px}.dev-tools-actions .btn{min-height:36px;max-width:100%;padding:7px 9px;font-size:.68rem;white-space:normal}
-.dev-tools-state{margin:0;display:grid;gap:6px}.dev-tools-state>div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:8px;font-size:.68rem;line-height:1.45}
-.dev-tools-state dt{color:var(--muted);font-weight:700}.dev-tools-state dd{margin:0;min-width:0;overflow-wrap:anywhere;color:var(--text)}
-.dev-tools-report{max-height:260px;margin:0;padding:10px;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font:600 .62rem/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
-.dev-tools-note{margin:0;color:var(--muted);font-size:.68rem;line-height:1.55;overflow-wrap:anywhere}
-.dev-long-text-fixture{min-width:0;display:grid;gap:7px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
-.dev-long-text-fixture h3,.dev-long-text-fixture p{min-width:0;margin:0;overflow-wrap:anywhere;word-break:normal}.dev-long-text-fixture h3{font-size:.8rem}.dev-long-text-fixture p{font-size:var(--body-copy-size);line-height:1.55}.dev-long-scientific{font-style:italic}
-@media(max-width:359px){.dev-tools-state>div{grid-template-columns:76px minmax(0,1fr)}.dev-tools-actions .btn{font-size:.64rem;padding-inline:7px}}
-
-
 /* DEV · 홈 큰 카드 레이아웃 조정 */
 .editorial-feature {
   margin-top: 2px;
@@ -2246,6 +2227,24 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
     width: 100%;
   }
 }
+
+/* V61 · 통합 DEV 테스트 도구 */
+.dev-tools-panel{margin:18px 0;padding:0;border:1px dashed var(--line);border-radius:12px;background:var(--surface-soft);color:var(--text)}
+.dev-tools-panel>summary{min-height:44px;padding:11px 13px;display:flex;align-items:center;font-size:.78rem;font-weight:800;cursor:pointer;color:var(--ink)}
+.dev-tools-body{padding:0 13px 13px;display:grid;gap:14px}
+.dev-tools-section{min-width:0;display:grid;gap:9px;padding-top:2px}
+.dev-tools-section+.dev-tools-section{padding-top:13px;border-top:1px solid var(--line)}
+.dev-tools-section h2{margin:0;font-size:.75rem;line-height:1.4;color:var(--ink)}
+.dev-tools-date{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.72rem;font-weight:700}
+.dev-tools-date input{min-width:0;min-height:38px;max-width:160px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font:inherit}
+.dev-tools-actions{display:flex;flex-wrap:wrap;gap:6px}.dev-tools-actions .btn{min-height:36px;max-width:100%;padding:7px 9px;font-size:.68rem;white-space:normal}
+.dev-tools-state{margin:0;display:grid;gap:6px}.dev-tools-state>div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:8px;font-size:.68rem;line-height:1.45}
+.dev-tools-state dt{color:var(--muted);font-weight:700}.dev-tools-state dd{margin:0;min-width:0;overflow-wrap:anywhere;color:var(--text)}
+.dev-tools-report{max-height:260px;margin:0;padding:10px;overflow:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);font:600 .62rem/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}
+.dev-tools-note{margin:0;color:var(--muted);font-size:.68rem;line-height:1.55;overflow-wrap:anywhere}
+.dev-long-text-fixture{min-width:0;display:grid;gap:7px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.dev-long-text-fixture h3,.dev-long-text-fixture p{min-width:0;margin:0;overflow-wrap:anywhere;word-break:normal}.dev-long-text-fixture h3{font-size:.8rem}.dev-long-text-fixture p{font-size:var(--body-copy-size);line-height:1.55}.dev-long-scientific{font-style:italic}
+@media(max-width:359px){.dev-tools-state>div{grid-template-columns:76px minmax(0,1fr)}.dev-tools-actions .btn{font-size:.64rem;padding-inline:7px}}
 </style>
 </head>
 <body>
@@ -2257,7 +2256,7 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
   <div id="app"></div>
   <script>"use strict";
 globalThis.__FLOWER_APP_DEV__=true;
-globalThis.__FLOWER_APP_DEV_PAYLOAD__={"audit":{"version":"V61","generatedAt":"2026-09-17T14:08:31.402Z","ok":true,"issues":[],"summary":{"total":0,"errors":0,"reviews":0}},"imageAssets":{"version":"V56","assets":[{"flowerId":"adonis","filename":"adonis-01.webp","path":"assets/flowers/adonis-01.webp","role":"local-fallback"},{"flowerId":"aster","filename":"aster-01.webp","path":"assets/flowers/aster-01.webp","role":"local-fallback"},{"flowerId":"azalea-korean","filename":"azalea-korean-01.webp","path":"assets/flowers/azalea-korean-01.webp","role":"local-fallback"},{"flowerId":"balloon-flower","filename":"balloon-flower-01.webp","path":"assets/flowers/balloon-flower-01.webp","role":"local-fallback"},{"flowerId":"camellia","filename":"camellia-01.webp","path":"assets/flowers/camellia-01.webp","role":"local-fallback"},{"flowerId":"canola","filename":"canola-01.webp","path":"assets/flowers/canola-01.webp","role":"local-fallback"},{"flowerId":"cherry-blossom","filename":"cherry-blossom-01.webp","path":"assets/flowers/cherry-blossom-01.webp","role":"local-fallback"},{"flowerId":"chrysanthemum","filename":"chrysanthemum-01.webp","path":"assets/flowers/chrysanthemum-01.webp","role":"local-fallback"},{"flowerId":"coreopsis","filename":"coreopsis-01.webp","path":"assets/flowers/coreopsis-01.webp","role":"local-fallback"},{"flowerId":"cosmos","filename":"cosmos-01.webp","path":"assets/flowers/cosmos-01.webp","role":"local-fallback"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-01.webp","path":"assets/flowers/crape-myrtle-01.webp","role":"local-fallback"},{"flowerId":"cyclamen","filename":"cyclamen-01.webp","path":"assets/flowers/cyclamen-01.webp","role":"local-fallback"},{"flowerId":"daffodil","filename":"daffodil-01.webp","path":"assets/flowers/daffodil-01.webp","role":"local-fallback"},{"flowerId":"dandelion","filename":"dandelion-01.webp","path":"assets/flowers/dandelion-01.webp","role":"local-fallback"},{"flowerId":"forsythia","filename":"forsythia-01.webp","path":"assets/flowers/forsythia-01.webp","role":"local-fallback"},{"flowerId":"gaura","filename":"gaura-01.webp","path":"assets/flowers/gaura-01.webp","role":"local-fallback"},{"flowerId":"gerbera","filename":"gerbera-01.webp","path":"assets/flowers/gerbera-01.webp","role":"local-fallback"},{"flowerId":"globe-amaranth","filename":"globe-amaranth-01.webp","path":"assets/flowers/globe-amaranth-01.webp","role":"local-fallback"},{"flowerId":"hellebore","filename":"hellebore-01.webp","path":"assets/flowers/hellebore-01.webp","role":"local-fallback"},{"flowerId":"hydrangea","filename":"hydrangea-01.webp","path":"assets/flowers/hydrangea-01.webp","role":"local-fallback"},{"flowerId":"iris","filename":"iris-01.webp","path":"assets/flowers/iris-01.webp","role":"local-fallback"},{"flowerId":"lavender","filename":"lavender-01.webp","path":"assets/flowers/lavender-01.webp","role":"local-fallback"},{"flowerId":"lily","filename":"lily-01.webp","path":"assets/flowers/lily-01.webp","role":"local-fallback"},{"flowerId":"lotus","filename":"lotus-01.webp","path":"assets/flowers/lotus-01.webp","role":"local-fallback"},{"flowerId":"magnolia","filename":"magnolia-01.webp","path":"assets/flowers/magnolia-01.webp","role":"local-fallback"},{"flowerId":"marigold","filename":"marigold-01.webp","path":"assets/flowers/marigold-01.webp","role":"local-fallback"},{"flowerId":"morning-glory","filename":"morning-glory-01.webp","path":"assets/flowers/morning-glory-01.webp","role":"local-fallback"},{"flowerId":"mugunghwa","filename":"mugunghwa-01.webp","path":"assets/flowers/mugunghwa-01.webp","role":"local-fallback"},{"flowerId":"peony","filename":"peony-01.webp","path":"assets/flowers/peony-01.webp","role":"local-fallback"},{"flowerId":"plum-blossom-red","filename":"plum-blossom-red-01.webp","path":"assets/flowers/plum-blossom-red-01.webp","role":"local-fallback"},{"flowerId":"poppy","filename":"poppy-01.webp","path":"assets/flowers/poppy-01.webp","role":"local-fallback"},{"flowerId":"red-spider-lily","filename":"red-spider-lily-01.webp","path":"assets/flowers/red-spider-lily-01.webp","role":"local-fallback"},{"flowerId":"rose","filename":"rose-01.webp","path":"assets/flowers/rose-01.webp","role":"local-fallback"},{"flowerId":"royal-azalea","filename":"royal-azalea-01.webp","path":"assets/flowers/royal-azalea-01.webp","role":"local-fallback"},{"flowerId":"salvia","filename":"salvia-01.webp","path":"assets/flowers/salvia-01.webp","role":"local-fallback"},{"flowerId":"shasta-daisy","filename":"shasta-daisy-01.webp","path":"assets/flowers/shasta-daisy-01.webp","role":"local-fallback"},{"flowerId":"silver-grass","filename":"silver-grass-01.webp","path":"assets/flowers/silver-grass-01.webp","role":"local-fallback"},{"flowerId":"snowdrop","filename":"snowdrop-01.webp","path":"assets/flowers/snowdrop-01.webp","role":"local-fallback"},{"flowerId":"sunflower","filename":"sunflower-01.webp","path":"assets/flowers/sunflower-01.webp","role":"local-fallback"},{"flowerId":"trumpet-creeper","filename":"trumpet-creeper-01.webp","path":"assets/flowers/trumpet-creeper-01.webp","role":"local-fallback"},{"flowerId":"tulip","filename":"tulip-01.webp","path":"assets/flowers/tulip-01.webp","role":"local-fallback"},{"flowerId":"ume","filename":"ume-01.webp","path":"assets/flowers/ume-01.webp","role":"local-fallback"},{"flowerId":"verbena","filename":"verbena-01.webp","path":"assets/flowers/verbena-01.webp","role":"local-fallback"},{"flowerId":"zinnia","filename":"zinnia-01.webp","path":"assets/flowers/zinnia-01.webp","role":"local-fallback"},{"flowerId":"wintersweet","filename":"wintersweet-01.webp","path":"assets/flowers/wintersweet-01.webp","role":"local-fallback"},{"flowerId":"sasanqua","filename":"sasanqua-01.webp","path":"assets/flowers/sasanqua-01.webp","role":"local-fallback"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-01.webp","path":"assets/flowers/cornelian-cherry-01.webp","role":"local-fallback"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-01.webp","path":"assets/flowers/chinese-fringe-tree-01.webp","role":"local-fallback"},{"flowerId":"leopard-plant","filename":"leopard-plant-01.webp","path":"assets/flowers/leopard-plant-01.webp","role":"local-fallback"},{"flowerId":"red-clover","filename":"red-clover-01.webp","path":"assets/flowers/red-clover-01.webp","role":"local-fallback","source":"user-provided","author":"사용자 직접 촬영","license":"사용자 제공 사진"},{"flowerId":null,"filename":"flower-fallback-01.webp","path":"assets/flowers/flower-fallback-01.webp","role":"generic-fallback"}]},"externalImages":{"version":"V56","images":[{"flowerId":"sunflower","filename":"sunflower-reference-01.webp","source":"Wikimedia Commons","author":"Reji Jacob","sourceUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","license":"Public domain","licenseUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg"},{"flowerId":"mugunghwa","filename":"mugunghwa-reference-01.webp","source":"Wikimedia Commons","author":"PapiPijuan","sourceUrl":"https://commons.wikimedia.org/wiki/File:Hibiscus_syriacus_Flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hibiscus_syriacus_Flower.jpg/960px-Hibiscus_syriacus_Flower.jpg"},{"flowerId":"rose","filename":"rose-reference-01.webp","source":"Wikimedia Commons","author":"Bontempi1953","sourceUrl":"https://commons.wikimedia.org/wiki/File:Rose_double.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rose_double.jpg/1280px-Rose_double.jpg"},{"flowerId":"tulip","filename":"tulip-reference-01.webp","source":"Wikimedia Commons","author":"DanilWikiUser","sourceUrl":"https://commons.wikimedia.org/wiki/File:20260506_Tulip_closeup.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/a/ae/20260506_Tulip_closeup.jpg"},{"flowerId":"cosmos","filename":"cosmos-reference-01.webp","source":"Wikimedia Commons","author":"Joydeep","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cosmos_bipinnatus_pink,_Burdwan,_West_Bengal,_India_10_01_2013.jpg","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg/960px-Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg"},{"flowerId":"zinnia","filename":"zinnia-reference-01.webp","source":"Wikimedia Commons","author":"Sara Nabih","sourceUrl":"https://commons.wikimedia.org/wiki/File:Zinnia_elegans_flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Zinnia_elegans_flower.jpg/960px-Zinnia_elegans_flower.jpg"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-reference-01.webp","source":"Wikimedia Commons","author":"Juan Carlos Fonseca Mata","sourceUrl":"https://commons.wikimedia.org/wiki/File:Lagerstroemia_indica_4.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lagerstroemia_indica_4.jpg/960px-Lagerstroemia_indica_4.jpg"},{"flowerId":"hydrangea","filename":"hydrangea-reference-01.webp","source":"Wikimedia Commons","author":"Michele Dorsey Walfred","sourceUrl":"https://commons.wikimedia.org/wiki/File:Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"},{"flowerId":"wintersweet","filename":"wintersweet-reference-01.webp","source":"Wikimedia Commons","author":"M a n u e l","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg"},{"flowerId":"sasanqua","filename":"sasanqua-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Camellia_sasanqua.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-reference-01.webp","source":"Wikimedia Commons","author":"Doctoroftcm","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cornus_officinalis.JPG","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-reference-01.webp","source":"Wikimedia Commons","author":"Stickpen","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"},{"flowerId":"leopard-plant","filename":"leopard-plant-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Farfugium_japonicum.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg"}]}};
+globalThis.__FLOWER_APP_DEV_PAYLOAD__={"audit":{"version":"V61","generatedAt":"2026-09-17T15:23:37.219Z","ok":true,"issues":[],"summary":{"total":0,"errors":0,"reviews":0}},"imageAssets":{"version":"V56","assets":[{"flowerId":"adonis","filename":"adonis-01.webp","path":"assets/flowers/adonis-01.webp","role":"local-fallback"},{"flowerId":"aster","filename":"aster-01.webp","path":"assets/flowers/aster-01.webp","role":"local-fallback"},{"flowerId":"azalea-korean","filename":"azalea-korean-01.webp","path":"assets/flowers/azalea-korean-01.webp","role":"local-fallback"},{"flowerId":"balloon-flower","filename":"balloon-flower-01.webp","path":"assets/flowers/balloon-flower-01.webp","role":"local-fallback"},{"flowerId":"camellia","filename":"camellia-01.webp","path":"assets/flowers/camellia-01.webp","role":"local-fallback"},{"flowerId":"canola","filename":"canola-01.webp","path":"assets/flowers/canola-01.webp","role":"local-fallback"},{"flowerId":"cherry-blossom","filename":"cherry-blossom-01.webp","path":"assets/flowers/cherry-blossom-01.webp","role":"local-fallback"},{"flowerId":"chrysanthemum","filename":"chrysanthemum-01.webp","path":"assets/flowers/chrysanthemum-01.webp","role":"local-fallback"},{"flowerId":"coreopsis","filename":"coreopsis-01.webp","path":"assets/flowers/coreopsis-01.webp","role":"local-fallback"},{"flowerId":"cosmos","filename":"cosmos-01.webp","path":"assets/flowers/cosmos-01.webp","role":"local-fallback"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-01.webp","path":"assets/flowers/crape-myrtle-01.webp","role":"local-fallback"},{"flowerId":"cyclamen","filename":"cyclamen-01.webp","path":"assets/flowers/cyclamen-01.webp","role":"local-fallback"},{"flowerId":"daffodil","filename":"daffodil-01.webp","path":"assets/flowers/daffodil-01.webp","role":"local-fallback"},{"flowerId":"dandelion","filename":"dandelion-01.webp","path":"assets/flowers/dandelion-01.webp","role":"local-fallback"},{"flowerId":"forsythia","filename":"forsythia-01.webp","path":"assets/flowers/forsythia-01.webp","role":"local-fallback"},{"flowerId":"gaura","filename":"gaura-01.webp","path":"assets/flowers/gaura-01.webp","role":"local-fallback"},{"flowerId":"gerbera","filename":"gerbera-01.webp","path":"assets/flowers/gerbera-01.webp","role":"local-fallback"},{"flowerId":"globe-amaranth","filename":"globe-amaranth-01.webp","path":"assets/flowers/globe-amaranth-01.webp","role":"local-fallback"},{"flowerId":"hellebore","filename":"hellebore-01.webp","path":"assets/flowers/hellebore-01.webp","role":"local-fallback"},{"flowerId":"hydrangea","filename":"hydrangea-01.webp","path":"assets/flowers/hydrangea-01.webp","role":"local-fallback"},{"flowerId":"iris","filename":"iris-01.webp","path":"assets/flowers/iris-01.webp","role":"local-fallback"},{"flowerId":"lavender","filename":"lavender-01.webp","path":"assets/flowers/lavender-01.webp","role":"local-fallback"},{"flowerId":"lily","filename":"lily-01.webp","path":"assets/flowers/lily-01.webp","role":"local-fallback"},{"flowerId":"lotus","filename":"lotus-01.webp","path":"assets/flowers/lotus-01.webp","role":"local-fallback"},{"flowerId":"magnolia","filename":"magnolia-01.webp","path":"assets/flowers/magnolia-01.webp","role":"local-fallback"},{"flowerId":"marigold","filename":"marigold-01.webp","path":"assets/flowers/marigold-01.webp","role":"local-fallback"},{"flowerId":"morning-glory","filename":"morning-glory-01.webp","path":"assets/flowers/morning-glory-01.webp","role":"local-fallback"},{"flowerId":"mugunghwa","filename":"mugunghwa-01.webp","path":"assets/flowers/mugunghwa-01.webp","role":"local-fallback"},{"flowerId":"peony","filename":"peony-01.webp","path":"assets/flowers/peony-01.webp","role":"local-fallback"},{"flowerId":"plum-blossom-red","filename":"plum-blossom-red-01.webp","path":"assets/flowers/plum-blossom-red-01.webp","role":"local-fallback"},{"flowerId":"poppy","filename":"poppy-01.webp","path":"assets/flowers/poppy-01.webp","role":"local-fallback"},{"flowerId":"red-spider-lily","filename":"red-spider-lily-01.webp","path":"assets/flowers/red-spider-lily-01.webp","role":"local-fallback"},{"flowerId":"rose","filename":"rose-01.webp","path":"assets/flowers/rose-01.webp","role":"local-fallback"},{"flowerId":"royal-azalea","filename":"royal-azalea-01.webp","path":"assets/flowers/royal-azalea-01.webp","role":"local-fallback"},{"flowerId":"salvia","filename":"salvia-01.webp","path":"assets/flowers/salvia-01.webp","role":"local-fallback"},{"flowerId":"shasta-daisy","filename":"shasta-daisy-01.webp","path":"assets/flowers/shasta-daisy-01.webp","role":"local-fallback"},{"flowerId":"silver-grass","filename":"silver-grass-01.webp","path":"assets/flowers/silver-grass-01.webp","role":"local-fallback"},{"flowerId":"snowdrop","filename":"snowdrop-01.webp","path":"assets/flowers/snowdrop-01.webp","role":"local-fallback"},{"flowerId":"sunflower","filename":"sunflower-01.webp","path":"assets/flowers/sunflower-01.webp","role":"local-fallback"},{"flowerId":"trumpet-creeper","filename":"trumpet-creeper-01.webp","path":"assets/flowers/trumpet-creeper-01.webp","role":"local-fallback"},{"flowerId":"tulip","filename":"tulip-01.webp","path":"assets/flowers/tulip-01.webp","role":"local-fallback"},{"flowerId":"ume","filename":"ume-01.webp","path":"assets/flowers/ume-01.webp","role":"local-fallback"},{"flowerId":"verbena","filename":"verbena-01.webp","path":"assets/flowers/verbena-01.webp","role":"local-fallback"},{"flowerId":"zinnia","filename":"zinnia-01.webp","path":"assets/flowers/zinnia-01.webp","role":"local-fallback"},{"flowerId":"wintersweet","filename":"wintersweet-01.webp","path":"assets/flowers/wintersweet-01.webp","role":"local-fallback"},{"flowerId":"sasanqua","filename":"sasanqua-01.webp","path":"assets/flowers/sasanqua-01.webp","role":"local-fallback"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-01.webp","path":"assets/flowers/cornelian-cherry-01.webp","role":"local-fallback"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-01.webp","path":"assets/flowers/chinese-fringe-tree-01.webp","role":"local-fallback"},{"flowerId":"leopard-plant","filename":"leopard-plant-01.webp","path":"assets/flowers/leopard-plant-01.webp","role":"local-fallback"},{"flowerId":"red-clover","filename":"red-clover-01.webp","path":"assets/flowers/red-clover-01.webp","role":"local-fallback","source":"user-provided","author":"사용자 직접 촬영","license":"사용자 제공 사진"},{"flowerId":null,"filename":"flower-fallback-01.webp","path":"assets/flowers/flower-fallback-01.webp","role":"generic-fallback"}]},"externalImages":{"version":"V56","images":[{"flowerId":"sunflower","filename":"sunflower-reference-01.webp","source":"Wikimedia Commons","author":"Reji Jacob","sourceUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","license":"Public domain","licenseUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg"},{"flowerId":"mugunghwa","filename":"mugunghwa-reference-01.webp","source":"Wikimedia Commons","author":"PapiPijuan","sourceUrl":"https://commons.wikimedia.org/wiki/File:Hibiscus_syriacus_Flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hibiscus_syriacus_Flower.jpg/960px-Hibiscus_syriacus_Flower.jpg"},{"flowerId":"rose","filename":"rose-reference-01.webp","source":"Wikimedia Commons","author":"Bontempi1953","sourceUrl":"https://commons.wikimedia.org/wiki/File:Rose_double.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rose_double.jpg/1280px-Rose_double.jpg"},{"flowerId":"tulip","filename":"tulip-reference-01.webp","source":"Wikimedia Commons","author":"DanilWikiUser","sourceUrl":"https://commons.wikimedia.org/wiki/File:20260506_Tulip_closeup.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/a/ae/20260506_Tulip_closeup.jpg"},{"flowerId":"cosmos","filename":"cosmos-reference-01.webp","source":"Wikimedia Commons","author":"Joydeep","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cosmos_bipinnatus_pink,_Burdwan,_West_Bengal,_India_10_01_2013.jpg","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg/960px-Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg"},{"flowerId":"zinnia","filename":"zinnia-reference-01.webp","source":"Wikimedia Commons","author":"Sara Nabih","sourceUrl":"https://commons.wikimedia.org/wiki/File:Zinnia_elegans_flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Zinnia_elegans_flower.jpg/960px-Zinnia_elegans_flower.jpg"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-reference-01.webp","source":"Wikimedia Commons","author":"Juan Carlos Fonseca Mata","sourceUrl":"https://commons.wikimedia.org/wiki/File:Lagerstroemia_indica_4.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lagerstroemia_indica_4.jpg/960px-Lagerstroemia_indica_4.jpg"},{"flowerId":"hydrangea","filename":"hydrangea-reference-01.webp","source":"Wikimedia Commons","author":"Michele Dorsey Walfred","sourceUrl":"https://commons.wikimedia.org/wiki/File:Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"},{"flowerId":"wintersweet","filename":"wintersweet-reference-01.webp","source":"Wikimedia Commons","author":"M a n u e l","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg"},{"flowerId":"sasanqua","filename":"sasanqua-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Camellia_sasanqua.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-reference-01.webp","source":"Wikimedia Commons","author":"Doctoroftcm","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cornus_officinalis.JPG","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-reference-01.webp","source":"Wikimedia Commons","author":"Stickpen","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"},{"flowerId":"leopard-plant","filename":"leopard-plant-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Farfugium_japonicum.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg"}]}};
 const __mods=Object.create(null);
 __mods["js/config.js"] = (() => {
 const APP_CONFIG = Object.freeze({
@@ -2844,84 +2843,27 @@ return {
 };
 })();
 
-__mods["js/devTools.js"] = (() => {
-const { APP_CONFIG } = __mods["js/config.js"];
-const { getFlowerTaxonIdentity } = __mods["js/flowerDataPolicy.js"];
+__mods["js/runtimeHooks.js"] = (() => {
+const hooks = {
+  createState: () => ({}),
+  resolveTextSize: (_state, fallback) => fallback,
+  beforeObservationSave: () => {},
+  handleAction: () => false,
+  handleChange: () => false,
+  todayFlowerContext: ({ date, storage }) => ({ date, storage }),
+  relaySnapshot: (snapshot) => snapshot,
+  resolveSyntheticAction: (_snapshot, action) => action,
+  shouldForceNetworkFailure: () => false,
+  renderSettingsExtra: () => null
+};
 
-const runtime = { forceNetworkFailure:false };
-const DUPLICATE_CODES = new Set(['DUPLICATE_ID','DUPLICATE_SCIENTIFIC_NAME','ACCEPTED_NAME_CONFLICT','SYNONYM_CONFLICT','DATA_LINK_DUPLICATE']);
-const IMAGE_CODES = new Set(['IMAGE_MISSING','IMAGE_PATH_INVALID','IMAGE_PATH_NOT_FOUND','IMAGE_MANIFEST_MISSING','IMAGE_FILENAME_INVALID','ORPHAN_IMAGE_FILE','STALE_IMAGE_PATH_REFERENCE','DATA_LINK_MISMATCH']);
-const LICENSE_CODES = new Set(['LICENSE_MISSING']);
-
-function setForceNetworkFailure(value) {
-  if (!APP_CONFIG.DEV_MODE) return false;
-  runtime.forceNetworkFailure = Boolean(value);
-  return runtime.forceNetworkFailure;
-}
-function shouldForceNetworkFailure() { return APP_CONFIG.DEV_MODE && runtime.forceNetworkFailure; }
-function getDevPayload() { return APP_CONFIG.DEV_MODE && globalThis.__FLOWER_APP_DEV_PAYLOAD__ ? globalThis.__FLOWER_APP_DEV_PAYLOAD__ : null; }
-
-const clean=value=>String(value??'').trim();
-const norm=value=>clean(value).replace(/\s+/g,' ').toLocaleLowerCase('en-US');
-function duplicateGroups(rows,keyFn) {
-  const map=new Map();
-  for(const row of rows){const key=keyFn(row);if(!key)continue;if(!map.has(key))map.set(key,[]);map.get(key).push(row);}
-  return [...map.entries()].filter(([,items])=>items.length>1);
-}
-function runDuplicateCheck(flowers=[]) {
-  const issues=[];
-  for(const [value,rows] of duplicateGroups(flowers,row=>clean(row.id))) issues.push(`ID 중복: ${value} (${rows.length}건)`);
-  for(const [value,rows] of duplicateGroups(flowers,row=>norm(row.scientificName))) issues.push(`학명 중복: ${value} · ${rows.map(row=>row.id).join(', ')}`);
-  const identities=flowers.map(getFlowerTaxonIdentity).filter(Boolean);
-  for(const [value,rows] of duplicateGroups(identities,row=>norm(row.acceptedScientificName))) {
-    const ids=[...new Set(rows.map(row=>row.id).filter(Boolean))];
-    if(ids.length>1) issues.push(`accepted name 충돌: ${value} · ${ids.join(', ')}`);
+function installRuntimeHooks(overrides = {}) {
+  for (const key of Object.keys(hooks)) {
+    if (typeof overrides[key] === 'function') hooks[key] = overrides[key];
   }
-  const synonyms=new Map();
-  for(const identity of identities){
-    const accepted=norm(identity.acceptedScientificName);
-    for(const synonym of identity.synonyms||[]){const key=norm(synonym);if(!key)continue;if(!synonyms.has(key))synonyms.set(key,[]);synonyms.get(key).push({id:identity.id,accepted});}
-  }
-  for(const [value,owners] of synonyms){
-    const accepted=[...new Set(owners.map(row=>row.accepted).filter(Boolean))];
-    if(accepted.length>1) issues.push(`synonym 충돌: ${value} · ${owners.map(row=>row.id).join(', ')}`);
-  }
-  return { ok:issues.length===0, issues };
-}
-function payloadIssues(codes) {
-  const issues=getDevPayload()?.audit?.issues;
-  return Array.isArray(issues) ? issues.filter(item=>codes.has(item.code)) : [];
-}
-function formatBuildCheck(title,codes,extra='') {
-  const payload=getDevPayload();
-  if(!payload) return `${title}\nDEV 빌드 검사 정보를 찾지 못했어요.`;
-  const issues=payloadIssues(codes);
-  const lines=[title,`검출: ${issues.length}건`];
-  if(extra) lines.push(extra);
-  if(!issues.length) lines.push('현재 빌드 기준 문제 없음');
-  else issues.forEach(item=>lines.push(`${item.code} · ${item.flowerId||item.path||item.value||item.message}`));
-  return lines.join('\n');
-}
-function runDevAudit(kind,flowers=[]) {
-  if(!APP_CONFIG.DEV_MODE) return '';
-  const payload=getDevPayload();
-  if(kind==='duplicates') {
-    const live=runDuplicateCheck(flowers);
-    const build=payloadIssues(DUPLICATE_CODES);
-    return ['데이터 중복 검사',`실시간 꽃 데이터: ${live.issues.length}건`,`빌드 연결 검사: ${build.length}건`,...(live.issues.length?live.issues:['현재 중복/충돌 문제 없음']),...build.map(item=>`${item.code} · ${item.flowerId||item.value||item.message}`)].join('\n');
-  }
-  if(kind==='images') {
-    const count=Array.isArray(payload?.imageAssets?.assets)?payload.imageAssets.assets.length:0;
-    return formatBuildCheck('이미지 누락 검사',IMAGE_CODES,`이미지 manifest: ${count}개`);
-  }
-  if(kind==='licenses') {
-    const count=Array.isArray(payload?.externalImages?.images)?payload.externalImages.images.length:0;
-    return formatBuildCheck('라이선스 누락 검사',LICENSE_CODES,`외부 이미지 메타데이터: ${count}개`);
-  }
-  return '';
 }
 
-return { setForceNetworkFailure, shouldForceNetworkFailure, getDevPayload, runDuplicateCheck, runDevAudit };
+return { hooks, installRuntimeHooks };
 })();
 
 __mods["js/dateUtils.js"] = (() => {
@@ -3063,7 +3005,7 @@ __mods["js/flowerService.js"] = (() => {
 const { APP_CONFIG, SUPPORTED_IMAGE_EXTENSIONS, SUPPORTED_IMAGE_TYPES } = __mods["js/config.js"];
 const { FLOWERS } = __mods["js/data.js"];
 const { getBloomStatus } = __mods["js/dateUtils.js"];
-const shouldForceNetworkFailure = () => Boolean(__mods["js/devTools.js"]?.shouldForceNetworkFailure?.());
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 
 class FlowerServiceError extends Error {
   constructor(code, message, cause) {
@@ -3303,7 +3245,7 @@ function normalizePlantNetResponse(payload, context = {}) {
 }
 
 async function analyzeViaBackend(preprocessed, signal) {
-  if (shouldForceNetworkFailure()) throw new FlowerServiceError('NETWORK','DEV에서 네트워크 실패를 강제로 재현하고 있어요.');
+  if (runtimeHooks.shouldForceNetworkFailure()) throw new FlowerServiceError('NETWORK','네트워크 연결을 확인해 주세요.');
   const formData = new FormData();
   formData.append('images', preprocessed.blob, 'flower.jpg');
   formData.append('organs', 'flower');
@@ -3620,13 +3562,6 @@ function createMemoryStorage(initial = {}) {
   };
 }
 
-const devStorage = createMemoryStorage();
-function getDevTodayFlowerStorage() { return devStorage; }
-function resetDevTodayFlowerStorage() {
-  for (const key of Object.keys(devStorage.snapshot())) devStorage.removeItem(key);
-  return devStorage;
-}
-
 function safeRead(storage, key, fallback) {
   try {
     const raw = storage?.getItem?.(key);
@@ -3789,8 +3724,6 @@ return {
   getTodayFlowerCandidates,
   deterministicShuffle,
   createMemoryStorage,
-  getDevTodayFlowerStorage,
-  resetDevTodayFlowerStorage,
   selectTodayFlower,
   simulateTodayFlowers
 };
@@ -3865,24 +3798,14 @@ function snapshotFrom({ targets, relay, records, synthetic = false, completedOve
   };
 }
 
-function devSnapshot(base, scenario) {
-  if (!scenario) return base;
-  if (scenario === 'empty') return snapshotFrom({targets:[],relay:null,records:[],synthetic:true});
-  const targets = scenario === 'shortage' ? base.targets.slice(0, Math.min(2, base.targets.length)) : base.targets;
-  if (scenario === 'before' || scenario === 'shortage') return snapshotFrom({targets,relay:null,records:[],synthetic:true});
-  const relay = {day:base.day,targetFlowerIds:targets.map((flower) => flower.id),startedAt:new Date(0).toISOString()};
-  const completedCount = scenario === 'complete' ? targets.length : scenario === 'partial' ? Math.max(0, targets.length - 1) : Math.min(1, targets.length);
-  return snapshotFrom({targets,relay,records:[],synthetic:true,completedOverride:targets.slice(0,completedCount).map((flower) => flower.id)});
-}
-
-function getFlowerRelaySnapshot({ flowers = [], date = new Date(), records = [], storage = globalThis.localStorage, devScenario = '' } = {}) {
+function getFlowerRelaySnapshot({ flowers = [], date = new Date(), records = [], storage = globalThis.localStorage } = {}) {
   const day = relayDay(date);
   const previewTargets = selectRelayTargets(flowers, date);
   const stored = parseRelayState(storage);
   const relay = stored?.day === day && stored.targetFlowerIds.every((id) => flowers.some((flower) => flower.id === id)) ? stored : null;
   const targetIds = relay?.targetFlowerIds || previewTargets.map((flower) => flower.id);
   const targets = targetIds.map((id) => flowers.find((flower) => flower.id === id)).filter(Boolean);
-  return devSnapshot(snapshotFrom({targets,relay,records}),devScenario);
+  return snapshotFrom({targets,relay,records});
 }
 
 function startFlowerRelay({ flowers = [], date = new Date(), storage = globalThis.localStorage, now = new Date() } = {}) {
@@ -4014,7 +3937,7 @@ return { EVENT_SNAPSHOT };
 
 __mods["js/eventService.js"] = (() => {
 const { APP_CONFIG } = __mods["js/config.js"];
-const shouldForceNetworkFailure = () => Boolean(__mods["js/devTools.js"]?.shouldForceNetworkFailure?.());
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { FLOWERS } = __mods["js/data.js"];
 const { getCache, setCache } = __mods["js/storage.js"];
 const { getEventStatus, parseApiDate } = __mods["js/dateUtils.js"];
@@ -4243,7 +4166,7 @@ async function getEventDetail(event, { signal } = {}) {
 
 async function getEvents({ force = false, signal } = {}) {
   if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
-  if (shouldForceNetworkFailure()) { const error=new Error('DEV_NETWORK_FAILURE'); error.userMessage='DEV에서 네트워크 실패를 강제로 재현하고 있어요.'; throw error; }
+  if (runtimeHooks.shouldForceNetworkFailure()) { const error=new Error('NETWORK_UNAVAILABLE'); error.userMessage='네트워크 연결을 확인해 주세요.'; throw error; }
   const snapshot = () => sortEvents(__mods['js/eventSnapshot.js'].EVENT_SNAPSHOT.events.map(item=>normalizeEvent(item,'verified-snapshot')).filter(Boolean));
   if (APP_CONFIG.STANDALONE) return snapshot();
   const cacheKey='events.v3.api';
@@ -4312,7 +4235,7 @@ return { "canUseEventSchedule": canUseEventSchedule, "normalizeEvent": normalize
 
 __mods["js/imageService.js"] = (() => {
 const { getCache, setCache } = __mods["js/storage.js"];
-const shouldForceNetworkFailure = () => Boolean(__mods["js/devTools.js"]?.shouldForceNetworkFailure?.());
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 
 const WIKIPEDIA_API = 'https://en.wikipedia.org/w/api.php';
 const CACHE_KEY = 'reference-images.wikipedia.v1';
@@ -4344,7 +4267,7 @@ function chunk(items, size = BATCH_SIZE) {
 }
 
 async function fetchJson(params, { signal } = {}) {
-  if (shouldForceNetworkFailure()) throw new Error('DEV_NETWORK_FAILURE');
+  if (runtimeHooks.shouldForceNetworkFailure()) throw new Error('NETWORK_UNAVAILABLE');
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   const abort = () => controller.abort();
@@ -4915,10 +4838,10 @@ return {renderFavoriteGarden,renderObservationPanel};
 })();
 
 __mods["js/ui/screens/home.js"] = (() => {
-const { APP_CONFIG } = __mods["js/config.js"];
 const { FLOWERS } = __mods["js/data.js"];
-const { getBloomStatus, parseApiDate } = __mods["js/dateUtils.js"];
-const { selectTodayFlower, getDevTodayFlowerStorage } = __mods["js/todayFlower.js"];
+const { getBloomStatus } = __mods["js/dateUtils.js"];
+const { selectTodayFlower } = __mods["js/todayFlower.js"];
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { getFlowerRelaySnapshot } = __mods["js/flowerRelay.js"];
 const { getOngoingEvents } = __mods["js/eventService.js"];
 const { el, button, image } = __mods["js/ui/dom.js"];
@@ -4964,14 +4887,13 @@ function renderRegionPicker(state, regions) {
 }
 
 function renderFlowerWalk(state) {
-  const walk = getFlowerRelaySnapshot({
-    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage,
-    devScenario:APP_CONFIG.DEV_MODE ? state.devRelayScenario : ''
-  });
+  const walk = runtimeHooks.relaySnapshot(getFlowerRelaySnapshot({
+    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage
+  }),state);
   const action = walk.status==='before'
-    ? (walk.synthetic?'dev-noop':'relay-start')
+    ? runtimeHooks.resolveSyntheticAction(walk,'relay-start')
     : walk.status==='active'
-      ? (walk.synthetic?'dev-noop':'relay-continue')
+      ? runtimeHooks.resolveSyntheticAction(walk,'relay-continue')
       : '';
   const actionText = walk.status==='active' ? '이어 걷기' : '꽃길 시작';
   const section = el('section',{className:'content-section flower-walk','aria-labelledby':'flower-walk-title'},[
@@ -5009,14 +4931,13 @@ function renderFlowerWalk(state) {
 }
 
 function renderFlowerRelay(state) {
-  const relay = getFlowerRelaySnapshot({
-    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage,
-    devScenario:APP_CONFIG.DEV_MODE ? state.devRelayScenario : ''
-  });
+  const relay = runtimeHooks.relaySnapshot(getFlowerRelaySnapshot({
+    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage
+  }),state);
   const relayViewAction = relay.status==='before'
-    ? (relay.synthetic?'dev-noop':'relay-start')
+    ? runtimeHooks.resolveSyntheticAction(relay,'relay-start')
     : relay.status==='active'
-      ? (relay.synthetic?'dev-noop':'relay-continue')
+      ? runtimeHooks.resolveSyntheticAction(relay,'relay-continue')
       : '';
   const section = el('section',{className:'content-section flower-relay','aria-labelledby':'flower-relay-title'},[
     el('div',{className:'section-head'},[
@@ -5055,8 +4976,8 @@ function renderFlowerRelay(state) {
       el('strong',{text:statusText}),
       relay.status==='active' && nextFlower ? el('span',{text:`다음 꽃 · ${primaryFlowerName(nextFlower)}`}) : null
     ]),
-    relay.status==='before' ? button('릴레이 시작',relay.synthetic?'dev-noop':'relay-start',{kind:'primary'}) : null,
-    relay.status==='active' ? button('이어보기',relay.synthetic?'dev-noop':'relay-continue',{kind:'primary'}) : null
+    relay.status==='before' ? button('릴레이 시작',runtimeHooks.resolveSyntheticAction(relay,'relay-start'),{kind:'primary'}) : null,
+    relay.status==='active' ? button('이어보기',runtimeHooks.resolveSyntheticAction(relay,'relay-continue'),{kind:'primary'}) : null
   ]));
   section.append(el('div',{className:'flower-relay-progress','aria-hidden':'true'},[
     el('span',{style:`width:${relay.total ? Math.round(relay.completedCount/relay.total*100) : 0}%`})
@@ -5101,12 +5022,12 @@ function renderHome(state) {
   const main = el('main', { className: 'screen home-screen', id: 'main-content' });
   const seasonFlowers = topSeasonFlowers(state);
   const blooming = seasonFlowers.filter((flower) => ['in-season', 'ending'].includes(getBloomStatus(flower.bloom, state.currentDate).code));
-  const devDate = APP_CONFIG.DEV_MODE && state.devTodayFlowerDate ? parseApiDate(state.devTodayFlowerDate) : null;
-  const featureDate = devDate || state.currentDate;
+  const todayContext=runtimeHooks.todayFlowerContext({state,date:state.currentDate,storage:localStorage});
+  const featureDate = todayContext.date;
   const todaySelection = selectTodayFlower({
     flowers: FLOWERS,
     date: featureDate,
-    storage: APP_CONFIG.DEV_MODE ? getDevTodayFlowerStorage() : localStorage
+    storage: todayContext.storage
   });
   const representative = todaySelection.flower;
   const regions = getHomeRegions(state.events);
@@ -6571,11 +6492,251 @@ const { renderAppHeader, renderBottomNav } = __mods["js/ui/screens/shell.js"];
 return { "renderHome": renderHome, "updateHomeSearchResults": updateHomeSearchResults, "renderCapture": renderCapture, "renderEncyclopedia": renderEncyclopedia, "updateEncyclopediaResults": updateEncyclopediaResults, "renderEvents": renderEvents, "updateEventResults": updateEventResults, "updateEventFlowerChoices": updateEventFlowerChoices, "renderFlowerDetail": renderFlowerDetail, "renderEventDetail": renderEventDetail, "renderAppHeader": renderAppHeader, "renderBottomNav": renderBottomNav };
 })();
 
+__mods["js/devTools.js"] = (() => {
+const { APP_CONFIG } = __mods["js/config.js"];
+const { FLOWERS } = __mods["js/data.js"];
+const { getFlowerTaxonIdentity } = __mods["js/flowerDataPolicy.js"];
+const { getSeason, getDatePresentation, parseApiDate } = __mods["js/dateUtils.js"];
+const { selectTodayFlower, simulateTodayFlowers, createMemoryStorage } = __mods["js/todayFlower.js"];
+const { installRuntimeHooks } = __mods["js/runtimeHooks.js"];
+
+const runtime = { forceNetworkFailure:false };
+const devStorage = createMemoryStorage();
+const DUPLICATE_CODES = new Set(['DUPLICATE_ID','DUPLICATE_SCIENTIFIC_NAME','ACCEPTED_NAME_CONFLICT','SYNONYM_CONFLICT','DATA_LINK_DUPLICATE']);
+const IMAGE_CODES = new Set(['IMAGE_MISSING','IMAGE_PATH_INVALID','IMAGE_PATH_NOT_FOUND','IMAGE_MANIFEST_MISSING','IMAGE_FILENAME_INVALID','ORPHAN_IMAGE_FILE','STALE_IMAGE_PATH_REFERENCE','DATA_LINK_MISMATCH']);
+const LICENSE_CODES = new Set(['LICENSE_MISSING']);
+
+function setForceNetworkFailure(value) {
+  if (!APP_CONFIG.DEV_MODE) return false;
+  runtime.forceNetworkFailure = Boolean(value);
+  return runtime.forceNetworkFailure;
+}
+function shouldForceNetworkFailure() { return APP_CONFIG.DEV_MODE && runtime.forceNetworkFailure; }
+function getDevPayload() { return APP_CONFIG.DEV_MODE && globalThis.__FLOWER_APP_DEV_PAYLOAD__ ? globalThis.__FLOWER_APP_DEV_PAYLOAD__ : null; }
+function getDevTodayFlowerStorage() { return devStorage; }
+function resetDevTodayFlowerStorage() {
+  for (const key of Object.keys(devStorage.snapshot())) devStorage.removeItem(key);
+  return devStorage;
+}
+
+const clean=value=>String(value??'').trim();
+const norm=value=>clean(value).replace(/\s+/g,' ').toLocaleLowerCase('en-US');
+function duplicateGroups(rows,keyFn) {
+  const map=new Map();
+  for(const row of rows){const key=keyFn(row);if(!key)continue;if(!map.has(key))map.set(key,[]);map.get(key).push(row);}
+  return [...map.entries()].filter(([,items])=>items.length>1);
+}
+function runDuplicateCheck(flowers=[]) {
+  const issues=[];
+  for(const [value,rows] of duplicateGroups(flowers,row=>clean(row.id))) issues.push(`ID 중복: ${value} (${rows.length}건)`);
+  for(const [value,rows] of duplicateGroups(flowers,row=>norm(row.scientificName))) issues.push(`학명 중복: ${value} · ${rows.map(row=>row.id).join(', ')}`);
+  const identities=flowers.map(getFlowerTaxonIdentity).filter(Boolean);
+  for(const [value,rows] of duplicateGroups(identities,row=>norm(row.acceptedScientificName))) {
+    const ids=[...new Set(rows.map(row=>row.id).filter(Boolean))];
+    if(ids.length>1) issues.push(`accepted name 충돌: ${value} · ${ids.join(', ')}`);
+  }
+  const synonyms=new Map();
+  for(const identity of identities){
+    const accepted=norm(identity.acceptedScientificName);
+    for(const synonym of identity.synonyms||[]){const key=norm(synonym);if(!key)continue;if(!synonyms.has(key))synonyms.set(key,[]);synonyms.get(key).push({id:identity.id,accepted});}
+  }
+  for(const [value,owners] of synonyms){
+    const accepted=[...new Set(owners.map(row=>row.accepted).filter(Boolean))];
+    if(accepted.length>1) issues.push(`synonym 충돌: ${value} · ${owners.map(row=>row.id).join(', ')}`);
+  }
+  return { ok:issues.length===0, issues };
+}
+function payloadIssues(codes) {
+  const issues=getDevPayload()?.audit?.issues;
+  return Array.isArray(issues) ? issues.filter(item=>codes.has(item.code)) : [];
+}
+function formatBuildCheck(title,codes,extra='') {
+  const payload=getDevPayload();
+  if(!payload) return `${title}\nDEV 빌드 검사 정보를 찾지 못했어요.`;
+  const issues=payloadIssues(codes);
+  const lines=[title,`검출: ${issues.length}건`];
+  if(extra) lines.push(extra);
+  if(!issues.length) lines.push('현재 빌드 기준 문제 없음');
+  else issues.forEach(item=>lines.push(`${item.code} · ${item.flowerId||item.path||item.value||item.message}`));
+  return lines.join('\n');
+}
+function runDevAudit(kind,flowers=[]) {
+  if(!APP_CONFIG.DEV_MODE) return '';
+  const payload=getDevPayload();
+  if(kind==='duplicates') {
+    const live=runDuplicateCheck(flowers);
+    const build=payloadIssues(DUPLICATE_CODES);
+    return ['데이터 중복 검사',`실시간 꽃 데이터: ${live.issues.length}건`,`빌드 연결 검사: ${build.length}건`,...(live.issues.length?live.issues:['현재 중복/충돌 문제 없음']),...build.map(item=>`${item.code} · ${item.flowerId||item.value||item.message}`)].join('\n');
+  }
+  if(kind==='images') {
+    const count=Array.isArray(payload?.imageAssets?.assets)?payload.imageAssets.assets.length:0;
+    return formatBuildCheck('이미지 누락 검사',IMAGE_CODES,`이미지 manifest: ${count}개`);
+  }
+  if(kind==='licenses') {
+    const count=Array.isArray(payload?.externalImages?.images)?payload.externalImages.images.length:0;
+    return formatBuildCheck('라이선스 누락 검사',LICENSE_CODES,`외부 이미지 메타데이터: ${count}개`);
+  }
+  return '';
+}
+
+function createState() {
+  return {
+    devTodayFlowerDate: getDatePresentation(new Date()).day,
+    devTodayFlowerReport: '',
+    devAuditReport: '',
+    devNetworkFailure: false,
+    devLongTextTest: false,
+    devTextSizeOverride: '',
+    devRelayScenario: '',
+    devObservationSaveFailure: false
+  };
+}
+
+function devTodayDate(state) {
+  return parseApiDate(state.devTodayFlowerDate) || state.currentDate;
+}
+
+function shiftDevTodayDate(state, offset, render) {
+  const base=devTodayDate(state);
+  const next=new Date(base.getFullYear(),base.getMonth(),base.getDate()+offset,12);
+  state.devTodayFlowerDate=getDatePresentation(next).day;
+  state.devTodayFlowerReport='';
+  render();
+}
+
+function formatTodaySimulation(rows) {
+  const seen=new Map();
+  const duplicateRows=[];
+  rows.forEach((row)=>{
+    if(!row.flowerId) return;
+    if(!seen.has(row.cycle)) seen.set(row.cycle,new Set());
+    const cycleSeen=seen.get(row.cycle);
+    if(cycleSeen.has(row.flowerId)) duplicateRows.push(`${row.day}:${row.flowerId}`);
+    cycleSeen.add(row.flowerId);
+  });
+  const lines=rows.map(row=>`${row.day} | cycle ${row.cycle} | ${row.flowerId || '(없음)'} | 후보 ${row.candidateCount}`);
+  return ['30일 시뮬레이션',...lines,`같은 사이클 중복: ${duplicateRows.length ? duplicateRows.join(', ') : '없음'}`].join('\n');
+}
+
+function runTodayTest(state, kind, render) {
+  const date=devTodayDate(state);
+  if(kind==='simulate') {
+    state.devTodayFlowerReport=formatTodaySimulation(simulateTodayFlowers({flowers:FLOWERS,startDate:date,days:30,storage:createMemoryStorage()}));
+  } else if(kind==='zero') {
+    const result=selectTodayFlower({flowers:[],date,storage:createMemoryStorage()});
+    state.devTodayFlowerReport=`후보 0개 테스트\n선택 ID: ${result.flowerId || '(없음)'}\n후보 수: ${result.candidateIds.length}\n통과: ${!result.flowerId && result.candidateIds.length===0 ? '예' : '아니오'}`;
+  } else if(kind==='one') {
+    const only={id:'__dev-only-flower__',bloom:{start:'01-01',end:'12-31'}};
+    const rows=simulateTodayFlowers({flowers:[only],startDate:date,days:4,storage:createMemoryStorage()});
+    state.devTodayFlowerReport=['후보 1개 테스트',...rows.map(row=>`${row.day} | cycle ${row.cycle} | ${row.flowerId}`),`통과: ${rows.every(row=>row.flowerId===only.id) ? '예' : '아니오'}`].join('\n');
+  } else if(kind==='boundary') {
+    const year=date.getFullYear();
+    const pairs=[[2,28,3,1],[5,31,6,1],[8,31,9,1],[11,30,12,1]];
+    const lines=['계절 경계 테스트'];
+    pairs.forEach(([m1,d1,m2,d2])=>{
+      const storage=createMemoryStorage();
+      const a=new Date(year,m1-1,d1,12),b=new Date(year,m2-1,d2,12);
+      const first=selectTodayFlower({flowers:FLOWERS,date:a,storage});
+      const second=selectTodayFlower({flowers:FLOWERS,date:b,storage});
+      lines.push(`${getDatePresentation(a).day} ${getSeason(a)} | ${first.flowerId || '(없음)'} | 후보 ${first.candidateIds.length}`);
+      lines.push(`${getDatePresentation(b).day} ${getSeason(b)} | ${second.flowerId || '(없음)'} | 후보 ${second.candidateIds.length}`);
+    });
+    state.devTodayFlowerReport=lines.join('\n');
+  } else if(kind==='data-change') {
+    const storage=createMemoryStorage();
+    const first=selectTodayFlower({flowers:FLOWERS,date,storage});
+    const added={id:'__dev-added-flower__',bloom:{start:'01-01',end:'12-31'}};
+    const withAdded=selectTodayFlower({flowers:[...FLOWERS,added],date,storage});
+    const nextDate=new Date(date.getFullYear(),date.getMonth(),date.getDate()+1,12);
+    const nextWithAdded=selectTodayFlower({flowers:[...FLOWERS,added],date:nextDate,storage});
+    const removable=nextWithAdded.candidateIds.find(id=>id!==nextWithAdded.flowerId) || nextWithAdded.flowerId;
+    const withoutOne=selectTodayFlower({flowers:[...FLOWERS,added].filter(flower=>flower.id!==removable),date:new Date(date.getFullYear(),date.getMonth(),date.getDate()+2,12),storage});
+    state.devTodayFlowerReport=[
+      '데이터 추가/제거 테스트',
+      `기준 선택: ${first.flowerId || '(없음)'}`,
+      `같은 날 데이터 추가 후 선택 유지: ${withAdded.flowerId || '(없음)'} (${withAdded.flowerId===first.flowerId ? '통과' : '실패'})`,
+      `추가 ID가 이후 후보에 포함: ${nextWithAdded.candidateIds.includes(added.id) ? '예' : '아니오'}`,
+      `추가 ID가 현재 사이클 순서에 포함: ${nextWithAdded.cycleOrder.includes(added.id) ? '예' : '아니오'}`,
+      `제거 ID: ${removable || '(없음)'}`,
+      `제거 후 후보/순서에서 제외: ${removable && !withoutOne.candidateIds.includes(removable) && !withoutOne.cycleOrder.includes(removable) ? '예' : '아니오'}`
+    ].join('\n');
+  }
+  render();
+}
+
+function handleAction({action,target,state,render}) {
+  switch(action) {
+    case 'dev-today-prev': shiftDevTodayDate(state,-1,render); return true;
+    case 'dev-today-next': shiftDevTodayDate(state,1,render); return true;
+    case 'dev-today-reset': resetDevTodayFlowerStorage();state.devTodayFlowerDate=getDatePresentation(new Date()).day;state.devTodayFlowerReport='';render();return true;
+    case 'dev-today-simulate': runTodayTest(state,'simulate',render); return true;
+    case 'dev-today-zero': runTodayTest(state,'zero',render); return true;
+    case 'dev-today-one': runTodayTest(state,'one',render); return true;
+    case 'dev-today-boundary': runTodayTest(state,'boundary',render); return true;
+    case 'dev-today-data-change': runTodayTest(state,'data-change',render); return true;
+    case 'dev-audit-duplicates': state.devAuditReport=runDevAudit('duplicates',FLOWERS);render();return true;
+    case 'dev-audit-images': state.devAuditReport=runDevAudit('images',FLOWERS);render();return true;
+    case 'dev-audit-licenses': state.devAuditReport=runDevAudit('licenses',FLOWERS);render();return true;
+    case 'dev-network-failure': state.devNetworkFailure=!state.devNetworkFailure;setForceNetworkFailure(state.devNetworkFailure);state.devAuditReport=`강제 네트워크 실패: ${state.devNetworkFailure?'켜짐':'꺼짐'}\nDEV 메모리 상태만 변경했어요.`;render();return true;
+    case 'dev-long-text': state.devLongTextTest=!state.devLongTextTest;render();return true;
+    case 'dev-font-min': state.devTextSizeOverride='small';render();return true;
+    case 'dev-font-max': state.devTextSizeOverride='large';render();return true;
+    case 'dev-font-reset': state.devTextSizeOverride='';render();return true;
+    case 'dev-relay-live': state.devRelayScenario='';render();return true;
+    case 'dev-relay-scenario': state.devRelayScenario=target.dataset.scenario || '';render();return true;
+    case 'dev-observation-save-failure': state.devObservationSaveFailure=!state.devObservationSaveFailure;render();return true;
+    case 'dev-noop': return true;
+    default: return false;
+  }
+}
+
+function handleChange({input,state,render}) {
+  if(input.dataset.action!=='dev-today-date') return false;
+  const parsed=parseApiDate(input.value);
+  if(parsed) {state.devTodayFlowerDate=getDatePresentation(parsed).day;state.devTodayFlowerReport='';render();}
+  return true;
+}
+
+function createRelaySnapshot(base,targets,started,completedFlowerIds=[]) {
+  const targetFlowerIds=targets.map(flower=>flower.id);
+  const completedSet=new Set(completedFlowerIds);
+  const nextFlowerId=targetFlowerIds.find(id=>!completedSet.has(id)) || '';
+  const status=!targetFlowerIds.length?'empty':!started?'before':nextFlowerId?'active':'complete';
+  return {...base,targets,targetFlowerIds,completedFlowerIds,nextFlowerId,total:targetFlowerIds.length,completedCount:completedFlowerIds.length,started,status,synthetic:true};
+}
+
+function relaySnapshot(base,state) {
+  const scenario=state.devRelayScenario || '';
+  if(!scenario) return base;
+  if(scenario==='empty') return createRelaySnapshot(base,[],false);
+  const targets=scenario==='shortage' ? base.targets.slice(0,Math.min(2,base.targets.length)) : base.targets;
+  if(scenario==='before' || scenario==='shortage') return createRelaySnapshot(base,targets,false);
+  const completedCount=scenario==='complete' ? targets.length : scenario==='partial' ? Math.max(0,targets.length-1) : Math.min(1,targets.length);
+  return createRelaySnapshot(base,targets,true,targets.slice(0,completedCount).map(flower=>flower.id));
+}
+
+installRuntimeHooks({
+  createState,
+  resolveTextSize: (state,fallback) => state.devTextSizeOverride || fallback,
+  beforeObservationSave: state => { if(state.devObservationSaveFailure) throw new Error('DEV 테스트: 관찰 기록 저장 실패'); },
+  handleAction,
+  handleChange,
+  todayFlowerContext: ({state,date,storage}) => ({date:parseApiDate(state.devTodayFlowerDate) || date,storage:getDevTodayFlowerStorage() || storage}),
+  relaySnapshot,
+  resolveSyntheticAction: (snapshot,action) => snapshot.synthetic ? 'dev-noop' : action,
+  shouldForceNetworkFailure,
+  renderSettingsExtra: state => __mods['js/ui/screens/devTools.js']?.renderDevTools?.(state) || null
+});
+
+return { setForceNetworkFailure, shouldForceNetworkFailure, getDevPayload, getDevTodayFlowerStorage, runDuplicateCheck, runDevAudit };
+})();
+
 __mods["js/ui/screens/devTools.js"] = (() => {
 const { APP_CONFIG } = __mods["js/config.js"];
 const { FLOWERS } = __mods["js/data.js"];
 const { parseApiDate } = __mods["js/dateUtils.js"];
-const { selectTodayFlower, getDevTodayFlowerStorage } = __mods["js/todayFlower.js"];
+const { selectTodayFlower } = __mods["js/todayFlower.js"];
+const { getDevTodayFlowerStorage } = __mods["js/devTools.js"];
 const { el, button } = __mods["js/ui/dom.js"];
 
 function renderLongTextFixture() {
@@ -6681,8 +6842,7 @@ const {getFlowerById}=__mods['js/data.js'];
 const {flowerListRow}=__mods['js/ui/components.js'];
 const {renderFavoriteGarden}=__mods['js/ui/observations.js'];
 const {selectControl}=__mods['js/ui/screens/shared.js'];
-const {APP_CONFIG}=__mods['js/config.js'];
-const {renderDevTools}=__mods['js/ui/screens/devTools.js'];
+const {hooks:runtimeHooks}=__mods['js/runtimeHooks.js'];
 function renderSettings(state) {
  const p=state.settings, main=el('main',{className:'screen settings-screen',id:'main-content'},[
   el('div',{className:'settings-heading'},[el('h1',{text:'설정'})])
@@ -6707,7 +6867,8 @@ function renderSettings(state) {
  main.append(sources,el('details',{className:'settings-disclosure'},[el('summary',{text:'서비스 정보'}),el('p',{text:'꽃을 보다 · V47'}),el('p',{text:'캘린더 추가는 ICS 파일을 내려받아요.'}),state.standalone?el('p',{text:'파일에서는 확인된 행사 자료를 보여줘요. 사진 검색은 서버에서 사용할 수 있어요.'}):null]));
  const saved=el('details',{className:'settings-disclosure'},[el('summary',{text:'저장한 꽃 소식'}),renderFavoriteGarden(state)]);
  main.append(saved);
- if(APP_CONFIG.DEV_MODE) main.append(renderDevTools(state));
+ const extra=runtimeHooks.renderSettingsExtra(state);
+ if(extra) main.append(extra);
  return main;
 }
 return {renderSettings};
@@ -6924,10 +7085,9 @@ return {downloadText};
 
 __mods["js/main.js"] = (() => {
 const { APP_CONFIG } = __mods["js/config.js"];
-const { setForceNetworkFailure, runDevAudit } = __mods["js/devTools.js"];
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { FLOWERS, getFlowerById } = __mods["js/data.js"];
 const { getSeason, getDatePresentation, parseApiDate } = __mods["js/dateUtils.js"];
-const { selectTodayFlower, simulateTodayFlowers, createMemoryStorage, resetDevTodayFlowerStorage } = __mods["js/todayFlower.js"];
 const { getFlowerRelaySnapshot, startFlowerRelay } = __mods["js/flowerRelay.js"];
 const { analyzeFlower, preprocessImage, validateImageFile, FlowerServiceError } = __mods["js/flowerService.js"];
 const { getEvents, getEventDetail } = __mods["js/eventService.js"];
@@ -6997,15 +7157,8 @@ const state = {
   bloomCalendarSelectedDate: '',
   selectedBloomFlowerId: '',
   bloomCalendarShowAll: false,
-  devTodayFlowerDate: APP_CONFIG.DEV_MODE ? getDatePresentation(new Date()).day : '',
-  devTodayFlowerReport: '',
-  devAuditReport: '',
-  devNetworkFailure: false,
-  devLongTextTest: false,
-  devTextSizeOverride: '',
   relayError: '',
-  devRelayScenario: '',
-  devObservationSaveFailure: false
+  ...runtimeHooks.createState()
 };
 
 let analysisController = null;
@@ -7019,7 +7172,7 @@ function render() {
   const panels={'encyclopedia-filter-panel':'filtersOpen','encyclopedia-advanced-filter-panel':'advancedFiltersOpen','event-filter-panel':'eventFiltersOpen','recent-flower-panel':'recentDetailsOpen'};
   for(const [id,key] of Object.entries(panels)) {const node=document.getElementById(id);if(node)state[key]=node.open;}
   applyTheme(state.settings.theme);
-  applyTextSize(APP_CONFIG.DEV_MODE && state.devTextSizeOverride ? state.devTextSizeOverride : state.settings.bodyTextSize);
+  applyTextSize(runtimeHooks.resolveTextSize(state,state.settings.bodyTextSize));
   renderApp(state);
 }
 
@@ -7090,80 +7243,6 @@ function scrollBloomFlowerRail(target) {
   const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   rail.scrollBy({left:direction*amount,behavior:reduceMotion?'auto':'smooth'});
   requestAnimationFrame(()=>__mods['js/calendar.js'].syncBloomRailControls(shell));
-}
-
-function devTodayDate() {
-  return APP_CONFIG.DEV_MODE ? (parseApiDate(state.devTodayFlowerDate) || state.currentDate) : state.currentDate;
-}
-
-function shiftDevTodayDate(offset) {
-  if (!APP_CONFIG.DEV_MODE) return;
-  const base=devTodayDate();
-  const next=new Date(base.getFullYear(),base.getMonth(),base.getDate()+offset,12);
-  state.devTodayFlowerDate=getDatePresentation(next).day;
-  state.devTodayFlowerReport='';
-  render();
-}
-
-function formatTodaySimulation(rows) {
-  const seen=new Map();
-  const duplicateRows=[];
-  rows.forEach((row)=>{
-    if(!row.flowerId) return;
-    if(!seen.has(row.cycle)) seen.set(row.cycle,new Set());
-    const cycleSeen=seen.get(row.cycle);
-    if(cycleSeen.has(row.flowerId)) duplicateRows.push(`${row.day}:${row.flowerId}`);
-    cycleSeen.add(row.flowerId);
-  });
-  const lines=rows.map(row=>`${row.day} | cycle ${row.cycle} | ${row.flowerId || '(없음)'} | 후보 ${row.candidateCount}`);
-  return [`30일 시뮬레이션`,...lines,`같은 사이클 중복: ${duplicateRows.length ? duplicateRows.join(', ') : '없음'}`].join('\n');
-}
-
-function runDevTodayTest(kind) {
-  if (!APP_CONFIG.DEV_MODE) return;
-  const date=devTodayDate();
-  if(kind==='simulate') {
-    state.devTodayFlowerReport=formatTodaySimulation(simulateTodayFlowers({flowers:FLOWERS,startDate:date,days:30,storage:createMemoryStorage()}));
-  } else if(kind==='zero') {
-    const result=selectTodayFlower({flowers:[],date,storage:createMemoryStorage()});
-    state.devTodayFlowerReport=`후보 0개 테스트\n선택 ID: ${result.flowerId || '(없음)'}\n후보 수: ${result.candidateIds.length}\n통과: ${!result.flowerId && result.candidateIds.length===0 ? '예' : '아니오'}`;
-  } else if(kind==='one') {
-    const only={id:'__dev-only-flower__',bloom:{start:'01-01',end:'12-31'}};
-    const rows=simulateTodayFlowers({flowers:[only],startDate:date,days:4,storage:createMemoryStorage()});
-    state.devTodayFlowerReport=['후보 1개 테스트',...rows.map(row=>`${row.day} | cycle ${row.cycle} | ${row.flowerId}`),`통과: ${rows.every(row=>row.flowerId===only.id) ? '예' : '아니오'}`].join('\n');
-  } else if(kind==='boundary') {
-    const year=date.getFullYear();
-    const pairs=[[2,28,3,1],[5,31,6,1],[8,31,9,1],[11,30,12,1]];
-    const lines=['계절 경계 테스트'];
-    pairs.forEach(([m1,d1,m2,d2])=>{
-      const storage=createMemoryStorage();
-      const a=new Date(year,m1-1,d1,12),b=new Date(year,m2-1,d2,12);
-      const first=selectTodayFlower({flowers:FLOWERS,date:a,storage});
-      const second=selectTodayFlower({flowers:FLOWERS,date:b,storage});
-      lines.push(`${getDatePresentation(a).day} ${getSeason(a)} | ${first.flowerId || '(없음)'} | 후보 ${first.candidateIds.length}`);
-      lines.push(`${getDatePresentation(b).day} ${getSeason(b)} | ${second.flowerId || '(없음)'} | 후보 ${second.candidateIds.length}`);
-    });
-    state.devTodayFlowerReport=lines.join('\n');
-  } else if(kind==='data-change') {
-    const storage=createMemoryStorage();
-    const first=selectTodayFlower({flowers:FLOWERS,date,storage});
-    const added={id:'__dev-added-flower__',bloom:{start:'01-01',end:'12-31'}};
-    const withAdded=selectTodayFlower({flowers:[...FLOWERS,added],date,storage});
-    const nextDate=new Date(date.getFullYear(),date.getMonth(),date.getDate()+1,12);
-    const nextWithAdded=selectTodayFlower({flowers:[...FLOWERS,added],date:nextDate,storage});
-    const removable=nextWithAdded.candidateIds.find(id=>id!==nextWithAdded.flowerId) || nextWithAdded.flowerId;
-    const withoutOne=selectTodayFlower({flowers:[...FLOWERS,added].filter(flower=>flower.id!==removable),date:new Date(date.getFullYear(),date.getMonth(),date.getDate()+2,12),storage});
-    state.devTodayFlowerReport=[
-      '데이터 추가/제거 테스트',
-      `기준 선택: ${first.flowerId || '(없음)'}`,
-      `같은 날 데이터 추가 후 선택 유지: ${withAdded.flowerId || '(없음)'} (${withAdded.flowerId===first.flowerId ? '통과' : '실패'})`,
-      `추가 ID가 이후 후보에 포함: ${nextWithAdded.candidateIds.includes(added.id) ? '예' : '아니오'}`,
-      `추가 ID가 현재 사이클 순서에 포함: ${nextWithAdded.cycleOrder.includes(added.id) ? '예' : '아니오'}`,
-      `제거 ID: ${removable || '(없음)'}`,
-      `제거 후 후보/순서에서 제외: ${removable && !withoutOne.candidateIds.includes(removable) && !withoutOne.cycleOrder.includes(removable) ? '예' : '아니오'}`
-    ].join('\n');
-  }
-  render();
 }
 
 function showToast(message) {
@@ -7439,7 +7518,7 @@ async function confirmCandidate(flowerId) {
   state.observationPhotoBusy=true;
   try {
     if(file) draft.photo=await createThumbnail(file);
-    if(APP_CONFIG.DEV_MODE && state.devObservationSaveFailure) throw new Error('DEV 테스트: 관찰 기록 저장 실패');
+    runtimeHooks.beforeObservationSave(state);
     const result=addObservation(draft);
     if(!result.ok) throw new Error(result.error);
     syncCollection();
@@ -7773,6 +7852,7 @@ function handleClick(event) {
   const target = event.target.closest('[data-action]');
   if (!target || target.disabled) return;
   const { action } = target.dataset;
+  if(runtimeHooks.handleAction({action,target,state,render})) return;
   switch (action) {
     case 'toggle-inline-select': {
       event.preventDefault();
@@ -7833,50 +7913,6 @@ function handleClick(event) {
       }
       break;
     }
-    case 'dev-today-prev': shiftDevTodayDate(-1); break;
-    case 'dev-today-next': shiftDevTodayDate(1); break;
-    case 'dev-today-reset':
-      if(APP_CONFIG.DEV_MODE) {resetDevTodayFlowerStorage();state.devTodayFlowerDate=getDatePresentation(new Date()).day;state.devTodayFlowerReport='';render();}
-      break;
-    case 'dev-today-simulate': runDevTodayTest('simulate'); break;
-    case 'dev-today-zero': runDevTodayTest('zero'); break;
-    case 'dev-today-one': runDevTodayTest('one'); break;
-    case 'dev-today-boundary': runDevTodayTest('boundary'); break;
-    case 'dev-today-data-change': runDevTodayTest('data-change'); break;
-    case 'dev-audit-duplicates':
-      if(APP_CONFIG.DEV_MODE){state.devAuditReport=runDevAudit('duplicates',FLOWERS);render();}
-      break;
-    case 'dev-audit-images':
-      if(APP_CONFIG.DEV_MODE){state.devAuditReport=runDevAudit('images',FLOWERS);render();}
-      break;
-    case 'dev-audit-licenses':
-      if(APP_CONFIG.DEV_MODE){state.devAuditReport=runDevAudit('licenses',FLOWERS);render();}
-      break;
-    case 'dev-network-failure':
-      if(APP_CONFIG.DEV_MODE){state.devNetworkFailure=!state.devNetworkFailure;setForceNetworkFailure(state.devNetworkFailure);state.devAuditReport=`강제 네트워크 실패: ${state.devNetworkFailure?'켜짐':'꺼짐'}\nDEV 메모리 상태만 변경했어요.`;render();}
-      break;
-    case 'dev-long-text':
-      if(APP_CONFIG.DEV_MODE){state.devLongTextTest=!state.devLongTextTest;render();}
-      break;
-    case 'dev-font-min':
-      if(APP_CONFIG.DEV_MODE){state.devTextSizeOverride='small';render();}
-      break;
-    case 'dev-font-max':
-      if(APP_CONFIG.DEV_MODE){state.devTextSizeOverride='large';render();}
-      break;
-    case 'dev-font-reset':
-      if(APP_CONFIG.DEV_MODE){state.devTextSizeOverride='';render();}
-      break;
-    case 'dev-relay-live':
-      if(APP_CONFIG.DEV_MODE){state.devRelayScenario='';render();}
-      break;
-    case 'dev-relay-scenario':
-      if(APP_CONFIG.DEV_MODE){state.devRelayScenario=target.dataset.scenario || '';render();}
-      break;
-    case 'dev-observation-save-failure':
-      if(APP_CONFIG.DEV_MODE){state.devObservationSaveFailure=!state.devObservationSaveFailure;render();}
-      break;
-    case 'dev-noop': break;
     case 'go-settings': switchTab('settings'); break;
     case 'open-bloom-calendar':
       state.bloomCalendarOpen=true;
@@ -8104,11 +8140,7 @@ function handleClick(event) {
 
 function handleChange(event) {
   const input = event.target;
-  if(APP_CONFIG.DEV_MODE && input.dataset.action==='dev-today-date') {
-    const parsed=parseApiDate(input.value);
-    if(parsed) {state.devTodayFlowerDate=getDatePresentation(parsed).day;state.devTodayFlowerReport='';render();}
-    return;
-  }
+  if(runtimeHooks.handleChange({input,state,render})) return;
   if(['setting-select','setting-toggle'].includes(input.dataset.action)) {
     const key=input.dataset.key;
     if(!['region','theme','recentEnabled','bodyTextSize'].includes(key)) return;
