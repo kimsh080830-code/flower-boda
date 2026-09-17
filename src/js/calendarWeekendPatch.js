@@ -6,12 +6,30 @@ function installStyles(){
  const style=document.createElement('style');
  style.id='calendar-weekend-patch';
  style.textContent=`
+.bloom-calendar-weekday:nth-child(1),
+.event-filter-calendar-weekday:nth-child(1),
+.calendar-weekday:nth-child(1),
 .bloom-calendar-day.is-sunday .bloom-calendar-day-number,
 .event-filter-calendar-day.is-sunday,
-.calendar-day.is-sunday{color:#C45A5A!important}
+.calendar-day.is-sunday{color:#E04444!important;font-weight:800}
+.bloom-calendar-weekday:nth-child(7),
+.event-filter-calendar-weekday:nth-child(7),
+.calendar-weekday:nth-child(7),
 .bloom-calendar-day.is-saturday .bloom-calendar-day-number,
 .event-filter-calendar-day.is-saturday,
-.calendar-day.is-saturday{color:#5879B8!important}
+.calendar-day.is-saturday{color:#3973E6!important;font-weight:800}
+[data-theme=dark] .bloom-calendar-weekday:nth-child(1),
+[data-theme=dark] .event-filter-calendar-weekday:nth-child(1),
+[data-theme=dark] .calendar-weekday:nth-child(1),
+[data-theme=dark] .bloom-calendar-day.is-sunday .bloom-calendar-day-number,
+[data-theme=dark] .event-filter-calendar-day.is-sunday,
+[data-theme=dark] .calendar-day.is-sunday{color:#FF6B6B!important}
+[data-theme=dark] .bloom-calendar-weekday:nth-child(7),
+[data-theme=dark] .event-filter-calendar-weekday:nth-child(7),
+[data-theme=dark] .calendar-weekday:nth-child(7),
+[data-theme=dark] .bloom-calendar-day.is-saturday .bloom-calendar-day-number,
+[data-theme=dark] .event-filter-calendar-day.is-saturday,
+[data-theme=dark] .calendar-day.is-saturday{color:#6EA8FF!important}
 `;
  document.head.append(style);
 }
