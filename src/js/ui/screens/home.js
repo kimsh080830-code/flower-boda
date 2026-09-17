@@ -1,8 +1,8 @@
 __mods["js/ui/screens/home.js"] = (() => {
-const { APP_CONFIG } = __mods["js/config.js"];
 const { FLOWERS } = __mods["js/data.js"];
-const { getBloomStatus, parseApiDate } = __mods["js/dateUtils.js"];
-const { selectTodayFlower, getDevTodayFlowerStorage } = __mods["js/todayFlower.js"];
+const { getBloomStatus } = __mods["js/dateUtils.js"];
+const { selectTodayFlower } = __mods["js/todayFlower.js"];
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { getFlowerRelaySnapshot } = __mods["js/flowerRelay.js"];
 const { getOngoingEvents } = __mods["js/eventService.js"];
 const { el, button, image } = __mods["js/ui/dom.js"];
@@ -48,14 +48,13 @@ function renderRegionPicker(state, regions) {
 }
 
 function renderFlowerWalk(state) {
-  const walk = getFlowerRelaySnapshot({
-    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage,
-    devScenario:APP_CONFIG.DEV_MODE ? state.devRelayScenario : ''
-  });
+  const walk = runtimeHooks.relaySnapshot(getFlowerRelaySnapshot({
+    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage
+  }),state);
   const action = walk.status==='before'
-    ? (walk.synthetic?'dev-noop':'relay-start')
+    ? runtimeHooks.resolveSyntheticAction(walk,'relay-start')
     : walk.status==='active'
-      ? (walk.synthetic?'dev-noop':'relay-continue')
+      ? runtimeHooks.resolveSyntheticAction(walk,'relay-continue')
       : '';
   const actionText = walk.status==='active' ? '이어 걷기' : '꽃길 시작';
   const section = el('section',{className:'content-section flower-walk','aria-labelledby':'flower-walk-title'},[
@@ -93,14 +92,13 @@ function renderFlowerWalk(state) {
 }
 
 function renderFlowerRelay(state) {
-  const relay = getFlowerRelaySnapshot({
-    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage,
-    devScenario:APP_CONFIG.DEV_MODE ? state.devRelayScenario : ''
-  });
+  const relay = runtimeHooks.relaySnapshot(getFlowerRelaySnapshot({
+    flowers:FLOWERS,date:state.currentDate,records:state.discoveredFlowers,storage:localStorage
+  }),state);
   const relayViewAction = relay.status==='before'
-    ? (relay.synthetic?'dev-noop':'relay-start')
+    ? runtimeHooks.resolveSyntheticAction(relay,'relay-start')
     : relay.status==='active'
-      ? (relay.synthetic?'dev-noop':'relay-continue')
+      ? runtimeHooks.resolveSyntheticAction(relay,'relay-continue')
       : '';
   const section = el('section',{className:'content-section flower-relay','aria-labelledby':'flower-relay-title'},[
     el('div',{className:'section-head'},[
@@ -139,8 +137,8 @@ function renderFlowerRelay(state) {
       el('strong',{text:statusText}),
       relay.status==='active' && nextFlower ? el('span',{text:`다음 꽃 · ${primaryFlowerName(nextFlower)}`}) : null
     ]),
-    relay.status==='before' ? button('릴레이 시작',relay.synthetic?'dev-noop':'relay-start',{kind:'primary'}) : null,
-    relay.status==='active' ? button('이어보기',relay.synthetic?'dev-noop':'relay-continue',{kind:'primary'}) : null
+    relay.status==='before' ? button('릴레이 시작',runtimeHooks.resolveSyntheticAction(relay,'relay-start'),{kind:'primary'}) : null,
+    relay.status==='active' ? button('이어보기',runtimeHooks.resolveSyntheticAction(relay,'relay-continue'),{kind:'primary'}) : null
   ]));
   section.append(el('div',{className:'flower-relay-progress','aria-hidden':'true'},[
     el('span',{style:`width:${relay.total ? Math.round(relay.completedCount/relay.total*100) : 0}%`})
@@ -185,12 +183,12 @@ function renderHome(state) {
   const main = el('main', { className: 'screen home-screen', id: 'main-content' });
   const seasonFlowers = topSeasonFlowers(state);
   const blooming = seasonFlowers.filter((flower) => ['in-season', 'ending'].includes(getBloomStatus(flower.bloom, state.currentDate).code));
-  const devDate = APP_CONFIG.DEV_MODE && state.devTodayFlowerDate ? parseApiDate(state.devTodayFlowerDate) : null;
-  const featureDate = devDate || state.currentDate;
+  const todayContext=runtimeHooks.todayFlowerContext({state,date:state.currentDate,storage:localStorage});
+  const featureDate = todayContext.date;
   const todaySelection = selectTodayFlower({
     flowers: FLOWERS,
     date: featureDate,
-    storage: APP_CONFIG.DEV_MODE ? getDevTodayFlowerStorage() : localStorage
+    storage: todayContext.storage
   });
   const representative = todaySelection.flower;
   const regions = getHomeRegions(state.events);

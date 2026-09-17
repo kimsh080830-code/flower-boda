@@ -1,6 +1,6 @@
 __mods["js/imageService.js"] = (() => {
 const { getCache, setCache } = __mods["js/storage.js"];
-const shouldForceNetworkFailure = () => Boolean(__mods["js/devTools.js"]?.shouldForceNetworkFailure?.());
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 
 const WIKIPEDIA_API = 'https://en.wikipedia.org/w/api.php';
 const CACHE_KEY = 'reference-images.wikipedia.v1';
@@ -32,7 +32,7 @@ function chunk(items, size = BATCH_SIZE) {
 }
 
 async function fetchJson(params, { signal } = {}) {
-  if (shouldForceNetworkFailure()) throw new Error('DEV_NETWORK_FAILURE');
+  if (runtimeHooks.shouldForceNetworkFailure()) throw new Error('NETWORK_UNAVAILABLE');
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   const abort = () => controller.abort();

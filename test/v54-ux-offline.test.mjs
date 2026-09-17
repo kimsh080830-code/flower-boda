@@ -13,7 +13,7 @@ const [main, shell, prefs, settings, components, dom, events, styles, build, dev
   read('../src/js/eventService.js'),
   read('../src/styles.css'),
   read('../build.mjs'),
-  read('../꽃을보다_V61_dev.html')
+  read('../index.html')
 ]);
 
 test('main tab swipe follows bottom-nav order, is finite, and excludes horizontal gesture zones and Android edges', () => {
@@ -46,7 +46,7 @@ test('body text size is backward-compatible in the existing settings object and 
   assert.match(settings, /본문 글자 크기/);
   assert.match(settings, /\['small','작게'\]/);
   assert.match(settings, /\['large','크게'\]/);
-  assert.match(main, /applyTextSize\(APP_CONFIG\.DEV_MODE && state\.devTextSizeOverride \? state\.devTextSizeOverride : state\.settings\.bodyTextSize\)/);
+  assert.match(main, /applyTextSize\(runtimeHooks\.resolveTextSize\(state,state\.settings\.bodyTextSize\)\)/);
 });
 
 test('text scaling reaches key reading text without scaling fixed navigation or header icons', () => {
@@ -90,9 +90,8 @@ test('long text and page overflow protections are structural rather than a globa
   bodyRules.forEach((rule) => assert.doesNotMatch(rule, /font-size\s*:/));
 });
 
-test('V61 build emits only the requested DEV file with V61 title', () => {
-  assert.match(build, /꽃을보다_V61_dev\.html/);
-  assert.doesNotMatch(build, /꽃을보다_V61\.html/);
+test('V61 build emits separate DEV and PROD files with V61 title', () => {
+  assert.match(build, /dev\?'index\.html':'index\.prod\.html'/);
   assert.match(devHtml, /globalThis\.__FLOWER_APP_DEV__=true/);
   assert.match(devHtml, /Botanical V61 DEV/);
 });

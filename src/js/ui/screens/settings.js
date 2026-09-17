@@ -4,8 +4,7 @@ const {getFlowerById}=__mods['js/data.js'];
 const {flowerListRow}=__mods['js/ui/components.js'];
 const {renderFavoriteGarden}=__mods['js/ui/observations.js'];
 const {selectControl}=__mods['js/ui/screens/shared.js'];
-const {APP_CONFIG}=__mods['js/config.js'];
-const {renderDevTools}=__mods['js/ui/screens/devTools.js'];
+const {hooks:runtimeHooks}=__mods['js/runtimeHooks.js'];
 function renderSettings(state) {
  const p=state.settings, main=el('main',{className:'screen settings-screen',id:'main-content'},[
   el('div',{className:'settings-heading'},[el('h1',{text:'설정'})])
@@ -30,7 +29,8 @@ function renderSettings(state) {
  main.append(sources,el('details',{className:'settings-disclosure'},[el('summary',{text:'서비스 정보'}),el('p',{text:'꽃을 보다 · V47'}),el('p',{text:'캘린더 추가는 ICS 파일을 내려받아요.'}),state.standalone?el('p',{text:'파일에서는 확인된 행사 자료를 보여줘요. 사진 검색은 서버에서 사용할 수 있어요.'}):null]));
  const saved=el('details',{className:'settings-disclosure'},[el('summary',{text:'저장한 꽃 소식'}),renderFavoriteGarden(state)]);
  main.append(saved);
- if(APP_CONFIG.DEV_MODE) main.append(renderDevTools(state));
+ const extra=runtimeHooks.renderSettingsExtra(state);
+ if(extra) main.append(extra);
  return main;
 }
 return {renderSettings};

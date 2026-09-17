@@ -2,7 +2,7 @@ __mods["js/flowerService.js"] = (() => {
 const { APP_CONFIG, SUPPORTED_IMAGE_EXTENSIONS, SUPPORTED_IMAGE_TYPES } = __mods["js/config.js"];
 const { FLOWERS } = __mods["js/data.js"];
 const { getBloomStatus } = __mods["js/dateUtils.js"];
-const shouldForceNetworkFailure = () => Boolean(__mods["js/devTools.js"]?.shouldForceNetworkFailure?.());
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 
 class FlowerServiceError extends Error {
   constructor(code, message, cause) {
@@ -242,7 +242,7 @@ function normalizePlantNetResponse(payload, context = {}) {
 }
 
 async function analyzeViaBackend(preprocessed, signal) {
-  if (shouldForceNetworkFailure()) throw new FlowerServiceError('NETWORK','DEV에서 네트워크 실패를 강제로 재현하고 있어요.');
+  if (runtimeHooks.shouldForceNetworkFailure()) throw new FlowerServiceError('NETWORK','네트워크 연결을 확인해 주세요.');
   const formData = new FormData();
   formData.append('images', preprocessed.blob, 'flower.jpg');
   formData.append('organs', 'flower');

@@ -8,7 +8,17 @@ const args=process.argv.slice(2);
 const mode=args.length===0 ? 'dev' : args.length===1 ? args[0].replace(/^--mode=/,'') : '';
 if(!['dev','prod'].includes(mode)) throw new Error('Usage: node build.mjs [--mode=dev|--mode=prod]');
 const dev=mode==='dev';
-const order=JSON.parse(await read('src/modules.json'));
+const manifest=JSON.parse(await read('src/modules.json'));
+if(!Array.isArray(manifest.common) || !Array.isArray(manifest.dev)) throw new Error('src/modules.json must define common and dev arrays');
+const order=[...manifest.common];
+if(dev){
+  for(const entry of manifest.dev){
+    if(!entry?.path || !entry?.before) throw new Error('Each DEV module must define path and before');
+    const index=order.indexOf(entry.before);
+    if(index<0) throw new Error(`DEV module anchor not found: ${entry.before}`);
+    order.splice(index,0,entry.path);
+  }
+}
 const sourceModuleScripts='const __mods=Object.create(null);\n'+(await Promise.all(order.map(name=>read('src/'+name)))).join('\n');
 new vm.Script('"use strict";\n'+sourceModuleScripts);
 const imageManifest=JSON.parse(await read('data/image-assets.json'));
@@ -27,7 +37,7 @@ async function inlineLocalImages(source){
 }
 const moduleScripts=await inlineLocalImages(sourceModuleScripts);
 new vm.Script('"use strict";\n'+moduleScripts);
-const styles=await read('src/styles.css');
+const styles=(await read('src/styles.css'))+(dev?'\n'+await read('src/dev-styles.css'):'');
 const template=await read('src/index.template.html');
 const buildHtml=()=>{
   const bootstrap='"use strict";\nglobalThis.__FLOWER_APP_DEV__='+String(dev)+';\n'+(dev?'globalThis.__FLOWER_APP_DEV_PAYLOAD__='+devPayload+';\n':'');

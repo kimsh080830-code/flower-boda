@@ -2,7 +2,8 @@ __mods["js/ui/screens/devTools.js"] = (() => {
 const { APP_CONFIG } = __mods["js/config.js"];
 const { FLOWERS } = __mods["js/data.js"];
 const { parseApiDate } = __mods["js/dateUtils.js"];
-const { selectTodayFlower, getDevTodayFlowerStorage } = __mods["js/todayFlower.js"];
+const { selectTodayFlower } = __mods["js/todayFlower.js"];
+const { getDevTodayFlowerStorage } = __mods["js/devTools.js"];
 const { el, button } = __mods["js/ui/dom.js"];
 
 function renderLongTextFixture() {

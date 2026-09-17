@@ -53,13 +53,6 @@ function createMemoryStorage(initial = {}) {
   };
 }
 
-const devStorage = createMemoryStorage();
-function getDevTodayFlowerStorage() { return devStorage; }
-function resetDevTodayFlowerStorage() {
-  for (const key of Object.keys(devStorage.snapshot())) devStorage.removeItem(key);
-  return devStorage;
-}
-
 function safeRead(storage, key, fallback) {
   try {
     const raw = storage?.getItem?.(key);
@@ -222,8 +215,6 @@ return {
   getTodayFlowerCandidates,
   deterministicShuffle,
   createMemoryStorage,
-  getDevTodayFlowerStorage,
-  resetDevTodayFlowerStorage,
   selectTodayFlower,
   simulateTodayFlowers
 };
