@@ -28,11 +28,12 @@ calendar.renderBloomCalendar=(state)=>{
  if(!flower) return layer;
  const {fill,stripe}=getFlowerColors(flower);
  layer.querySelectorAll('.bloom-calendar-day.is-full-bloom').forEach(day=>{
-  day.style.setProperty('--bloom-fill',fill);
-  day.style.setProperty('--bloom-stripe',stripe);
-  day.style.background=day.classList.contains('has-flower-event')
+  const background=day.classList.contains('has-flower-event')
    ? `repeating-linear-gradient(135deg,${stripe}55 0,${stripe}55 2px,transparent 2px,transparent 6px),${fill}`
    : fill;
+  day.style.setProperty('--bloom-fill',fill);
+  day.style.setProperty('--bloom-stripe',stripe);
+  day.style.setProperty('background',background,'important');
  });
  return layer;
 };
