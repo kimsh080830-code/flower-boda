@@ -10,7 +10,7 @@ const [encyclopedia, details, main, styles, home, build, devHtml] = await Promis
   read('../src/styles.css'),
   read('../src/js/ui/screens/home.js'),
   read('../build.mjs'),
-  read('../꽃을보다_V61_dev.html')
+  read('../index.html')
 ]);
 
 test('encyclopedia search placeholder matches home exactly without changing search matcher', () => {

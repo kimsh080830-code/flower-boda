@@ -1,9 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
+import { promisify } from 'node:util';
 import vm from 'node:vm';
 
 const read=relative=>readFile(new URL(`../${relative}`,import.meta.url),'utf8');
+await promisify(execFile)(process.execPath,['build.mjs','--mode=prod'],{
+  cwd:new URL('../',import.meta.url),
+  env:{...process.env,GITHUB_ACTIONS:'false'}
+});
 const [build,packageText,modulesText,dev,prod,settings,devPanel,devRuntime,main,eventService,imageService,flowerService,commonStyles,devStyles]=await Promise.all([
   read('build.mjs'),read('package.json'),read('src/modules.json'),read('index.html'),read('index.prod.html'),
   read('src/js/ui/screens/settings.js'),read('src/js/ui/screens/devTools.js'),read('src/js/devTools.js'),read('src/js/main.js'),

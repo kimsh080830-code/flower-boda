@@ -10,7 +10,7 @@ const [events, calendar, main, components, styles, build, devHtml] = await Promi
   read('../src/js/ui/components.js'),
   read('../src/styles.css'),
   read('../build.mjs'),
-  read('../꽃을보다_V61_dev.html')
+  read('../index.html')
 ]);
 
 test('event list heading is rendered before loading/error branches and has no immediate top divider', () => {

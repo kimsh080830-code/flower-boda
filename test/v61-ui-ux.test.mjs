@@ -43,7 +43,7 @@ test('large text uses the existing settings key and one central 14 percent scale
     '.event-title', '.filter-panel > summary', '.setting-row', '.observation-field',
     '.detail-disclosure summary', '.bloom-calendar-day'
   ]) {
-    assert.match(styles, new RegExp(selector.replace(/[.*+?^${}()|[\]\]/g, '\$&') + '[^{]*\{[^}]*var\(--body-text-scale\)', 's'));
+    assert.match(styles, new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[^{]*\\{[^}]*var\\(--body-text-scale\\)', 's'));
   }
   assert.doesNotMatch(styles, /\.bottom-nav[^}]*var\(--body-text-scale\)/s);
   assert.doesNotMatch(styles, /\.settings-slider-icon[^}]*var\(--body-text-scale\)/s);

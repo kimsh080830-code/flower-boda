@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import test from 'node:test';
 
-const html = await readFile(new URL('../꽃을보다_V61_dev.html',import.meta.url),'utf8');
+const html = await readFile(new URL('../index.html',import.meta.url),'utf8');
 function frontend(fetch = async () => { throw new Error('offline'); }) {
   const context = vm.createContext({ URL,URLSearchParams,Date,Intl,setTimeout,clearTimeout,DOMException,fetch,__mods:{
     'js/config.js':{ APP_CONFIG:{ DEMO_MODE:false,API:{ events:'/api/events',eventDetail:'/api/event-detail' },EVENT_CACHE_TTL_MS:1000 } },

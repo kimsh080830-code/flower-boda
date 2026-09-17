@@ -62,7 +62,7 @@ test('V56 external image metadata uses the required management fields',()=>{
 });
 
 test('V56 built HTML inlines local WebP fallbacks for standalone offline use',async()=>{
-  const dev=await readFile(path.join(ROOT,'꽃을보다_V61_dev.html'),'utf8');
+  const dev=await readFile(path.join(ROOT,'index.html'),'utf8');
   assert.match(dev,/data:image\/webp;base64,/);
   assert.doesNotMatch(dev,/const __flowerAssets = \{[^;]*assets\/flowers\//);
   assert.doesNotMatch(dev,/const img = \(id\) => [^;]*assets\/flowers\//);

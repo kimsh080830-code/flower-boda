@@ -4,7 +4,7 @@ import { pathToFileURL } from 'node:url';
 
 const edge='C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
 const baseline=pathToFileURL('D:\\20606김승현\\느\\_꽃을보다_V60_baseline_dev.html').href+'?noRemoteImages';
-const current=pathToFileURL('D:\\20606김승현\\느\\꽃을보다_V61\\꽃을보다_V61_dev.html').href+'?noRemoteImages';
+const current=pathToFileURL('D:\\20606김승현\\느\\꽃을보다_V61\\index.html').href+'?noRemoteImages';
 const widths=[320,360,390,412];
 const themes=['light','dark'];
 const textSizes=['medium','large'];
