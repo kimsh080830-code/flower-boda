@@ -77,44 +77,7 @@ function renderFlowerDetail(state, flower) {
     flower.flowerFeatures ? el('p', { className: 'detail-subcopy', text: `꽃: ${flower.flowerFeatures}` }) : null,
     flower.leafFeatures ? el('p', { className: 'detail-subcopy', text: `잎: ${flower.leafFeatures}` }) : null
   ].filter(Boolean);
-  const taxonomyData = flower.taxonomy || {};
-  const taxonomySteps = [
-    { rank: '계', value: taxonomyData.kingdomKo ? `${taxonomyData.kingdomKo} · ${taxonomyData.kingdom}` : taxonomyData.kingdom },
-    { rank: '문', value: taxonomyData.phylumKo ? `${taxonomyData.phylumKo} · ${taxonomyData.phylum}` : taxonomyData.phylum },
-    { rank: '강', value: taxonomyData.className },
-    { rank: '아강', value: taxonomyData.subclassName },
-    { rank: '큰 분류', value: taxonomyData.majorGroupKo ? `${taxonomyData.majorGroupKo} · ${taxonomyData.majorGroup}` : taxonomyData.majorGroup },
-    { rank: '목', value: taxonomyData.orderKo ? `${taxonomyData.orderKo} · ${taxonomyData.order}` : taxonomyData.order },
-    { rank: '과', value: taxonomyData.familyLatin ? `${taxonomyData.familyKo || flower.family} · ${taxonomyData.familyLatin}` : flower.family },
-    { rank: '속', value: taxonomyData.genusLatin ? `${taxonomyData.genusKo ? `${taxonomyData.genusKo} · ` : ''}${taxonomyData.genusLatin}` : flower.genus },
-    { rank: '학명', value: taxonomyData.acceptedName || flower.scientificName }
-  ].filter((step) => step.value);
-  const taxonomyHierarchy = el('ol', {
-    className: 'taxonomy-hierarchy',
-    ariaLabel: '큰 분류에서 작은 분류 순서'
-  }, taxonomySteps.map((step, index) => el('li', {
-    className: `taxonomy-step ${index === taxonomySteps.length - 1 ? 'is-current' : ''}`
-  }, [
-    el('span', { className: 'taxonomy-rank', text: step.rank }),
-    el('strong', { className: 'taxonomy-name', text: step.value }),
-    index === taxonomySteps.length - 1 ? el('span', { className: 'taxonomy-current-note', text: '현재 보고 있는 항목' }) : null
-  ].filter(Boolean))));
-  const taxonomy = [
-    flower.nameEn ? detailLine('영문명', flower.nameEn) : null,
-    el('p', { className: 'taxonomy-guide', text: '위쪽은 큰 분류, 아래로 갈수록 더 구체적인 분류예요.' }),
-    taxonomyHierarchy,
-    taxonomyData.taxonType ? el('p', { className: 'taxonomy-status', text: `분류 상태 · ${taxonomyData.taxonType}` }) : null,
-    taxonomyData.note ? el('p', { className: 'detail-subcopy', text: taxonomyData.note }) : null,
-    el('p', { className: 'taxonomy-source-note', text: '분류 기준 · 국명은 국립수목원 국가표준식물목록을 참고하고, 학명·상위 분류는 Kew POWO/WCVP를 우선하며 World Flora Online을 교차검증 자료로 사용했어요.' })
-  ].filter(Boolean);
   const environment = [flower.habitat ? el('p', { text: flower.habitat }) : null].filter(Boolean);
-  const care = flower.care ? [
-    el('dl', { className: 'detail-mini-facts' }, [
-      detailLine('햇빛', flower.care.sunlight),
-      detailLine('물 관리', flower.care.watering),
-      detailLine('난이도', flower.care.difficulty)
-    ].filter(Boolean))
-  ] : [];
 
   if (identification.length) { const section=infoDisclosure('구별 특징',identification,true);section.classList.add('detail-identification');layer.append(section); }
   const lookalikes = Array.isArray(flower.lookalikes) ? flower.lookalikes.filter((item) => item?.nameKo) : [];
@@ -136,8 +99,6 @@ function renderFlowerDetail(state, flower) {
     });
     layer.append(infoDisclosure('꽃말 자세히', languageChildren));
   }
-  if (taxonomy.some((item) => item?.childElementCount)) layer.append(infoDisclosure('분류 정보', taxonomy));
-  if (care.length) layer.append(infoDisclosure('기본 관리', care));
   if (flower.precautions) layer.append(infoDisclosure('주의사항', [el('p', { text: flower.precautions })]));
   if (flower.imageCredit?.license) {
     const creditParts = [flower.imageCredit.creator, flower.imageCredit.license, 'Wikimedia Commons'].filter(Boolean);

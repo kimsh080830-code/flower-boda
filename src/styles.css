@@ -1268,128 +1268,6 @@ body.is-modal-open { overflow: hidden; }
 
 
 
-.advanced-filter-panel {
-  margin: 4px 0 8px;
-  border-top: 1px solid var(--line);
-}
-.advanced-filter-panel > summary {
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  color: var(--text);
-  font-size: .74rem;
-  font-weight: 700;
-  list-style: none;
-}
-.advanced-filter-panel > summary::-webkit-details-marker { display: none; }
-.advanced-filter-panel > summary::after {
-  content: "+";
-  margin-left: auto;
-  color: var(--muted);
-  font-size: .95rem;
-  font-weight: 400;
-}
-.advanced-filter-panel[open] > summary::after { content: "−"; }
-.advanced-filter-grid {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 8px;
-  padding: 0 0 10px;
-}
-.taxonomy-source-note {
-  margin: 10px 0 0;
-  color: var(--muted-2);
-  font-size: .66rem;
-  line-height: 1.55;
-}
-@media (max-width: 340px) {
-  .advanced-filter-grid { grid-template-columns: 1fr; }
-}
-
-
-.taxonomy-guide {
-  margin: 0 0 14px;
-  color: var(--muted);
-  font-size: .68rem;
-  line-height: 1.5;
-}
-.taxonomy-hierarchy {
-  position: relative;
-  margin: 0;
-  padding: 0 0 0 24px;
-  list-style: none;
-}
-.taxonomy-hierarchy::before {
-  content: "";
-  position: absolute;
-  left: 6px;
-  top: 9px;
-  bottom: 12px;
-  width: 1px;
-  background: var(--line);
-}
-.taxonomy-step {
-  position: relative;
-  min-width: 0;
-  padding: 0 0 16px 8px;
-}
-.taxonomy-step:last-child { padding-bottom: 3px; }
-.taxonomy-step::before {
-  content: "";
-  position: absolute;
-  left: -21px;
-  top: 6px;
-  width: 7px;
-  height: 7px;
-  border: 1px solid var(--muted-2);
-  border-radius: 50%;
-  background: var(--surface);
-  box-sizing: border-box;
-}
-.taxonomy-step.is-current {
-  margin: 0 0 3px -4px;
-  padding: 10px 12px;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-small);
-  background: var(--accent-soft);
-}
-.taxonomy-step.is-current::before { left: -18px; top: 16px; border-color: var(--accent); background: var(--accent); }
-.taxonomy-step.is-current .taxonomy-rank,
-.taxonomy-step.is-current .taxonomy-current-note { color: var(--accent-strong); }
-.taxonomy-rank {
-  display: block;
-  color: var(--muted-2);
-  font-size: .59rem;
-  line-height: 1.3;
-  font-weight: 700;
-}
-.taxonomy-name {
-  display: block;
-  margin-top: 3px;
-  color: var(--ink);
-  font-size: .78rem;
-  line-height: 1.45;
-  font-weight: 720;
-  overflow-wrap: anywhere;
-}
-.taxonomy-current-note {
-  display: block;
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: .62rem;
-  line-height: 1.4;
-}
-.taxonomy-status {
-  margin: 13px 0 0;
-  padding-top: 10px;
-  border-top: 1px solid var(--line-soft);
-  color: var(--muted);
-  font-size: .68rem;
-  line-height: 1.5;
-}
-
 .personal-card { padding:16px 0; border-bottom:1px solid var(--line-soft); min-width:0; }
 .personal-card p { margin:8px 0; font-size:.85rem; line-height:1.6; overflow-wrap:anywhere; }
 .personal-heading, .personal-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
@@ -1547,8 +1425,7 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
 .filter-panel > summary::after {
   flex: 0 0 auto;
 }
-.filter-panel > summary > span:first-child,
-.advanced-filter-panel > summary > span:first-child {
+.filter-panel > summary > span:first-child {
   flex: 0 0 auto;
 }
 .filter-summary-hint {
@@ -1577,12 +1454,6 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
 .inline-select-option {
   white-space: normal;
   line-height: 1.35;
-}
-.advanced-filter-panel > summary {
-  min-width: 0;
-}
-.advanced-filter-panel > summary::after {
-  flex: 0 0 auto;
 }
 .encyclopedia-empty-state {
   gap: 5px;
@@ -1647,8 +1518,7 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
   background: var(--accent-soft);
 }
 @media (max-width: 420px) {
-  .filter-panel > summary,
-  .advanced-filter-panel > summary {
+  .filter-panel > summary {
     gap: 7px;
   }
   .filter-summary-hint {
@@ -1835,10 +1705,6 @@ body { overflow-x: clip; }
 .detail-disclosure-body { font-size: calc(.77rem * var(--body-text-scale)); overflow-wrap: anywhere; }
 .detail-line dd { font-size: calc(.75rem * var(--body-text-scale)); }
 .detail-location-meta { font-size: calc(.66rem * var(--body-text-scale)); overflow-wrap: anywhere; }
-.taxonomy-guide { font-size: calc(.68rem * var(--body-text-scale)); }
-.taxonomy-name { font-size: calc(.78rem * var(--body-text-scale)); }
-.taxonomy-current-note { font-size: calc(.62rem * var(--body-text-scale)); }
-.taxonomy-status, .taxonomy-source-note { font-size: calc(.68rem * var(--body-text-scale)); }
 .weather-note { font-size: calc(.68rem * var(--body-text-scale)); color: var(--muted); overflow-wrap: anywhere; }
 .event-date-filter-note { font-size: calc(.7rem * var(--body-text-scale)); }
 .event-calendar-section > p { font-size: calc(.7rem * var(--body-text-scale)); }
@@ -1873,7 +1739,6 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
 .event-meta { font-size: calc(.64rem * var(--body-text-scale)); }
 .event-error-copy strong { font-size: calc(.88rem * var(--body-text-scale)); }
 .filter-panel > summary { font-size: calc(.76rem * var(--body-text-scale)); }
-.advanced-filter-panel > summary { font-size: calc(.74rem * var(--body-text-scale)); }
 .filter-summary-hint,
 .filter-field { font-size: calc(.61rem * var(--body-text-scale)); }
 .inline-select-trigger { font-size: calc(.75rem * var(--body-text-scale)); }
@@ -1922,9 +1787,9 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
 .editorial-feature-copy, .editorial-feature-meta, .feature-actions,
 .flower-poster-copy, .flower-poster-title, .species-main, .species-title-line,
 .event-main, .event-title, .event-location, .event-meta, .detail-intro,
-.detail-title-row, .detail-scientific, .detail-line, .taxonomy-step,
+.detail-title-row, .detail-scientific, .detail-line,
 .setting-row, .setting-row > span:first-child, .settings-disclosure,
-.filter-panel, .filter-panel > summary, .advanced-filter-panel > summary,
+.filter-panel, .filter-panel > summary,
 .event-date-field, .event-date-field-heading { min-width: 0; }
 .page-header h1, .section-head h2, .event-title, .event-location,
 .detail-intro h2, .detail-scientific, .species-standard, .detail-standard-name,

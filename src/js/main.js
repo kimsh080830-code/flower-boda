@@ -14,7 +14,7 @@ const { renderApp, updateHomeSearchResults, updateEncyclopediaResults, updateEve
 
 const {loadSettings,saveSettings,loadRecent,rememberFlower,clearRecent,loadVisits,saveVisits,applyTheme,applyTextSize}=__mods['js/preferences.js'];
 const preferences = loadSettings();
-function emptyFlowerFilters(overrides={}) {return {season:'',color:'',bloom:'',favoritesOnly:false,majorGroup:'',order:'',family:'',genus:'',petalShape:'',...overrides};}
+function emptyFlowerFilters(overrides={}) {return {season:'',favoritesOnly:false,...overrides};}
 
 const state = {
   settings: preferences,
@@ -62,7 +62,6 @@ const state = {
   photoPrepareVisible: false,
   detail: null,
   filtersOpen: false,
-  advancedFiltersOpen: false,
   eventFiltersOpen: false,
   recentDetailsOpen: false,
   recentClearPending: false,
@@ -84,7 +83,7 @@ let referenceImageController = null;
 let toastTimer = null;
 
 function render() {
-  const panels={'encyclopedia-filter-panel':'filtersOpen','encyclopedia-advanced-filter-panel':'advancedFiltersOpen','event-filter-panel':'eventFiltersOpen','recent-flower-panel':'recentDetailsOpen'};
+  const panels={'encyclopedia-filter-panel':'filtersOpen','event-filter-panel':'eventFiltersOpen','recent-flower-panel':'recentDetailsOpen'};
   for(const [id,key] of Object.entries(panels)) {const node=document.getElementById(id);if(node)state[key]=node.open;}
   applyTheme(state.settings.theme);
   applyTextSize(runtimeHooks.resolveTextSize(state,state.settings.bodyTextSize));
@@ -784,17 +783,7 @@ function handleClick(event) {
       const selectAction = target.dataset.selectAction || '';
       target.closest('details.inline-select')?.removeAttribute('open');
       if (selectAction === 'filter-encyclopedia') {
-        const keys = {
-          'flower-season-filter': 'season',
-          'flower-color-filter': 'color',
-          'flower-bloom-filter': 'bloom',
-          'flower-major-group-filter': 'majorGroup',
-          'flower-order-filter': 'order',
-          'flower-family-filter': 'family',
-          'flower-genus-filter': 'genus',
-          'flower-petal-shape-filter': 'petalShape'
-        };
-        if (keys[controlId]) state.encyclopediaFilters = { ...state.encyclopediaFilters, [keys[controlId]]: value };
+        if (controlId === 'flower-season-filter') state.encyclopediaFilters = { ...state.encyclopediaFilters, season: value };
         render();
       } else if (selectAction === 'sort-encyclopedia') {
         state.encyclopediaSort = ['default','name','bloom-early','bloom-late'].includes(value) ? value : 'default';
@@ -1077,14 +1066,7 @@ function handleChange(event) {
   if (input.dataset.action === 'filter-encyclopedia') {
     state.encyclopediaFilters = {
       season: document.getElementById('flower-season-filter')?.value || '',
-      color: document.getElementById('flower-color-filter')?.value || '',
-      bloom: document.getElementById('flower-bloom-filter')?.value || '',
-      favoritesOnly: Boolean(state.encyclopediaFilters.favoritesOnly),
-      majorGroup: document.getElementById('flower-major-group-filter')?.value || '',
-      order: document.getElementById('flower-order-filter')?.value || '',
-      family: document.getElementById('flower-family-filter')?.value || '',
-      genus: document.getElementById('flower-genus-filter')?.value || '',
-      petalShape: document.getElementById('flower-petal-shape-filter')?.value || ''
+      favoritesOnly: Boolean(state.encyclopediaFilters.favoritesOnly)
     };
     updateEncyclopediaResults(state);
     return;
