@@ -17,7 +17,7 @@ test('HTTP public file boundary', { timeout: 20000 }, async (t) => {
   await copyFile(new URL('../server.mjs', import.meta.url), path.join(root, 'server.mjs'));
   await mkdir(path.join(root,'lib'));
   await copyFile(new URL('../lib/event-quality.mjs', import.meta.url), path.join(root, 'lib/event-quality.mjs'));
-  const pages = ['index.html'];
+  const pages = ['꽃을보다_V61_dev.html'];
   for (const name of pages) await writeFile(path.join(root, name), `<h1>${name}</h1>`);
   const privateFiles = [
     '.env', '.env.example', 'package.json', 'package-lock.json', 'README.md',

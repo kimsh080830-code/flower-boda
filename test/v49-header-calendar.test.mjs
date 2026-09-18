@@ -15,7 +15,7 @@ function modules() {
 test('global header contains only app name, date/solar-term control, and settings control',()=>{
  assert.match(shell,/className: 'app-brand', text: '꽃을 보다'/);
  assert.match(shell,/className:'app-date-context'.*action:'open-bloom-calendar'/s);
- assert.match(shell,/text:date\.solarTerm/);
+ assert.match(shell,/text:`\$\{date\.season\} · \$\{date\.solarTerm\}`/);
  assert.match(shell,/action:'go-settings'/);
  assert.doesNotMatch(shell,/app-subtitle|BOTANICAL GUIDE|nav-camera|검색|날씨|지역|필터/);
 });
