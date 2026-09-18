@@ -73,12 +73,11 @@ test('relay storage and placeholders remain the existing V61 implementation', ()
   assert.doesNotMatch(home, /flower-relay-placeholder[^\n]*(?:svg|img|icon|emoji)/i);
 });
 
-test('V61 produces only the DEV bundle and adds no image or SVG asset', async () => {
-  assert.match(build, /꽃을보다_V61_dev\.html/);
-  assert.doesNotMatch(build, /꽃을보다_V61\.html/);
+test('V61 declares the current DEV and PROD bundles and adds no image or SVG asset', async () => {
+  assert.match(build, /const output=dev\?'index\.html':'index\.prod\.html'/);
   assert.match(template, /Botanical V61 DEV/);
   const assets = await readdir(path.join(ROOT, 'assets', 'flowers'));
-  assert.equal(assets.length, 46);
+  assert.equal(assets.length, 51);
   assert.equal(assets.every((name) => name.endsWith('.webp')), true);
 });
 

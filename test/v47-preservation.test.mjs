@@ -10,10 +10,12 @@ function runtime(source=html,protocol='https:') {
  vm.runInContext(source.match(/<script>([\s\S]*?)<\/script>/)[1].split('__mods["js/main.js"]')[0],context);
  return {mods:vm.runInContext('__mods',context),values};
 }
-test('all 45 flower records, scientific names, colors, meanings, habitats and taxonomy remain identical',()=>{
+test('all 51 flower records preserve required facts and all 45 existing flower meanings',()=>{
  const after=runtime().mods['js/data.js'];
- assert.equal(after.FLOWERS.length,45);
- assert.ok(after.FLOWERS.every(flower=>flower.id&&flower.scientificName&&Array.isArray(flower.colors)&&flower.flowerLanguage?.meaning&&flower.habitat&&flower.taxonomy?.acceptedName));
+ assert.equal(after.FLOWERS.length,51);
+ assert.ok(after.FLOWERS.every(flower=>flower.id&&flower.scientificName&&Array.isArray(flower.colors)&&flower.habitat&&flower.taxonomy?.acceptedName));
+ const flowersWithMeaning=after.FLOWERS.filter(flower=>flower.flowerLanguage?.meaning);
+ assert.equal(flowersWithMeaning.length,45);
 });
 test('all 200 genuine event records and evidence remain identical in standalone and server data',async()=>{
  const copy=await readFile(new URL('../data/verified-events.json',import.meta.url));

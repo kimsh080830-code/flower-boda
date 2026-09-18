@@ -42,10 +42,9 @@ test('header/date and calendar CSS remain unboxed and have narrow-screen coverag
  assert.match(styles,/\.bloom-calendar-grid\{[^}]*repeat\(7,minmax\(0,1fr\)\)/s);
  assert.doesNotMatch(styles,/\.app-date-context\{[^}]*box-shadow/s);
 });
-test('V61 DEV build is the only declared V61 output',async()=>{
+test('V61 build declares the current DEV and PROD outputs',async()=>{
  const build=await readFile(new URL('../build.mjs',import.meta.url),'utf8');
  assert.match(html,/Botanical V61 DEV/);
  assert.doesNotMatch(html,/Botanical V47/);
- assert.match(build,/꽃을보다_V61_dev\.html/);
- assert.doesNotMatch(build,/꽃을보다_V61\.html/);
+ assert.match(build,/const output=dev\?'index\.html':'index\.prod\.html'/);
 });

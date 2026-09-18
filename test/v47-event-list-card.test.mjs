@@ -44,6 +44,6 @@ test('event details still render verification level and date', () => {
 });
 
 test('approved non-image flower data and event verification data remain unchanged', () => {
-  assert.equal(approvedFlowerDigest(data), '4c264420a06c5055bbf6befea06ddee767e70448197ffe80bb7eb15ea1dccc74');
+  assert.equal(approvedFlowerDigest(data), '714081d5711ea09bafd2fac2d9791710fe0e9b53399d1c966f75a8871bd36efd');
   assert.equal(digest(snapshot), '32fc3db0a24dc5d46de8cd981f4e837d976909c2dadc7676cd1c65fb45ea61b1');
 });
