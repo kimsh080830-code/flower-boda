@@ -13,6 +13,13 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
+      - name: Guard branch
+        run: |
+          if [ "${GITHUB_REF_NAME}" != "dev" ]; then
+            echo "Blocked: DEV workflow may run only on dev."
+            exit 1
+          fi
+
       - name: Checkout dev
         uses: actions/checkout@v4
         with:
@@ -30,6 +37,12 @@ jobs:
       - name: Build DEV
         run: |
           npm run build:dev
+
+      - name: Verify DEV artifact
+        run: |
+          test -f index.html
+          grep -q 'globalThis.__FLOWER_APP_DEV__=true' index.html
+          grep -q '__FLOWER_APP_DEV_PAYLOAD__' index.html
 
       - name: Commit generated index to dev
         run: |
