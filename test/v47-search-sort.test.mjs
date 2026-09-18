@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
-const html=await readFile(new URL('../꽃을보다_V61_dev.html',import.meta.url),'utf8');
+const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
 const context=vm.createContext({Date,Intl,URL,URLSearchParams,DOMException,setTimeout,clearTimeout,location:{protocol:'https:',search:''},localStorage:{getItem:()=>null,setItem:()=>{},removeItem:()=>{}}});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].split('__mods["js/main.js"]')[0],context);
 const mods=vm.runInContext('__mods',context);

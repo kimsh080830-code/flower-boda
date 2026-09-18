@@ -34,11 +34,14 @@ function clone(value){ return JSON.parse(JSON.stringify(value)); }
 
 test('V56 source image manifest matches all flower fallback files without audit errors', async()=>{
   const result=auditData(baseInput);
+  const flowersWithFallback=flowers.filter(flower=>flower.localImage);
   assert.equal(result.ok,true,JSON.stringify(result.issues,null,2));
-  assert.equal(flowers.length,45);
-  assert.equal(imageAssets.filter(a=>a.flowerId).length,flowers.length);
-  assert.equal(assetNames.length,46); // 45 flower fallbacks + one generic fallback
-  for(const flower of flowers){
+  assert.equal(flowers.length,51);
+  assert.equal(flowersWithFallback.length,50);
+  assert.deepEqual([...flowers.filter(flower=>!flower.localImage).map(flower=>flower.id)],['pansy']);
+  assert.equal(imageAssets.filter(a=>a.flowerId).length,flowersWithFallback.length);
+  assert.equal(assetNames.length,51); // 50 flower fallbacks + one generic fallback
+  for(const flower of flowersWithFallback){
     assert.match(flower.localImage,LOCAL_IMAGE_PATTERN);
     assert.ok(existingPaths.includes(flower.localImage),flower.localImage);
     const manifest=imageAssets.find(a=>a.flowerId===flower.id);
@@ -51,7 +54,7 @@ test('V56 source image manifest matches all flower fallback files without audit 
 
 test('V56 external image metadata uses the required management fields',()=>{
   const required=['flowerId','filename','source','author','sourceUrl','license','licenseUrl','attributionRequired'];
-  assert.equal(externalImages.length,8);
+  assert.equal(externalImages.length,13);
   for(const meta of externalImages){
     for(const field of required) assert.ok(Object.hasOwn(meta,field),`${meta.flowerId}:${field}`);
     assert.match(meta.filename,EXTERNAL_FILENAME_PATTERN);
@@ -62,7 +65,7 @@ test('V56 external image metadata uses the required management fields',()=>{
 });
 
 test('V56 built HTML inlines local WebP fallbacks for standalone offline use',async()=>{
-  const dev=await readFile(path.join(ROOT,'꽃을보다_V61_dev.html'),'utf8');
+  const dev=await readFile(path.join(ROOT,'index.html'),'utf8');
   assert.match(dev,/data:image\/webp;base64,/);
   assert.doesNotMatch(dev,/const __flowerAssets = \{[^;]*assets\/flowers\//);
   assert.doesNotMatch(dev,/const img = \(id\) => [^;]*assets\/flowers\//);

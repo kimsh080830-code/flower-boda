@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 
-const html=await readFile(new URL('../꽃을보다_V61_dev.html',import.meta.url),'utf8');
+const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
 const calendarSource=await readFile(new URL('../src/js/calendar.js',import.meta.url),'utf8');
 const main=await readFile(new URL('../src/js/main.js',import.meta.url),'utf8');
 const styles=await readFile(new URL('../src/styles.css',import.meta.url),'utf8');

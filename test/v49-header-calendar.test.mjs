@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-const html=await readFile(new URL('../꽃을보다_V61_dev.html',import.meta.url),'utf8');
+const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
 const styles=await readFile(new URL('../src/styles.css',import.meta.url),'utf8');
 const shell=await readFile(new URL('../src/js/ui/screens/shell.js',import.meta.url),'utf8');
 const main=await readFile(new URL('../src/js/main.js',import.meta.url),'utf8');
@@ -15,7 +15,7 @@ function modules() {
 test('global header contains only app name, date/solar-term control, and settings control',()=>{
  assert.match(shell,/className: 'app-brand', text: '꽃을 보다'/);
  assert.match(shell,/className:'app-date-context'.*action:'open-bloom-calendar'/s);
- assert.match(shell,/text:date\.solarTerm/);
+ assert.match(shell,/text:`\$\{date\.season\} · \$\{date\.solarTerm\}`/);
  assert.match(shell,/action:'go-settings'/);
  assert.doesNotMatch(shell,/app-subtitle|BOTANICAL GUIDE|nav-camera|검색|날씨|지역|필터/);
 });
@@ -42,10 +42,9 @@ test('header/date and calendar CSS remain unboxed and have narrow-screen coverag
  assert.match(styles,/\.bloom-calendar-grid\{[^}]*repeat\(7,minmax\(0,1fr\)\)/s);
  assert.doesNotMatch(styles,/\.app-date-context\{[^}]*box-shadow/s);
 });
-test('V61 DEV build is the only declared V61 output',async()=>{
+test('V61 build declares the current DEV and PROD outputs',async()=>{
  const build=await readFile(new URL('../build.mjs',import.meta.url),'utf8');
  assert.match(html,/Botanical V61 DEV/);
  assert.doesNotMatch(html,/Botanical V47/);
- assert.match(build,/꽃을보다_V61_dev\.html/);
- assert.doesNotMatch(build,/꽃을보다_V61\.html/);
+ assert.match(build,/const output=dev\?'index\.html':'index\.prod\.html'/);
 });

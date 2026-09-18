@@ -1,9 +1,8 @@
 __mods["js/main.js"] = (() => {
 const { APP_CONFIG } = __mods["js/config.js"];
-const { setForceNetworkFailure, runDevAudit } = __mods["js/devTools.js"];
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { FLOWERS, getFlowerById } = __mods["js/data.js"];
 const { getSeason, getDatePresentation, parseApiDate } = __mods["js/dateUtils.js"];
-const { selectTodayFlower, simulateTodayFlowers, createMemoryStorage, resetDevTodayFlowerStorage } = __mods["js/todayFlower.js"];
 const { getFlowerRelaySnapshot, startFlowerRelay } = __mods["js/flowerRelay.js"];
 const { analyzeFlower, preprocessImage, validateImageFile, FlowerServiceError } = __mods["js/flowerService.js"];
 const { getEvents, getEventDetail } = __mods["js/eventService.js"];
@@ -73,15 +72,8 @@ const state = {
   bloomCalendarSelectedDate: '',
   selectedBloomFlowerId: '',
   bloomCalendarShowAll: false,
-  devTodayFlowerDate: APP_CONFIG.DEV_MODE ? getDatePresentation(new Date()).day : '',
-  devTodayFlowerReport: '',
-  devAuditReport: '',
-  devNetworkFailure: false,
-  devLongTextTest: false,
-  devTextSizeOverride: '',
   relayError: '',
-  devRelayScenario: '',
-  devObservationSaveFailure: false
+  ...runtimeHooks.createState()
 };
 
 let analysisController = null;
@@ -95,7 +87,7 @@ function render() {
   const panels={'encyclopedia-filter-panel':'filtersOpen','encyclopedia-advanced-filter-panel':'advancedFiltersOpen','event-filter-panel':'eventFiltersOpen','recent-flower-panel':'recentDetailsOpen'};
   for(const [id,key] of Object.entries(panels)) {const node=document.getElementById(id);if(node)state[key]=node.open;}
   applyTheme(state.settings.theme);
-  applyTextSize(APP_CONFIG.DEV_MODE && state.devTextSizeOverride ? state.devTextSizeOverride : state.settings.bodyTextSize);
+  applyTextSize(runtimeHooks.resolveTextSize(state,state.settings.bodyTextSize));
   renderApp(state);
 }
 
@@ -166,80 +158,6 @@ function scrollBloomFlowerRail(target) {
   const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   rail.scrollBy({left:direction*amount,behavior:reduceMotion?'auto':'smooth'});
   requestAnimationFrame(()=>__mods['js/calendar.js'].syncBloomRailControls(shell));
-}
-
-function devTodayDate() {
-  return APP_CONFIG.DEV_MODE ? (parseApiDate(state.devTodayFlowerDate) || state.currentDate) : state.currentDate;
-}
-
-function shiftDevTodayDate(offset) {
-  if (!APP_CONFIG.DEV_MODE) return;
-  const base=devTodayDate();
-  const next=new Date(base.getFullYear(),base.getMonth(),base.getDate()+offset,12);
-  state.devTodayFlowerDate=getDatePresentation(next).day;
-  state.devTodayFlowerReport='';
-  render();
-}
-
-function formatTodaySimulation(rows) {
-  const seen=new Map();
-  const duplicateRows=[];
-  rows.forEach((row)=>{
-    if(!row.flowerId) return;
-    if(!seen.has(row.cycle)) seen.set(row.cycle,new Set());
-    const cycleSeen=seen.get(row.cycle);
-    if(cycleSeen.has(row.flowerId)) duplicateRows.push(`${row.day}:${row.flowerId}`);
-    cycleSeen.add(row.flowerId);
-  });
-  const lines=rows.map(row=>`${row.day} | cycle ${row.cycle} | ${row.flowerId || '(없음)'} | 후보 ${row.candidateCount}`);
-  return [`30일 시뮬레이션`,...lines,`같은 사이클 중복: ${duplicateRows.length ? duplicateRows.join(', ') : '없음'}`].join('\n');
-}
-
-function runDevTodayTest(kind) {
-  if (!APP_CONFIG.DEV_MODE) return;
-  const date=devTodayDate();
-  if(kind==='simulate') {
-    state.devTodayFlowerReport=formatTodaySimulation(simulateTodayFlowers({flowers:FLOWERS,startDate:date,days:30,storage:createMemoryStorage()}));
-  } else if(kind==='zero') {
-    const result=selectTodayFlower({flowers:[],date,storage:createMemoryStorage()});
-    state.devTodayFlowerReport=`후보 0개 테스트\n선택 ID: ${result.flowerId || '(없음)'}\n후보 수: ${result.candidateIds.length}\n통과: ${!result.flowerId && result.candidateIds.length===0 ? '예' : '아니오'}`;
-  } else if(kind==='one') {
-    const only={id:'__dev-only-flower__',bloom:{start:'01-01',end:'12-31'}};
-    const rows=simulateTodayFlowers({flowers:[only],startDate:date,days:4,storage:createMemoryStorage()});
-    state.devTodayFlowerReport=['후보 1개 테스트',...rows.map(row=>`${row.day} | cycle ${row.cycle} | ${row.flowerId}`),`통과: ${rows.every(row=>row.flowerId===only.id) ? '예' : '아니오'}`].join('\n');
-  } else if(kind==='boundary') {
-    const year=date.getFullYear();
-    const pairs=[[2,28,3,1],[5,31,6,1],[8,31,9,1],[11,30,12,1]];
-    const lines=['계절 경계 테스트'];
-    pairs.forEach(([m1,d1,m2,d2])=>{
-      const storage=createMemoryStorage();
-      const a=new Date(year,m1-1,d1,12),b=new Date(year,m2-1,d2,12);
-      const first=selectTodayFlower({flowers:FLOWERS,date:a,storage});
-      const second=selectTodayFlower({flowers:FLOWERS,date:b,storage});
-      lines.push(`${getDatePresentation(a).day} ${getSeason(a)} | ${first.flowerId || '(없음)'} | 후보 ${first.candidateIds.length}`);
-      lines.push(`${getDatePresentation(b).day} ${getSeason(b)} | ${second.flowerId || '(없음)'} | 후보 ${second.candidateIds.length}`);
-    });
-    state.devTodayFlowerReport=lines.join('\n');
-  } else if(kind==='data-change') {
-    const storage=createMemoryStorage();
-    const first=selectTodayFlower({flowers:FLOWERS,date,storage});
-    const added={id:'__dev-added-flower__',bloom:{start:'01-01',end:'12-31'}};
-    const withAdded=selectTodayFlower({flowers:[...FLOWERS,added],date,storage});
-    const nextDate=new Date(date.getFullYear(),date.getMonth(),date.getDate()+1,12);
-    const nextWithAdded=selectTodayFlower({flowers:[...FLOWERS,added],date:nextDate,storage});
-    const removable=nextWithAdded.candidateIds.find(id=>id!==nextWithAdded.flowerId) || nextWithAdded.flowerId;
-    const withoutOne=selectTodayFlower({flowers:[...FLOWERS,added].filter(flower=>flower.id!==removable),date:new Date(date.getFullYear(),date.getMonth(),date.getDate()+2,12),storage});
-    state.devTodayFlowerReport=[
-      '데이터 추가/제거 테스트',
-      `기준 선택: ${first.flowerId || '(없음)'}`,
-      `같은 날 데이터 추가 후 선택 유지: ${withAdded.flowerId || '(없음)'} (${withAdded.flowerId===first.flowerId ? '통과' : '실패'})`,
-      `추가 ID가 이후 후보에 포함: ${nextWithAdded.candidateIds.includes(added.id) ? '예' : '아니오'}`,
-      `추가 ID가 현재 사이클 순서에 포함: ${nextWithAdded.cycleOrder.includes(added.id) ? '예' : '아니오'}`,
-      `제거 ID: ${removable || '(없음)'}`,
-      `제거 후 후보/순서에서 제외: ${removable && !withoutOne.candidateIds.includes(removable) && !withoutOne.cycleOrder.includes(removable) ? '예' : '아니오'}`
-    ].join('\n');
-  }
-  render();
 }
 
 function showToast(message) {
@@ -515,7 +433,7 @@ async function confirmCandidate(flowerId) {
   state.observationPhotoBusy=true;
   try {
     if(file) draft.photo=await createThumbnail(file);
-    if(APP_CONFIG.DEV_MODE && state.devObservationSaveFailure) throw new Error('DEV 테스트: 관찰 기록 저장 실패');
+    runtimeHooks.beforeObservationSave(state);
     const result=addObservation(draft);
     if(!result.ok) throw new Error(result.error);
     syncCollection();
@@ -849,6 +767,7 @@ function handleClick(event) {
   const target = event.target.closest('[data-action]');
   if (!target || target.disabled) return;
   const { action } = target.dataset;
+  if(runtimeHooks.handleAction({action,target,state,render})) return;
   switch (action) {
     case 'toggle-inline-select': {
       event.preventDefault();
@@ -909,50 +828,6 @@ function handleClick(event) {
       }
       break;
     }
-    case 'dev-today-prev': shiftDevTodayDate(-1); break;
-    case 'dev-today-next': shiftDevTodayDate(1); break;
-    case 'dev-today-reset':
-      if(APP_CONFIG.DEV_MODE) {resetDevTodayFlowerStorage();state.devTodayFlowerDate=getDatePresentation(new Date()).day;state.devTodayFlowerReport='';render();}
-      break;
-    case 'dev-today-simulate': runDevTodayTest('simulate'); break;
-    case 'dev-today-zero': runDevTodayTest('zero'); break;
-    case 'dev-today-one': runDevTodayTest('one'); break;
-    case 'dev-today-boundary': runDevTodayTest('boundary'); break;
-    case 'dev-today-data-change': runDevTodayTest('data-change'); break;
-    case 'dev-audit-duplicates':
-      if(APP_CONFIG.DEV_MODE){state.devAuditReport=runDevAudit('duplicates',FLOWERS);render();}
-      break;
-    case 'dev-audit-images':
-      if(APP_CONFIG.DEV_MODE){state.devAuditReport=runDevAudit('images',FLOWERS);render();}
-      break;
-    case 'dev-audit-licenses':
-      if(APP_CONFIG.DEV_MODE){state.devAuditReport=runDevAudit('licenses',FLOWERS);render();}
-      break;
-    case 'dev-network-failure':
-      if(APP_CONFIG.DEV_MODE){state.devNetworkFailure=!state.devNetworkFailure;setForceNetworkFailure(state.devNetworkFailure);state.devAuditReport=`강제 네트워크 실패: ${state.devNetworkFailure?'켜짐':'꺼짐'}\nDEV 메모리 상태만 변경했어요.`;render();}
-      break;
-    case 'dev-long-text':
-      if(APP_CONFIG.DEV_MODE){state.devLongTextTest=!state.devLongTextTest;render();}
-      break;
-    case 'dev-font-min':
-      if(APP_CONFIG.DEV_MODE){state.devTextSizeOverride='small';render();}
-      break;
-    case 'dev-font-max':
-      if(APP_CONFIG.DEV_MODE){state.devTextSizeOverride='large';render();}
-      break;
-    case 'dev-font-reset':
-      if(APP_CONFIG.DEV_MODE){state.devTextSizeOverride='';render();}
-      break;
-    case 'dev-relay-live':
-      if(APP_CONFIG.DEV_MODE){state.devRelayScenario='';render();}
-      break;
-    case 'dev-relay-scenario':
-      if(APP_CONFIG.DEV_MODE){state.devRelayScenario=target.dataset.scenario || '';render();}
-      break;
-    case 'dev-observation-save-failure':
-      if(APP_CONFIG.DEV_MODE){state.devObservationSaveFailure=!state.devObservationSaveFailure;render();}
-      break;
-    case 'dev-noop': break;
     case 'go-settings': switchTab('settings'); break;
     case 'open-bloom-calendar':
       state.bloomCalendarOpen=true;
@@ -1180,11 +1055,7 @@ function handleClick(event) {
 
 function handleChange(event) {
   const input = event.target;
-  if(APP_CONFIG.DEV_MODE && input.dataset.action==='dev-today-date') {
-    const parsed=parseApiDate(input.value);
-    if(parsed) {state.devTodayFlowerDate=getDatePresentation(parsed).day;state.devTodayFlowerReport='';render();}
-    return;
-  }
+  if(runtimeHooks.handleChange({input,state,render})) return;
   if(['setting-select','setting-toggle'].includes(input.dataset.action)) {
     const key=input.dataset.key;
     if(!['region','theme','recentEnabled','bodyTextSize'].includes(key)) return;

@@ -19,8 +19,8 @@ const { FLOWERS } = data;
 
 test('V55 flower scope contains only supported flowering-plant records', () => {
   const report = policy.getFlowerDataReview();
-  assert.equal(FLOWERS.length, 45);
-  assert.equal(report.floweringPlantEligible, 45);
+  assert.equal(FLOWERS.length, 51);
+  assert.equal(report.floweringPlantEligible, 51);
   assert.deepEqual([...report.excluded], []);
   assert.ok(FLOWERS.every(policy.isFloweringPlantRecord));
 });

@@ -10,7 +10,7 @@ const [encyclopedia, details, main, styles, home, build, devHtml] = await Promis
   read('../src/styles.css'),
   read('../src/js/ui/screens/home.js'),
   read('../build.mjs'),
-  read('../꽃을보다_V61_dev.html')
+  read('../index.html')
 ]);
 
 test('encyclopedia search placeholder matches home exactly without changing search matcher', () => {
@@ -61,9 +61,8 @@ test('bookmark controls meet requested touch/text styling and have light/dark ac
   assert.match(styles, /\[data-theme=dark\] \.favorite-filter-toggle\.is-active,[\s\S]*?\[data-theme=dark\] \.detail-favorite-button\.is-active/);
 });
 
-test('V61 build emits only the requested DEV file', () => {
-  assert.match(build, /꽃을보다_V61_dev\.html/);
-  assert.doesNotMatch(build, /꽃을보다_V61\.html/);
+test('V61 build declares the current DEV and PROD files', () => {
+  assert.match(build, /const output=dev\?'index\.html':'index\.prod\.html'/);
   assert.match(devHtml, /globalThis\.__FLOWER_APP_DEV__=true/);
   assert.match(devHtml, /꽃 이름·초성·학명 검색/);
 });

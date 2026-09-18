@@ -10,7 +10,7 @@ const [events, calendar, main, components, styles, build, devHtml] = await Promi
   read('../src/js/ui/components.js'),
   read('../src/styles.css'),
   read('../build.mjs'),
-  read('../꽃을보다_V61_dev.html')
+  read('../index.html')
 ]);
 
 test('event list heading is rendered before loading/error branches and has no immediate top divider', () => {
@@ -74,9 +74,8 @@ test('existing filtered cards render before an error so failure is appended at t
   assert.ok(listAppend >= 0 && errorAppend > listAppend);
 });
 
-test('V61 build emits only the requested DEV file', () => {
-  assert.match(build, /꽃을보다_V61_dev\.html/);
-  assert.doesNotMatch(build, /꽃을보다_V61\.html/);
+test('V61 build declares the current DEV and PROD files', () => {
+  assert.match(build, /const output=dev\?'index\.html':'index\.prod\.html'/);
   assert.match(devHtml, /globalThis\.__FLOWER_APP_DEV__=true/);
   assert.match(devHtml, /Botanical V61 DEV/);
 });

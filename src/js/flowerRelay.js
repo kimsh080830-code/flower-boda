@@ -67,24 +67,14 @@ function snapshotFrom({ targets, relay, records, synthetic = false, completedOve
   };
 }
 
-function devSnapshot(base, scenario) {
-  if (!scenario) return base;
-  if (scenario === 'empty') return snapshotFrom({targets:[],relay:null,records:[],synthetic:true});
-  const targets = scenario === 'shortage' ? base.targets.slice(0, Math.min(2, base.targets.length)) : base.targets;
-  if (scenario === 'before' || scenario === 'shortage') return snapshotFrom({targets,relay:null,records:[],synthetic:true});
-  const relay = {day:base.day,targetFlowerIds:targets.map((flower) => flower.id),startedAt:new Date(0).toISOString()};
-  const completedCount = scenario === 'complete' ? targets.length : scenario === 'partial' ? Math.max(0, targets.length - 1) : Math.min(1, targets.length);
-  return snapshotFrom({targets,relay,records:[],synthetic:true,completedOverride:targets.slice(0,completedCount).map((flower) => flower.id)});
-}
-
-function getFlowerRelaySnapshot({ flowers = [], date = new Date(), records = [], storage = globalThis.localStorage, devScenario = '' } = {}) {
+function getFlowerRelaySnapshot({ flowers = [], date = new Date(), records = [], storage = globalThis.localStorage } = {}) {
   const day = relayDay(date);
   const previewTargets = selectRelayTargets(flowers, date);
   const stored = parseRelayState(storage);
   const relay = stored?.day === day && stored.targetFlowerIds.every((id) => flowers.some((flower) => flower.id === id)) ? stored : null;
   const targetIds = relay?.targetFlowerIds || previewTargets.map((flower) => flower.id);
   const targets = targetIds.map((id) => flowers.find((flower) => flower.id === id)).filter(Boolean);
-  return devSnapshot(snapshotFrom({targets,relay,records}),devScenario);
+  return snapshotFrom({targets,relay,records});
 }
 
 function startFlowerRelay({ flowers = [], date = new Date(), storage = globalThis.localStorage, now = new Date() } = {}) {

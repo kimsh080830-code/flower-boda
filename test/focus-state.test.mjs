@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import vm from 'node:vm';
 
-const html = await readFile(new URL('../꽃을보다_V61_dev.html', import.meta.url), 'utf8');
+const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 const helpers = html.slice(html.indexOf('let renderedTab = null;'), html.indexOf('function renderApp(state)'));
 const trap = html.slice(html.indexOf('function trapModalFocus(event)'), html.indexOf('function handleKeydown(event)'));
 

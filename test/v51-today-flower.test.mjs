@@ -3,12 +3,13 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 
-const html=await readFile(new URL('../꽃을보다_V61_dev.html',import.meta.url),'utf8');
+const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
 const devHtml=html;
 const source=await readFile(new URL('../src/js/todayFlower.js',import.meta.url),'utf8');
 const homeSource=await readFile(new URL('../src/js/ui/screens/home.js',import.meta.url),'utf8');
 const settingsSource=await readFile(new URL('../src/js/ui/screens/settings.js',import.meta.url),'utf8');
 const devToolsSource=await readFile(new URL('../src/js/ui/screens/devTools.js',import.meta.url),'utf8');
+const devRuntimeSource=await readFile(new URL('../src/js/devTools.js',import.meta.url),'utf8');
 const mainSource=await readFile(new URL('../src/js/main.js',import.meta.url),'utf8');
 
 function modules(page=html) {
@@ -124,19 +125,20 @@ test('30-day simulation has no duplicate within a cycle unless a one-candidate c
 test('V61 DEV build enables isolated test controls',()=>{
   assert.match(devHtml,/globalThis\.__FLOWER_APP_DEV__=true/);
   assert.doesNotMatch(homeSource,/renderTodayFlowerDevPanel/);
-  assert.match(homeSource,/storage: APP_CONFIG\.DEV_MODE \? getDevTodayFlowerStorage\(\) : localStorage/);
-  assert.match(settingsSource,/if\(APP_CONFIG\.DEV_MODE\) main\.append\(renderDevTools\(state\)\)/);
+  assert.match(homeSource,/runtimeHooks\.todayFlowerContext/);
+  assert.match(settingsSource,/runtimeHooks\.renderSettingsExtra/);
   assert.match(devToolsSource,/DEV · 통합 테스트 도구/);
   assert.match(devToolsSource,/가상 날짜/);
   assert.match(devToolsSource,/30일 시뮬레이션/);
   assert.match(devToolsSource,/현재 개화 후보/);
   assert.match(devToolsSource,/선택 꽃 ID/);
   assert.match(devToolsSource,/셔플 순서/);
-  assert.match(mainSource,/dev-today-prev/);
-  assert.match(mainSource,/dev-today-next/);
-  assert.match(mainSource,/dev-today-simulate/);
-  assert.match(mainSource,/dev-today-zero/);
-  assert.match(mainSource,/dev-today-one/);
-  assert.match(mainSource,/dev-today-boundary/);
-  assert.match(mainSource,/dev-today-data-change/);
+  assert.doesNotMatch(mainSource,/dev-today-prev|dev-today-simulate/);
+  assert.match(devRuntimeSource,/dev-today-prev/);
+  assert.match(devRuntimeSource,/dev-today-next/);
+  assert.match(devRuntimeSource,/dev-today-simulate/);
+  assert.match(devRuntimeSource,/dev-today-zero/);
+  assert.match(devRuntimeSource,/dev-today-one/);
+  assert.match(devRuntimeSource,/dev-today-boundary/);
+  assert.match(devRuntimeSource,/dev-today-data-change/);
 });

@@ -3,12 +3,13 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import test from 'node:test';
 
-const html = await readFile(new URL('../꽃을보다_V61_dev.html',import.meta.url),'utf8');
+const html = await readFile(new URL('../index.html',import.meta.url),'utf8');
 function frontend(fetch = async () => { throw new Error('offline'); }) {
   const context = vm.createContext({ URL,URLSearchParams,Date,Intl,setTimeout,clearTimeout,DOMException,fetch,__mods:{
     'js/config.js':{ APP_CONFIG:{ DEMO_MODE:false,API:{ events:'/api/events',eventDetail:'/api/event-detail' },EVENT_CACHE_TTL_MS:1000 } },
     'js/data.js':{ DEMO_EVENTS:[],FLOWERS:[{ id:'rose',nameKo:'장미',eventKeywords:[] }],getFlowerById:(id)=>id==='rose'?{ id:'rose',nameKo:'장미',eventKeywords:[] }:null },
     'js/storage.js':{ getCache:()=>null,setCache:()=>true },
+    'js/runtimeHooks.js':{ hooks:{ shouldForceNetworkFailure:()=>false } },
     'js/eventSnapshot.js':{VERIFIED_EVENT_SNAPSHOT:{events:[]}}, 'js/flowerViewData.js':{}, 'js/ui/dom.js':{}, 'js/ui/components.js':{}, 'js/ui/screens/shared.js':{}
   } });
   for (const name of ['dateUtils','searchUtils','eventService']) {

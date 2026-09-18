@@ -1,8 +1,13 @@
 __mods["js/devTools.js"] = (() => {
 const { APP_CONFIG } = __mods["js/config.js"];
+const { FLOWERS } = __mods["js/data.js"];
 const { getFlowerTaxonIdentity } = __mods["js/flowerDataPolicy.js"];
+const { getSeason, getDatePresentation, parseApiDate } = __mods["js/dateUtils.js"];
+const { selectTodayFlower, simulateTodayFlowers, createMemoryStorage } = __mods["js/todayFlower.js"];
+const { installRuntimeHooks } = __mods["js/runtimeHooks.js"];
 
 const runtime = { forceNetworkFailure:false };
+const devStorage = createMemoryStorage();
 const DUPLICATE_CODES = new Set(['DUPLICATE_ID','DUPLICATE_SCIENTIFIC_NAME','ACCEPTED_NAME_CONFLICT','SYNONYM_CONFLICT','DATA_LINK_DUPLICATE']);
 const IMAGE_CODES = new Set(['IMAGE_MISSING','IMAGE_PATH_INVALID','IMAGE_PATH_NOT_FOUND','IMAGE_MANIFEST_MISSING','IMAGE_FILENAME_INVALID','ORPHAN_IMAGE_FILE','STALE_IMAGE_PATH_REFERENCE','DATA_LINK_MISMATCH']);
 const LICENSE_CODES = new Set(['LICENSE_MISSING']);
@@ -14,6 +19,11 @@ function setForceNetworkFailure(value) {
 }
 function shouldForceNetworkFailure() { return APP_CONFIG.DEV_MODE && runtime.forceNetworkFailure; }
 function getDevPayload() { return APP_CONFIG.DEV_MODE && globalThis.__FLOWER_APP_DEV_PAYLOAD__ ? globalThis.__FLOWER_APP_DEV_PAYLOAD__ : null; }
+function getDevTodayFlowerStorage() { return devStorage; }
+function resetDevTodayFlowerStorage() {
+  for (const key of Object.keys(devStorage.snapshot())) devStorage.removeItem(key);
+  return devStorage;
+}
 
 const clean=value=>String(value??'').trim();
 const norm=value=>clean(value).replace(/\s+/g,' ').toLocaleLowerCase('en-US');
@@ -75,5 +85,154 @@ function runDevAudit(kind,flowers=[]) {
   return '';
 }
 
-return { setForceNetworkFailure, shouldForceNetworkFailure, getDevPayload, runDuplicateCheck, runDevAudit };
+function createState() {
+  return {
+    devTodayFlowerDate: getDatePresentation(new Date()).day,
+    devTodayFlowerReport: '',
+    devAuditReport: '',
+    devNetworkFailure: false,
+    devLongTextTest: false,
+    devTextSizeOverride: '',
+    devRelayScenario: '',
+    devObservationSaveFailure: false
+  };
+}
+
+function devTodayDate(state) {
+  return parseApiDate(state.devTodayFlowerDate) || state.currentDate;
+}
+
+function shiftDevTodayDate(state, offset, render) {
+  const base=devTodayDate(state);
+  const next=new Date(base.getFullYear(),base.getMonth(),base.getDate()+offset,12);
+  state.devTodayFlowerDate=getDatePresentation(next).day;
+  state.devTodayFlowerReport='';
+  render();
+}
+
+function formatTodaySimulation(rows) {
+  const seen=new Map();
+  const duplicateRows=[];
+  rows.forEach((row)=>{
+    if(!row.flowerId) return;
+    if(!seen.has(row.cycle)) seen.set(row.cycle,new Set());
+    const cycleSeen=seen.get(row.cycle);
+    if(cycleSeen.has(row.flowerId)) duplicateRows.push(`${row.day}:${row.flowerId}`);
+    cycleSeen.add(row.flowerId);
+  });
+  const lines=rows.map(row=>`${row.day} | cycle ${row.cycle} | ${row.flowerId || '(없음)'} | 후보 ${row.candidateCount}`);
+  return ['30일 시뮬레이션',...lines,`같은 사이클 중복: ${duplicateRows.length ? duplicateRows.join(', ') : '없음'}`].join('\n');
+}
+
+function runTodayTest(state, kind, render) {
+  const date=devTodayDate(state);
+  if(kind==='simulate') {
+    state.devTodayFlowerReport=formatTodaySimulation(simulateTodayFlowers({flowers:FLOWERS,startDate:date,days:30,storage:createMemoryStorage()}));
+  } else if(kind==='zero') {
+    const result=selectTodayFlower({flowers:[],date,storage:createMemoryStorage()});
+    state.devTodayFlowerReport=`후보 0개 테스트\n선택 ID: ${result.flowerId || '(없음)'}\n후보 수: ${result.candidateIds.length}\n통과: ${!result.flowerId && result.candidateIds.length===0 ? '예' : '아니오'}`;
+  } else if(kind==='one') {
+    const only={id:'__dev-only-flower__',bloom:{start:'01-01',end:'12-31'}};
+    const rows=simulateTodayFlowers({flowers:[only],startDate:date,days:4,storage:createMemoryStorage()});
+    state.devTodayFlowerReport=['후보 1개 테스트',...rows.map(row=>`${row.day} | cycle ${row.cycle} | ${row.flowerId}`),`통과: ${rows.every(row=>row.flowerId===only.id) ? '예' : '아니오'}`].join('\n');
+  } else if(kind==='boundary') {
+    const year=date.getFullYear();
+    const pairs=[[2,28,3,1],[5,31,6,1],[8,31,9,1],[11,30,12,1]];
+    const lines=['계절 경계 테스트'];
+    pairs.forEach(([m1,d1,m2,d2])=>{
+      const storage=createMemoryStorage();
+      const a=new Date(year,m1-1,d1,12),b=new Date(year,m2-1,d2,12);
+      const first=selectTodayFlower({flowers:FLOWERS,date:a,storage});
+      const second=selectTodayFlower({flowers:FLOWERS,date:b,storage});
+      lines.push(`${getDatePresentation(a).day} ${getSeason(a)} | ${first.flowerId || '(없음)'} | 후보 ${first.candidateIds.length}`);
+      lines.push(`${getDatePresentation(b).day} ${getSeason(b)} | ${second.flowerId || '(없음)'} | 후보 ${second.candidateIds.length}`);
+    });
+    state.devTodayFlowerReport=lines.join('\n');
+  } else if(kind==='data-change') {
+    const storage=createMemoryStorage();
+    const first=selectTodayFlower({flowers:FLOWERS,date,storage});
+    const added={id:'__dev-added-flower__',bloom:{start:'01-01',end:'12-31'}};
+    const withAdded=selectTodayFlower({flowers:[...FLOWERS,added],date,storage});
+    const nextDate=new Date(date.getFullYear(),date.getMonth(),date.getDate()+1,12);
+    const nextWithAdded=selectTodayFlower({flowers:[...FLOWERS,added],date:nextDate,storage});
+    const removable=nextWithAdded.candidateIds.find(id=>id!==nextWithAdded.flowerId) || nextWithAdded.flowerId;
+    const withoutOne=selectTodayFlower({flowers:[...FLOWERS,added].filter(flower=>flower.id!==removable),date:new Date(date.getFullYear(),date.getMonth(),date.getDate()+2,12),storage});
+    state.devTodayFlowerReport=[
+      '데이터 추가/제거 테스트',
+      `기준 선택: ${first.flowerId || '(없음)'}`,
+      `같은 날 데이터 추가 후 선택 유지: ${withAdded.flowerId || '(없음)'} (${withAdded.flowerId===first.flowerId ? '통과' : '실패'})`,
+      `추가 ID가 이후 후보에 포함: ${nextWithAdded.candidateIds.includes(added.id) ? '예' : '아니오'}`,
+      `추가 ID가 현재 사이클 순서에 포함: ${nextWithAdded.cycleOrder.includes(added.id) ? '예' : '아니오'}`,
+      `제거 ID: ${removable || '(없음)'}`,
+      `제거 후 후보/순서에서 제외: ${removable && !withoutOne.candidateIds.includes(removable) && !withoutOne.cycleOrder.includes(removable) ? '예' : '아니오'}`
+    ].join('\n');
+  }
+  render();
+}
+
+function handleAction({action,target,state,render}) {
+  switch(action) {
+    case 'dev-today-prev': shiftDevTodayDate(state,-1,render); return true;
+    case 'dev-today-next': shiftDevTodayDate(state,1,render); return true;
+    case 'dev-today-reset': resetDevTodayFlowerStorage();state.devTodayFlowerDate=getDatePresentation(new Date()).day;state.devTodayFlowerReport='';render();return true;
+    case 'dev-today-simulate': runTodayTest(state,'simulate',render); return true;
+    case 'dev-today-zero': runTodayTest(state,'zero',render); return true;
+    case 'dev-today-one': runTodayTest(state,'one',render); return true;
+    case 'dev-today-boundary': runTodayTest(state,'boundary',render); return true;
+    case 'dev-today-data-change': runTodayTest(state,'data-change',render); return true;
+    case 'dev-audit-duplicates': state.devAuditReport=runDevAudit('duplicates',FLOWERS);render();return true;
+    case 'dev-audit-images': state.devAuditReport=runDevAudit('images',FLOWERS);render();return true;
+    case 'dev-audit-licenses': state.devAuditReport=runDevAudit('licenses',FLOWERS);render();return true;
+    case 'dev-network-failure': state.devNetworkFailure=!state.devNetworkFailure;setForceNetworkFailure(state.devNetworkFailure);state.devAuditReport=`강제 네트워크 실패: ${state.devNetworkFailure?'켜짐':'꺼짐'}\nDEV 메모리 상태만 변경했어요.`;render();return true;
+    case 'dev-long-text': state.devLongTextTest=!state.devLongTextTest;render();return true;
+    case 'dev-font-min': state.devTextSizeOverride='small';render();return true;
+    case 'dev-font-max': state.devTextSizeOverride='large';render();return true;
+    case 'dev-font-reset': state.devTextSizeOverride='';render();return true;
+    case 'dev-relay-live': state.devRelayScenario='';render();return true;
+    case 'dev-relay-scenario': state.devRelayScenario=target.dataset.scenario || '';render();return true;
+    case 'dev-observation-save-failure': state.devObservationSaveFailure=!state.devObservationSaveFailure;render();return true;
+    case 'dev-noop': return true;
+    default: return false;
+  }
+}
+
+function handleChange({input,state,render}) {
+  if(input.dataset.action!=='dev-today-date') return false;
+  const parsed=parseApiDate(input.value);
+  if(parsed) {state.devTodayFlowerDate=getDatePresentation(parsed).day;state.devTodayFlowerReport='';render();}
+  return true;
+}
+
+function createRelaySnapshot(base,targets,started,completedFlowerIds=[]) {
+  const targetFlowerIds=targets.map(flower=>flower.id);
+  const completedSet=new Set(completedFlowerIds);
+  const nextFlowerId=targetFlowerIds.find(id=>!completedSet.has(id)) || '';
+  const status=!targetFlowerIds.length?'empty':!started?'before':nextFlowerId?'active':'complete';
+  return {...base,targets,targetFlowerIds,completedFlowerIds,nextFlowerId,total:targetFlowerIds.length,completedCount:completedFlowerIds.length,started,status,synthetic:true};
+}
+
+function relaySnapshot(base,state) {
+  const scenario=state.devRelayScenario || '';
+  if(!scenario) return base;
+  if(scenario==='empty') return createRelaySnapshot(base,[],false);
+  const targets=scenario==='shortage' ? base.targets.slice(0,Math.min(2,base.targets.length)) : base.targets;
+  if(scenario==='before' || scenario==='shortage') return createRelaySnapshot(base,targets,false);
+  const completedCount=scenario==='complete' ? targets.length : scenario==='partial' ? Math.max(0,targets.length-1) : Math.min(1,targets.length);
+  return createRelaySnapshot(base,targets,true,targets.slice(0,completedCount).map(flower=>flower.id));
+}
+
+installRuntimeHooks({
+  createState,
+  resolveTextSize: (state,fallback) => state.devTextSizeOverride || fallback,
+  beforeObservationSave: state => { if(state.devObservationSaveFailure) throw new Error('DEV 테스트: 관찰 기록 저장 실패'); },
+  handleAction,
+  handleChange,
+  todayFlowerContext: ({state,date,storage}) => ({date:parseApiDate(state.devTodayFlowerDate) || date,storage:getDevTodayFlowerStorage() || storage}),
+  relaySnapshot,
+  resolveSyntheticAction: (snapshot,action) => snapshot.synthetic ? 'dev-noop' : action,
+  shouldForceNetworkFailure,
+  renderSettingsExtra: state => __mods['js/ui/screens/devTools.js']?.renderDevTools?.(state) || null
+});
+
+return { setForceNetworkFailure, shouldForceNetworkFailure, getDevPayload, getDevTodayFlowerStorage, runDuplicateCheck, runDevAudit };
 })();

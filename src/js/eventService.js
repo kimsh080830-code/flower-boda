@@ -1,6 +1,6 @@
 __mods["js/eventService.js"] = (() => {
 const { APP_CONFIG } = __mods["js/config.js"];
-const shouldForceNetworkFailure = () => Boolean(__mods["js/devTools.js"]?.shouldForceNetworkFailure?.());
+const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { FLOWERS } = __mods["js/data.js"];
 const { getCache, setCache } = __mods["js/storage.js"];
 const { getEventStatus, parseApiDate } = __mods["js/dateUtils.js"];
@@ -229,7 +229,7 @@ async function getEventDetail(event, { signal } = {}) {
 
 async function getEvents({ force = false, signal } = {}) {
   if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
-  if (shouldForceNetworkFailure()) { const error=new Error('DEV_NETWORK_FAILURE'); error.userMessage='DEV에서 네트워크 실패를 강제로 재현하고 있어요.'; throw error; }
+  if (runtimeHooks.shouldForceNetworkFailure()) { const error=new Error('NETWORK_UNAVAILABLE'); error.userMessage='네트워크 연결을 확인해 주세요.'; throw error; }
   const snapshot = () => sortEvents(__mods['js/eventSnapshot.js'].EVENT_SNAPSHOT.events.map(item=>normalizeEvent(item,'verified-snapshot')).filter(Boolean));
   if (APP_CONFIG.STANDALONE) return snapshot();
   const cacheKey='events.v3.api';

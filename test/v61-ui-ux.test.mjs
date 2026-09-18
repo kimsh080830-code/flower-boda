@@ -43,7 +43,7 @@ test('large text uses the existing settings key and one central 14 percent scale
     '.event-title', '.filter-panel > summary', '.setting-row', '.observation-field',
     '.detail-disclosure summary', '.bloom-calendar-day'
   ]) {
-    assert.match(styles, new RegExp(selector.replace(/[.*+?^${}()|[\]\]/g, '\$&') + '[^{]*\{[^}]*var\(--body-text-scale\)', 's'));
+    assert.match(styles, new RegExp(selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[^{]*\\{[^}]*var\\(--body-text-scale\\)', 's'));
   }
   assert.doesNotMatch(styles, /\.bottom-nav[^}]*var\(--body-text-scale\)/s);
   assert.doesNotMatch(styles, /\.settings-slider-icon[^}]*var\(--body-text-scale\)/s);
@@ -73,12 +73,11 @@ test('relay storage and placeholders remain the existing V61 implementation', ()
   assert.doesNotMatch(home, /flower-relay-placeholder[^\n]*(?:svg|img|icon|emoji)/i);
 });
 
-test('V61 produces only the DEV bundle and adds no image or SVG asset', async () => {
-  assert.match(build, /꽃을보다_V61_dev\.html/);
-  assert.doesNotMatch(build, /꽃을보다_V61\.html/);
+test('V61 declares the current DEV and PROD bundles and adds no image or SVG asset', async () => {
+  assert.match(build, /const output=dev\?'index\.html':'index\.prod\.html'/);
   assert.match(template, /Botanical V61 DEV/);
   const assets = await readdir(path.join(ROOT, 'assets', 'flowers'));
-  assert.equal(assets.length, 46);
+  assert.equal(assets.length, 51);
   assert.equal(assets.every((name) => name.endsWith('.webp')), true);
 });
 

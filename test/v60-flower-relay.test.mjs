@@ -4,9 +4,9 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const read = (relative) => readFile(new URL(`../${relative}`,import.meta.url),'utf8');
-const [html,relaySource,homeSource,mainSource,styles,build,modulesText,devToolsSource] = await Promise.all([
-  read('꽃을보다_V61_dev.html'),read('src/js/flowerRelay.js'),read('src/js/ui/screens/home.js'),read('src/js/main.js'),
-  read('src/styles.css'),read('build.mjs'),read('src/modules.json'),read('src/js/ui/screens/devTools.js')
+const [html,relaySource,homeSource,mainSource,styles,build,modulesText,devToolsSource,devRuntimeSource] = await Promise.all([
+  read('index.html'),read('src/js/flowerRelay.js'),read('src/js/ui/screens/home.js'),read('src/js/main.js'),
+  read('src/styles.css'),read('build.mjs'),read('src/modules.json'),read('src/js/ui/screens/devTools.js'),read('src/js/devTools.js')
 ]);
 
 function memoryStorage(initial = {}) {
@@ -111,9 +111,9 @@ test('new day and malformed saved state safely return to start state without del
 test('empty and shortage DEV fixtures are memory-only representations',()=>{
   let writes=0;
   const storage={getItem(){return null},setItem(){writes+=1}};
-  const relay=modules(storage)['js/flowerRelay.js'];
-  const empty=relay.getFlowerRelaySnapshot({flowers:[flower('a')],date:date('2026-09-14'),storage,devScenario:'empty'});
-  const shortage=relay.getFlowerRelaySnapshot({flowers:[flower('a'),flower('b'),flower('c')],date:date('2026-09-14'),storage,devScenario:'shortage'});
+  const loaded=modules(storage),relay=loaded['js/flowerRelay.js'],hooks=loaded['js/runtimeHooks.js'].hooks;
+  const empty=hooks.relaySnapshot(relay.getFlowerRelaySnapshot({flowers:[flower('a')],date:date('2026-09-14'),storage}),{devRelayScenario:'empty'});
+  const shortage=hooks.relaySnapshot(relay.getFlowerRelaySnapshot({flowers:[flower('a'),flower('b'),flower('c')],date:date('2026-09-14'),storage}),{devRelayScenario:'shortage'});
   assert.equal(empty.status,'empty');
   assert.equal(shortage.total,2);
   assert.equal(shortage.status,'before');
@@ -142,7 +142,7 @@ test('main reuses candidate confirmation and observation save before deriving re
   const confirm=mainSource.slice(mainSource.indexOf('async function confirmCandidate'),mainSource.indexOf('function syncCollection'));
   assert.ok(confirm.indexOf('addObservation(draft)')<confirm.indexOf('syncCollection()'));
   assert.ok(confirm.indexOf('syncCollection()')<confirm.indexOf('getFlowerRelaySnapshot'));
-  assert.match(confirm,/devObservationSaveFailure/);
+  assert.match(confirm,/runtimeHooks\.beforeObservationSave/);
   assert.match(mainSource,/case 'relay-start'/);
   assert.match(mainSource,/case 'relay-continue'/);
   assert.doesNotMatch(`${relaySource}\n${homeSource}`,/geolocation|GPS/i);
@@ -151,11 +151,11 @@ test('main reuses candidate confirmation and observation save before deriving re
 test('DEV controls cover every requested relay state without direct collection writes',()=>{
   for(const label of ['시작 전','1개 완료','일부 진행','전체 완료','후보 없음','후보 부족','관찰 저장 실패']) assert.match(devToolsSource,new RegExp(label));
   assert.doesNotMatch(devToolsSource,/localStorage\.setItem|addObservation\(|saveSettings\(/);
+  assert.match(devRuntimeSource,/function relaySnapshot/);
 });
 
-test('build policy emits V61 DEV only and includes the relay module',()=>{
-  assert.match(build,/꽃을보다_V61_dev\.html/);
-  assert.doesNotMatch(build,/꽃을보다_V61\.html/);
+test('build policy emits separate DEV and PROD files and keeps relay common',()=>{
+  assert.match(build,/dev\?'index\.html':'index\.prod\.html'/);
   assert.match(html,/globalThis\.__FLOWER_APP_DEV__=true/);
-  assert.ok(JSON.parse(modulesText).includes('js/flowerRelay.js'));
+  assert.ok(JSON.parse(modulesText).common.includes('js/flowerRelay.js'));
 });

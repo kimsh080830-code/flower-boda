@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import test from 'node:test';
 
-const html = await readFile(new URL('../꽃을보다_V61_dev.html', import.meta.url), 'utf8');
+const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 function ui() {
   const el = (tag, props = {}, children = []) => ({ tag, props, children: children.filter(Boolean), append(...items) { this.children.push(...items.filter(Boolean)); } });
   const button = (text, action, options = {}) => el('button', { text, disabled: options.disabled, dataset: { action, ...options.data } });

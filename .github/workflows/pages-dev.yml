@@ -27,9 +27,13 @@ jobs:
         with:
           node-version: 20
 
+      - name: Test
+        run: |
+          npm test
+
       - name: Build
         run: |
-          npm run build
+          npm run build:dev
 
       - name: Commit generated index to dev
         run: |
