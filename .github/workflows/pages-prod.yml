@@ -17,6 +17,13 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Guard branch
+        run: |
+          if [ "${GITHUB_REF_NAME}" != "main" ]; then
+            echo "Blocked: PROD workflow may run only on main."
+            exit 1
+          fi
+
       - name: Checkout main
         uses: actions/checkout@v4
         with:
@@ -34,6 +41,23 @@ jobs:
       - name: Build PROD
         run: |
           npm run build:prod
+
+      - name: Verify PROD artifact
+        run: |
+          test -f index.prod.html
+          grep -q 'globalThis.__FLOWER_APP_DEV__=false' index.prod.html
+          if grep -q '__FLOWER_APP_DEV_PAYLOAD__' index.prod.html; then
+            echo "Blocked: DEV payload found in PROD artifact."
+            exit 1
+          fi
+          if grep -q 'js/devTools.js' index.prod.html; then
+            echo "Blocked: js/devTools.js found in PROD artifact."
+            exit 1
+          fi
+          if grep -q 'js/ui/screens/devTools.js' index.prod.html; then
+            echo "Blocked: DEV UI module found in PROD artifact."
+            exit 1
+          fi
 
       - name: Prepare Pages artifact
         run: |
