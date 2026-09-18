@@ -1,4 +1,4 @@
-name: Publish dev to gh-pages
+name: Validate dev build
 
 on:
   push:
@@ -9,12 +9,8 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: gh-pages-publish
-  cancel-in-progress: true
-
 jobs:
-  publish:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout dev
@@ -31,7 +27,7 @@ jobs:
         run: |
           npm test
 
-      - name: Build
+      - name: Build DEV
         run: |
           npm run build:dev
 
@@ -46,25 +42,3 @@ jobs:
             git commit -m "build: generate index.html"
             git push origin HEAD:dev
           fi
-
-      - name: Prepare Pages artifact
-        run: |
-          rm -rf dist
-          mkdir -p dist
-          cp "index.html" dist/index.html
-          cp -R assets dist/assets
-          touch dist/.nojekyll
-
-      - name: Publish gh-pages branch
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd dist
-          git init
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "deploy: ${GITHUB_SHA}"
-          git branch -M gh-pages
-          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push --force origin gh-pages
