@@ -1276,128 +1276,6 @@ body.is-modal-open { overflow: hidden; }
 
 
 
-.advanced-filter-panel {
-  margin: 4px 0 8px;
-  border-top: 1px solid var(--line);
-}
-.advanced-filter-panel > summary {
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  color: var(--text);
-  font-size: .74rem;
-  font-weight: 700;
-  list-style: none;
-}
-.advanced-filter-panel > summary::-webkit-details-marker { display: none; }
-.advanced-filter-panel > summary::after {
-  content: "+";
-  margin-left: auto;
-  color: var(--muted);
-  font-size: .95rem;
-  font-weight: 400;
-}
-.advanced-filter-panel[open] > summary::after { content: "−"; }
-.advanced-filter-grid {
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 8px;
-  padding: 0 0 10px;
-}
-.taxonomy-source-note {
-  margin: 10px 0 0;
-  color: var(--muted-2);
-  font-size: .66rem;
-  line-height: 1.55;
-}
-@media (max-width: 340px) {
-  .advanced-filter-grid { grid-template-columns: 1fr; }
-}
-
-
-.taxonomy-guide {
-  margin: 0 0 14px;
-  color: var(--muted);
-  font-size: .68rem;
-  line-height: 1.5;
-}
-.taxonomy-hierarchy {
-  position: relative;
-  margin: 0;
-  padding: 0 0 0 24px;
-  list-style: none;
-}
-.taxonomy-hierarchy::before {
-  content: "";
-  position: absolute;
-  left: 6px;
-  top: 9px;
-  bottom: 12px;
-  width: 1px;
-  background: var(--line);
-}
-.taxonomy-step {
-  position: relative;
-  min-width: 0;
-  padding: 0 0 16px 8px;
-}
-.taxonomy-step:last-child { padding-bottom: 3px; }
-.taxonomy-step::before {
-  content: "";
-  position: absolute;
-  left: -21px;
-  top: 6px;
-  width: 7px;
-  height: 7px;
-  border: 1px solid var(--muted-2);
-  border-radius: 50%;
-  background: var(--surface);
-  box-sizing: border-box;
-}
-.taxonomy-step.is-current {
-  margin: 0 0 3px -4px;
-  padding: 10px 12px;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-small);
-  background: var(--accent-soft);
-}
-.taxonomy-step.is-current::before { left: -18px; top: 16px; border-color: var(--accent); background: var(--accent); }
-.taxonomy-step.is-current .taxonomy-rank,
-.taxonomy-step.is-current .taxonomy-current-note { color: var(--accent-strong); }
-.taxonomy-rank {
-  display: block;
-  color: var(--muted-2);
-  font-size: .59rem;
-  line-height: 1.3;
-  font-weight: 700;
-}
-.taxonomy-name {
-  display: block;
-  margin-top: 3px;
-  color: var(--ink);
-  font-size: .78rem;
-  line-height: 1.45;
-  font-weight: 720;
-  overflow-wrap: anywhere;
-}
-.taxonomy-current-note {
-  display: block;
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: .62rem;
-  line-height: 1.4;
-}
-.taxonomy-status {
-  margin: 13px 0 0;
-  padding-top: 10px;
-  border-top: 1px solid var(--line-soft);
-  color: var(--muted);
-  font-size: .68rem;
-  line-height: 1.5;
-}
-
 .personal-card { padding:16px 0; border-bottom:1px solid var(--line-soft); min-width:0; }
 .personal-card p { margin:8px 0; font-size:.85rem; line-height:1.6; overflow-wrap:anywhere; }
 .personal-heading, .personal-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
@@ -1555,8 +1433,7 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
 .filter-panel > summary::after {
   flex: 0 0 auto;
 }
-.filter-panel > summary > span:first-child,
-.advanced-filter-panel > summary > span:first-child {
+.filter-panel > summary > span:first-child {
   flex: 0 0 auto;
 }
 .filter-summary-hint {
@@ -1585,12 +1462,6 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
 .inline-select-option {
   white-space: normal;
   line-height: 1.35;
-}
-.advanced-filter-panel > summary {
-  min-width: 0;
-}
-.advanced-filter-panel > summary::after {
-  flex: 0 0 auto;
 }
 .encyclopedia-empty-state {
   gap: 5px;
@@ -1655,8 +1526,7 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
   background: var(--accent-soft);
 }
 @media (max-width: 420px) {
-  .filter-panel > summary,
-  .advanced-filter-panel > summary {
+  .filter-panel > summary {
     gap: 7px;
   }
   .filter-summary-hint {
@@ -1843,10 +1713,6 @@ body { overflow-x: clip; }
 .detail-disclosure-body { font-size: calc(.77rem * var(--body-text-scale)); overflow-wrap: anywhere; }
 .detail-line dd { font-size: calc(.75rem * var(--body-text-scale)); }
 .detail-location-meta { font-size: calc(.66rem * var(--body-text-scale)); overflow-wrap: anywhere; }
-.taxonomy-guide { font-size: calc(.68rem * var(--body-text-scale)); }
-.taxonomy-name { font-size: calc(.78rem * var(--body-text-scale)); }
-.taxonomy-current-note { font-size: calc(.62rem * var(--body-text-scale)); }
-.taxonomy-status, .taxonomy-source-note { font-size: calc(.68rem * var(--body-text-scale)); }
 .weather-note { font-size: calc(.68rem * var(--body-text-scale)); color: var(--muted); overflow-wrap: anywhere; }
 .event-date-filter-note { font-size: calc(.7rem * var(--body-text-scale)); }
 .event-calendar-section > p { font-size: calc(.7rem * var(--body-text-scale)); }
@@ -1881,7 +1747,6 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
 .event-meta { font-size: calc(.64rem * var(--body-text-scale)); }
 .event-error-copy strong { font-size: calc(.88rem * var(--body-text-scale)); }
 .filter-panel > summary { font-size: calc(.76rem * var(--body-text-scale)); }
-.advanced-filter-panel > summary { font-size: calc(.74rem * var(--body-text-scale)); }
 .filter-summary-hint,
 .filter-field { font-size: calc(.61rem * var(--body-text-scale)); }
 .inline-select-trigger { font-size: calc(.75rem * var(--body-text-scale)); }
@@ -1930,9 +1795,9 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
 .editorial-feature-copy, .editorial-feature-meta, .feature-actions,
 .flower-poster-copy, .flower-poster-title, .species-main, .species-title-line,
 .event-main, .event-title, .event-location, .event-meta, .detail-intro,
-.detail-title-row, .detail-scientific, .detail-line, .taxonomy-step,
+.detail-title-row, .detail-scientific, .detail-line,
 .setting-row, .setting-row > span:first-child, .settings-disclosure,
-.filter-panel, .filter-panel > summary, .advanced-filter-panel > summary,
+.filter-panel, .filter-panel > summary,
 .event-date-field, .event-date-field-heading { min-width: 0; }
 .page-header h1, .section-head h2, .event-title, .event-location,
 .detail-intro h2, .detail-scientific, .species-standard, .detail-standard-name,
@@ -2256,7 +2121,7 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
   <div id="app"></div>
   <script>"use strict";
 globalThis.__FLOWER_APP_DEV__=true;
-globalThis.__FLOWER_APP_DEV_PAYLOAD__={"audit":{"version":"V61","generatedAt":"2026-09-18T04:58:26.491Z","ok":true,"issues":[],"summary":{"total":0,"errors":0,"reviews":0}},"imageAssets":{"version":"V56","assets":[{"flowerId":"adonis","filename":"adonis-01.webp","path":"assets/flowers/adonis-01.webp","role":"local-fallback"},{"flowerId":"aster","filename":"aster-01.webp","path":"assets/flowers/aster-01.webp","role":"local-fallback"},{"flowerId":"azalea-korean","filename":"azalea-korean-01.webp","path":"assets/flowers/azalea-korean-01.webp","role":"local-fallback"},{"flowerId":"balloon-flower","filename":"balloon-flower-01.webp","path":"assets/flowers/balloon-flower-01.webp","role":"local-fallback"},{"flowerId":"camellia","filename":"camellia-01.webp","path":"assets/flowers/camellia-01.webp","role":"local-fallback"},{"flowerId":"canola","filename":"canola-01.webp","path":"assets/flowers/canola-01.webp","role":"local-fallback"},{"flowerId":"cherry-blossom","filename":"cherry-blossom-01.webp","path":"assets/flowers/cherry-blossom-01.webp","role":"local-fallback"},{"flowerId":"chrysanthemum","filename":"chrysanthemum-01.webp","path":"assets/flowers/chrysanthemum-01.webp","role":"local-fallback"},{"flowerId":"coreopsis","filename":"coreopsis-01.webp","path":"assets/flowers/coreopsis-01.webp","role":"local-fallback"},{"flowerId":"cosmos","filename":"cosmos-01.webp","path":"assets/flowers/cosmos-01.webp","role":"local-fallback"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-01.webp","path":"assets/flowers/crape-myrtle-01.webp","role":"local-fallback"},{"flowerId":"cyclamen","filename":"cyclamen-01.webp","path":"assets/flowers/cyclamen-01.webp","role":"local-fallback"},{"flowerId":"daffodil","filename":"daffodil-01.webp","path":"assets/flowers/daffodil-01.webp","role":"local-fallback"},{"flowerId":"dandelion","filename":"dandelion-01.webp","path":"assets/flowers/dandelion-01.webp","role":"local-fallback"},{"flowerId":"forsythia","filename":"forsythia-01.webp","path":"assets/flowers/forsythia-01.webp","role":"local-fallback"},{"flowerId":"gaura","filename":"gaura-01.webp","path":"assets/flowers/gaura-01.webp","role":"local-fallback"},{"flowerId":"gerbera","filename":"gerbera-01.webp","path":"assets/flowers/gerbera-01.webp","role":"local-fallback"},{"flowerId":"globe-amaranth","filename":"globe-amaranth-01.webp","path":"assets/flowers/globe-amaranth-01.webp","role":"local-fallback"},{"flowerId":"hellebore","filename":"hellebore-01.webp","path":"assets/flowers/hellebore-01.webp","role":"local-fallback"},{"flowerId":"hydrangea","filename":"hydrangea-01.webp","path":"assets/flowers/hydrangea-01.webp","role":"local-fallback"},{"flowerId":"iris","filename":"iris-01.webp","path":"assets/flowers/iris-01.webp","role":"local-fallback"},{"flowerId":"lavender","filename":"lavender-01.webp","path":"assets/flowers/lavender-01.webp","role":"local-fallback"},{"flowerId":"lily","filename":"lily-01.webp","path":"assets/flowers/lily-01.webp","role":"local-fallback"},{"flowerId":"lotus","filename":"lotus-01.webp","path":"assets/flowers/lotus-01.webp","role":"local-fallback"},{"flowerId":"magnolia","filename":"magnolia-01.webp","path":"assets/flowers/magnolia-01.webp","role":"local-fallback"},{"flowerId":"marigold","filename":"marigold-01.webp","path":"assets/flowers/marigold-01.webp","role":"local-fallback"},{"flowerId":"morning-glory","filename":"morning-glory-01.webp","path":"assets/flowers/morning-glory-01.webp","role":"local-fallback"},{"flowerId":"mugunghwa","filename":"mugunghwa-01.webp","path":"assets/flowers/mugunghwa-01.webp","role":"local-fallback"},{"flowerId":"peony","filename":"peony-01.webp","path":"assets/flowers/peony-01.webp","role":"local-fallback"},{"flowerId":"plum-blossom-red","filename":"plum-blossom-red-01.webp","path":"assets/flowers/plum-blossom-red-01.webp","role":"local-fallback"},{"flowerId":"poppy","filename":"poppy-01.webp","path":"assets/flowers/poppy-01.webp","role":"local-fallback"},{"flowerId":"red-spider-lily","filename":"red-spider-lily-01.webp","path":"assets/flowers/red-spider-lily-01.webp","role":"local-fallback"},{"flowerId":"rose","filename":"rose-01.webp","path":"assets/flowers/rose-01.webp","role":"local-fallback"},{"flowerId":"royal-azalea","filename":"royal-azalea-01.webp","path":"assets/flowers/royal-azalea-01.webp","role":"local-fallback"},{"flowerId":"salvia","filename":"salvia-01.webp","path":"assets/flowers/salvia-01.webp","role":"local-fallback"},{"flowerId":"shasta-daisy","filename":"shasta-daisy-01.webp","path":"assets/flowers/shasta-daisy-01.webp","role":"local-fallback"},{"flowerId":"silver-grass","filename":"silver-grass-01.webp","path":"assets/flowers/silver-grass-01.webp","role":"local-fallback"},{"flowerId":"snowdrop","filename":"snowdrop-01.webp","path":"assets/flowers/snowdrop-01.webp","role":"local-fallback"},{"flowerId":"sunflower","filename":"sunflower-01.webp","path":"assets/flowers/sunflower-01.webp","role":"local-fallback"},{"flowerId":"trumpet-creeper","filename":"trumpet-creeper-01.webp","path":"assets/flowers/trumpet-creeper-01.webp","role":"local-fallback"},{"flowerId":"tulip","filename":"tulip-01.webp","path":"assets/flowers/tulip-01.webp","role":"local-fallback"},{"flowerId":"ume","filename":"ume-01.webp","path":"assets/flowers/ume-01.webp","role":"local-fallback"},{"flowerId":"verbena","filename":"verbena-01.webp","path":"assets/flowers/verbena-01.webp","role":"local-fallback"},{"flowerId":"zinnia","filename":"zinnia-01.webp","path":"assets/flowers/zinnia-01.webp","role":"local-fallback"},{"flowerId":"wintersweet","filename":"wintersweet-01.webp","path":"assets/flowers/wintersweet-01.webp","role":"local-fallback"},{"flowerId":"sasanqua","filename":"sasanqua-01.webp","path":"assets/flowers/sasanqua-01.webp","role":"local-fallback"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-01.webp","path":"assets/flowers/cornelian-cherry-01.webp","role":"local-fallback"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-01.webp","path":"assets/flowers/chinese-fringe-tree-01.webp","role":"local-fallback"},{"flowerId":"leopard-plant","filename":"leopard-plant-01.webp","path":"assets/flowers/leopard-plant-01.webp","role":"local-fallback"},{"flowerId":"red-clover","filename":"red-clover-01.webp","path":"assets/flowers/red-clover-01.webp","role":"local-fallback","source":"user-provided","author":"사용자 직접 촬영","license":"사용자 제공 사진"},{"flowerId":null,"filename":"flower-fallback-01.webp","path":"assets/flowers/flower-fallback-01.webp","role":"generic-fallback"}]},"externalImages":{"version":"V56","images":[{"flowerId":"sunflower","filename":"sunflower-reference-01.webp","source":"Wikimedia Commons","author":"Reji Jacob","sourceUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","license":"Public domain","licenseUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg"},{"flowerId":"mugunghwa","filename":"mugunghwa-reference-01.webp","source":"Wikimedia Commons","author":"PapiPijuan","sourceUrl":"https://commons.wikimedia.org/wiki/File:Hibiscus_syriacus_Flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hibiscus_syriacus_Flower.jpg/960px-Hibiscus_syriacus_Flower.jpg"},{"flowerId":"rose","filename":"rose-reference-01.webp","source":"Wikimedia Commons","author":"Bontempi1953","sourceUrl":"https://commons.wikimedia.org/wiki/File:Rose_double.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rose_double.jpg/1280px-Rose_double.jpg"},{"flowerId":"tulip","filename":"tulip-reference-01.webp","source":"Wikimedia Commons","author":"DanilWikiUser","sourceUrl":"https://commons.wikimedia.org/wiki/File:20260506_Tulip_closeup.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/a/ae/20260506_Tulip_closeup.jpg"},{"flowerId":"cosmos","filename":"cosmos-reference-01.webp","source":"Wikimedia Commons","author":"Joydeep","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cosmos_bipinnatus_pink,_Burdwan,_West_Bengal,_India_10_01_2013.jpg","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg/960px-Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg"},{"flowerId":"zinnia","filename":"zinnia-reference-01.webp","source":"Wikimedia Commons","author":"Sara Nabih","sourceUrl":"https://commons.wikimedia.org/wiki/File:Zinnia_elegans_flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Zinnia_elegans_flower.jpg/960px-Zinnia_elegans_flower.jpg"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-reference-01.webp","source":"Wikimedia Commons","author":"Juan Carlos Fonseca Mata","sourceUrl":"https://commons.wikimedia.org/wiki/File:Lagerstroemia_indica_4.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lagerstroemia_indica_4.jpg/960px-Lagerstroemia_indica_4.jpg"},{"flowerId":"hydrangea","filename":"hydrangea-reference-01.webp","source":"Wikimedia Commons","author":"Michele Dorsey Walfred","sourceUrl":"https://commons.wikimedia.org/wiki/File:Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"},{"flowerId":"wintersweet","filename":"wintersweet-reference-01.webp","source":"Wikimedia Commons","author":"M a n u e l","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg"},{"flowerId":"sasanqua","filename":"sasanqua-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Camellia_sasanqua.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-reference-01.webp","source":"Wikimedia Commons","author":"Doctoroftcm","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cornus_officinalis.JPG","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-reference-01.webp","source":"Wikimedia Commons","author":"Stickpen","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"},{"flowerId":"leopard-plant","filename":"leopard-plant-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Farfugium_japonicum.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg"}]}};
+globalThis.__FLOWER_APP_DEV_PAYLOAD__={"audit":{"version":"V61","generatedAt":"2026-09-18T06:36:58.562Z","ok":true,"issues":[],"summary":{"total":0,"errors":0,"reviews":0}},"imageAssets":{"version":"V56","assets":[{"flowerId":"adonis","filename":"adonis-01.webp","path":"assets/flowers/adonis-01.webp","role":"local-fallback"},{"flowerId":"aster","filename":"aster-01.webp","path":"assets/flowers/aster-01.webp","role":"local-fallback"},{"flowerId":"azalea-korean","filename":"azalea-korean-01.webp","path":"assets/flowers/azalea-korean-01.webp","role":"local-fallback"},{"flowerId":"balloon-flower","filename":"balloon-flower-01.webp","path":"assets/flowers/balloon-flower-01.webp","role":"local-fallback"},{"flowerId":"camellia","filename":"camellia-01.webp","path":"assets/flowers/camellia-01.webp","role":"local-fallback"},{"flowerId":"canola","filename":"canola-01.webp","path":"assets/flowers/canola-01.webp","role":"local-fallback"},{"flowerId":"cherry-blossom","filename":"cherry-blossom-01.webp","path":"assets/flowers/cherry-blossom-01.webp","role":"local-fallback"},{"flowerId":"chrysanthemum","filename":"chrysanthemum-01.webp","path":"assets/flowers/chrysanthemum-01.webp","role":"local-fallback"},{"flowerId":"coreopsis","filename":"coreopsis-01.webp","path":"assets/flowers/coreopsis-01.webp","role":"local-fallback"},{"flowerId":"cosmos","filename":"cosmos-01.webp","path":"assets/flowers/cosmos-01.webp","role":"local-fallback"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-01.webp","path":"assets/flowers/crape-myrtle-01.webp","role":"local-fallback"},{"flowerId":"cyclamen","filename":"cyclamen-01.webp","path":"assets/flowers/cyclamen-01.webp","role":"local-fallback"},{"flowerId":"daffodil","filename":"daffodil-01.webp","path":"assets/flowers/daffodil-01.webp","role":"local-fallback"},{"flowerId":"dandelion","filename":"dandelion-01.webp","path":"assets/flowers/dandelion-01.webp","role":"local-fallback"},{"flowerId":"forsythia","filename":"forsythia-01.webp","path":"assets/flowers/forsythia-01.webp","role":"local-fallback"},{"flowerId":"gaura","filename":"gaura-01.webp","path":"assets/flowers/gaura-01.webp","role":"local-fallback"},{"flowerId":"gerbera","filename":"gerbera-01.webp","path":"assets/flowers/gerbera-01.webp","role":"local-fallback"},{"flowerId":"globe-amaranth","filename":"globe-amaranth-01.webp","path":"assets/flowers/globe-amaranth-01.webp","role":"local-fallback"},{"flowerId":"hellebore","filename":"hellebore-01.webp","path":"assets/flowers/hellebore-01.webp","role":"local-fallback"},{"flowerId":"hydrangea","filename":"hydrangea-01.webp","path":"assets/flowers/hydrangea-01.webp","role":"local-fallback"},{"flowerId":"iris","filename":"iris-01.webp","path":"assets/flowers/iris-01.webp","role":"local-fallback"},{"flowerId":"lavender","filename":"lavender-01.webp","path":"assets/flowers/lavender-01.webp","role":"local-fallback"},{"flowerId":"lily","filename":"lily-01.webp","path":"assets/flowers/lily-01.webp","role":"local-fallback"},{"flowerId":"lotus","filename":"lotus-01.webp","path":"assets/flowers/lotus-01.webp","role":"local-fallback"},{"flowerId":"magnolia","filename":"magnolia-01.webp","path":"assets/flowers/magnolia-01.webp","role":"local-fallback"},{"flowerId":"marigold","filename":"marigold-01.webp","path":"assets/flowers/marigold-01.webp","role":"local-fallback"},{"flowerId":"morning-glory","filename":"morning-glory-01.webp","path":"assets/flowers/morning-glory-01.webp","role":"local-fallback"},{"flowerId":"mugunghwa","filename":"mugunghwa-01.webp","path":"assets/flowers/mugunghwa-01.webp","role":"local-fallback"},{"flowerId":"peony","filename":"peony-01.webp","path":"assets/flowers/peony-01.webp","role":"local-fallback"},{"flowerId":"plum-blossom-red","filename":"plum-blossom-red-01.webp","path":"assets/flowers/plum-blossom-red-01.webp","role":"local-fallback"},{"flowerId":"poppy","filename":"poppy-01.webp","path":"assets/flowers/poppy-01.webp","role":"local-fallback"},{"flowerId":"red-spider-lily","filename":"red-spider-lily-01.webp","path":"assets/flowers/red-spider-lily-01.webp","role":"local-fallback"},{"flowerId":"rose","filename":"rose-01.webp","path":"assets/flowers/rose-01.webp","role":"local-fallback"},{"flowerId":"royal-azalea","filename":"royal-azalea-01.webp","path":"assets/flowers/royal-azalea-01.webp","role":"local-fallback"},{"flowerId":"salvia","filename":"salvia-01.webp","path":"assets/flowers/salvia-01.webp","role":"local-fallback"},{"flowerId":"shasta-daisy","filename":"shasta-daisy-01.webp","path":"assets/flowers/shasta-daisy-01.webp","role":"local-fallback"},{"flowerId":"silver-grass","filename":"silver-grass-01.webp","path":"assets/flowers/silver-grass-01.webp","role":"local-fallback"},{"flowerId":"snowdrop","filename":"snowdrop-01.webp","path":"assets/flowers/snowdrop-01.webp","role":"local-fallback"},{"flowerId":"sunflower","filename":"sunflower-01.webp","path":"assets/flowers/sunflower-01.webp","role":"local-fallback"},{"flowerId":"trumpet-creeper","filename":"trumpet-creeper-01.webp","path":"assets/flowers/trumpet-creeper-01.webp","role":"local-fallback"},{"flowerId":"tulip","filename":"tulip-01.webp","path":"assets/flowers/tulip-01.webp","role":"local-fallback"},{"flowerId":"ume","filename":"ume-01.webp","path":"assets/flowers/ume-01.webp","role":"local-fallback"},{"flowerId":"verbena","filename":"verbena-01.webp","path":"assets/flowers/verbena-01.webp","role":"local-fallback"},{"flowerId":"zinnia","filename":"zinnia-01.webp","path":"assets/flowers/zinnia-01.webp","role":"local-fallback"},{"flowerId":"wintersweet","filename":"wintersweet-01.webp","path":"assets/flowers/wintersweet-01.webp","role":"local-fallback"},{"flowerId":"sasanqua","filename":"sasanqua-01.webp","path":"assets/flowers/sasanqua-01.webp","role":"local-fallback"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-01.webp","path":"assets/flowers/cornelian-cherry-01.webp","role":"local-fallback"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-01.webp","path":"assets/flowers/chinese-fringe-tree-01.webp","role":"local-fallback"},{"flowerId":"leopard-plant","filename":"leopard-plant-01.webp","path":"assets/flowers/leopard-plant-01.webp","role":"local-fallback"},{"flowerId":"red-clover","filename":"red-clover-01.webp","path":"assets/flowers/red-clover-01.webp","role":"local-fallback","source":"user-provided","author":"사용자 직접 촬영","license":"사용자 제공 사진"},{"flowerId":null,"filename":"flower-fallback-01.webp","path":"assets/flowers/flower-fallback-01.webp","role":"generic-fallback"}]},"externalImages":{"version":"V56","images":[{"flowerId":"sunflower","filename":"sunflower-reference-01.webp","source":"Wikimedia Commons","author":"Reji Jacob","sourceUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","license":"Public domain","licenseUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg"},{"flowerId":"mugunghwa","filename":"mugunghwa-reference-01.webp","source":"Wikimedia Commons","author":"PapiPijuan","sourceUrl":"https://commons.wikimedia.org/wiki/File:Hibiscus_syriacus_Flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hibiscus_syriacus_Flower.jpg/960px-Hibiscus_syriacus_Flower.jpg"},{"flowerId":"rose","filename":"rose-reference-01.webp","source":"Wikimedia Commons","author":"Bontempi1953","sourceUrl":"https://commons.wikimedia.org/wiki/File:Rose_double.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rose_double.jpg/1280px-Rose_double.jpg"},{"flowerId":"tulip","filename":"tulip-reference-01.webp","source":"Wikimedia Commons","author":"DanilWikiUser","sourceUrl":"https://commons.wikimedia.org/wiki/File:20260506_Tulip_closeup.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/a/ae/20260506_Tulip_closeup.jpg"},{"flowerId":"cosmos","filename":"cosmos-reference-01.webp","source":"Wikimedia Commons","author":"Joydeep","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cosmos_bipinnatus_pink,_Burdwan,_West_Bengal,_India_10_01_2013.jpg","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg/960px-Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg"},{"flowerId":"zinnia","filename":"zinnia-reference-01.webp","source":"Wikimedia Commons","author":"Sara Nabih","sourceUrl":"https://commons.wikimedia.org/wiki/File:Zinnia_elegans_flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Zinnia_elegans_flower.jpg/960px-Zinnia_elegans_flower.jpg"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-reference-01.webp","source":"Wikimedia Commons","author":"Juan Carlos Fonseca Mata","sourceUrl":"https://commons.wikimedia.org/wiki/File:Lagerstroemia_indica_4.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lagerstroemia_indica_4.jpg/960px-Lagerstroemia_indica_4.jpg"},{"flowerId":"hydrangea","filename":"hydrangea-reference-01.webp","source":"Wikimedia Commons","author":"Michele Dorsey Walfred","sourceUrl":"https://commons.wikimedia.org/wiki/File:Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"},{"flowerId":"wintersweet","filename":"wintersweet-reference-01.webp","source":"Wikimedia Commons","author":"M a n u e l","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg"},{"flowerId":"sasanqua","filename":"sasanqua-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Camellia_sasanqua.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-reference-01.webp","source":"Wikimedia Commons","author":"Doctoroftcm","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cornus_officinalis.JPG","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-reference-01.webp","source":"Wikimedia Commons","author":"Stickpen","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"},{"flowerId":"leopard-plant","filename":"leopard-plant-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Farfugium_japonicum.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg"}]}};
 const __mods=Object.create(null);
 __mods["js/config.js"] = (() => {
 const APP_CONFIG = Object.freeze({
@@ -5309,26 +5174,16 @@ return { "renderCapture": renderCapture, "comparisonFacts": comparisonFacts, "un
 })();
 
 __mods["js/ui/screens/encyclopedia.js"] = (() => {
-const { FLOWERS, SEASONS, COLORS, MAJOR_GROUP_OPTIONS, ORDER_OPTIONS, FAMILY_OPTIONS, GENUS_OPTIONS } = __mods["js/data.js"];
-const { getBloomStatus } = __mods["js/dateUtils.js"];
+const { FLOWERS, SEASONS } = __mods["js/data.js"];
 const { matchesFlowerSearch } = __mods["js/searchUtils.js"];
 const { $, el, button } = __mods["js/ui/dom.js"];
 const { sectionHeader, emptyState, flowerPoster } = __mods["js/ui/components.js"];
 const { pageHeader, selectControl } = __mods["js/ui/screens/shared.js"];
-const { petalShapeValues, sortFlowers } = __mods["js/flowerViewData.js"];
-const PETAL_SHAPE_OPTIONS = [...new Set(FLOWERS.flatMap(petalShapeValues))]
-  .sort((a,b)=>a.localeCompare(b,'ko-KR'));
+const { sortFlowers } = __mods["js/flowerViewData.js"];
 function filterEncyclopedia(state) {
   const filtered=FLOWERS.filter((flower) => {
     if (!matchesFlowerSearch(flower, state.searchQuery)) return false;
     if (state.encyclopediaFilters.season && !flower.seasons.includes(state.encyclopediaFilters.season)) return false;
-    if (state.encyclopediaFilters.color && !flower.colors.includes(state.encyclopediaFilters.color)) return false;
-    if (state.encyclopediaFilters.bloom === 'now' && !['in-season', 'ending'].includes(getBloomStatus(flower.bloom, state.currentDate).code)) return false;
-    if (state.encyclopediaFilters.majorGroup && flower.taxonomy?.majorGroup !== state.encyclopediaFilters.majorGroup) return false;
-    if (state.encyclopediaFilters.order && flower.taxonomy?.order !== state.encyclopediaFilters.order) return false;
-    if (state.encyclopediaFilters.family && flower.taxonomy?.familyLatin !== state.encyclopediaFilters.family) return false;
-    if (state.encyclopediaFilters.genus && flower.taxonomy?.genusLatin !== state.encyclopediaFilters.genus) return false;
-    if (state.encyclopediaFilters.petalShape && !petalShapeValues(flower).includes(state.encyclopediaFilters.petalShape)) return false;
     if (state.encyclopediaFilters.favoritesOnly && !state.favoriteFlowerIds.includes(flower.id)) return false;
     return true;
   });
@@ -5355,12 +5210,10 @@ function renderEncyclopedia(state) {
   const details = el('details', { id:'encyclopedia-filter-panel',className: 'filter-panel', open: state.filtersOpen ? '' : null });
   details.append(el('summary', {}, [
     el('span', { text: '필터' }),
-    el('span', { className: 'filter-summary-hint', text: '계절 · 색상 · 개화 · 저장' })
+    el('span', { className: 'filter-summary-hint', text: '계절 · 저장' })
   ]));
   details.append(el('div', { className: 'filter-grid' }, [
-    selectControl('계절', 'flower-season-filter', [['','전체'], ...SEASONS.map((season) => [season, season])], state.encyclopediaFilters.season, 'filter-encyclopedia'),
-    selectControl('색상', 'flower-color-filter', [['','전체'], ...COLORS.map((color) => [color, color])], state.encyclopediaFilters.color, 'filter-encyclopedia'),
-    selectControl('개화', 'flower-bloom-filter', [['','전체'], ['now','지금 볼 시기']], state.encyclopediaFilters.bloom, 'filter-encyclopedia')
+    selectControl('계절', 'flower-season-filter', [['','전체'], ...SEASONS.map((season) => [season, season])], state.encyclopediaFilters.season, 'filter-encyclopedia')
   ]));
   details.append(el('button', {
     type: 'button',
@@ -5372,20 +5225,6 @@ function renderEncyclopedia(state) {
     el('span', { text: '저장한 꽃' })
   ]));
 
-  const advanced = el('details', { id:'encyclopedia-advanced-filter-panel',className:'advanced-filter-panel',open:state.advancedFiltersOpen?'':null });
-  advanced.append(el('summary', {}, [
-    el('span', { text: '고급 필터' }),
-    el('span', { className: 'filter-summary-hint', text: `큰 분류 · 목 · 과 · 속${PETAL_SHAPE_OPTIONS.length ? ' · 꽃잎 모양' : ''}` })
-  ]));
-  const advancedFields=[
-    selectControl('큰 분류', 'flower-major-group-filter', [['','전체'], ...MAJOR_GROUP_OPTIONS], state.encyclopediaFilters.majorGroup, 'filter-encyclopedia'),
-    selectControl('목', 'flower-order-filter', [['','전체'], ...ORDER_OPTIONS], state.encyclopediaFilters.order, 'filter-encyclopedia'),
-    selectControl('과', 'flower-family-filter', [['','전체'], ...FAMILY_OPTIONS], state.encyclopediaFilters.family, 'filter-encyclopedia'),
-    selectControl('속', 'flower-genus-filter', [['','전체'], ...GENUS_OPTIONS], state.encyclopediaFilters.genus, 'filter-encyclopedia')
-  ];
-  if(PETAL_SHAPE_OPTIONS.length) advancedFields.push(selectControl('꽃잎 모양','flower-petal-shape-filter',[['','전체'],...PETAL_SHAPE_OPTIONS.map(value=>[value,value])],state.encyclopediaFilters.petalShape,'filter-encyclopedia'));
-  advanced.append(el('div', { className: 'advanced-filter-grid' }, advancedFields));
-  details.append(advanced);
   details.append(button('검색·필터·정렬 초기화', 'reset-encyclopedia', { kind: 'tertiary', extraClass: 'btn-small filter-reset' }));
   main.append(details);
   main.append(el('section',{className:'sort-panel','aria-label':'도감 정렬'},[
@@ -5412,7 +5251,7 @@ function updateEncyclopediaResults(state, root = document) {
   flowers.forEach((flower) => grid.append(flowerPoster(flower, state, { showBloomFlow: false })));
   results.append(grid);
 }
-return { "renderEncyclopedia": renderEncyclopedia, "updateEncyclopediaResults": updateEncyclopediaResults, "filterEncyclopedia": filterEncyclopedia, "PETAL_SHAPE_OPTIONS": PETAL_SHAPE_OPTIONS };
+return { "renderEncyclopedia": renderEncyclopedia, "updateEncyclopediaResults": updateEncyclopediaResults, "filterEncyclopedia": filterEncyclopedia };
 })();
 
 __mods["js/ui/screens/events.js"] = (() => {
@@ -6260,44 +6099,7 @@ function renderFlowerDetail(state, flower) {
     flower.flowerFeatures ? el('p', { className: 'detail-subcopy', text: `꽃: ${flower.flowerFeatures}` }) : null,
     flower.leafFeatures ? el('p', { className: 'detail-subcopy', text: `잎: ${flower.leafFeatures}` }) : null
   ].filter(Boolean);
-  const taxonomyData = flower.taxonomy || {};
-  const taxonomySteps = [
-    { rank: '계', value: taxonomyData.kingdomKo ? `${taxonomyData.kingdomKo} · ${taxonomyData.kingdom}` : taxonomyData.kingdom },
-    { rank: '문', value: taxonomyData.phylumKo ? `${taxonomyData.phylumKo} · ${taxonomyData.phylum}` : taxonomyData.phylum },
-    { rank: '강', value: taxonomyData.className },
-    { rank: '아강', value: taxonomyData.subclassName },
-    { rank: '큰 분류', value: taxonomyData.majorGroupKo ? `${taxonomyData.majorGroupKo} · ${taxonomyData.majorGroup}` : taxonomyData.majorGroup },
-    { rank: '목', value: taxonomyData.orderKo ? `${taxonomyData.orderKo} · ${taxonomyData.order}` : taxonomyData.order },
-    { rank: '과', value: taxonomyData.familyLatin ? `${taxonomyData.familyKo || flower.family} · ${taxonomyData.familyLatin}` : flower.family },
-    { rank: '속', value: taxonomyData.genusLatin ? `${taxonomyData.genusKo ? `${taxonomyData.genusKo} · ` : ''}${taxonomyData.genusLatin}` : flower.genus },
-    { rank: '학명', value: taxonomyData.acceptedName || flower.scientificName }
-  ].filter((step) => step.value);
-  const taxonomyHierarchy = el('ol', {
-    className: 'taxonomy-hierarchy',
-    ariaLabel: '큰 분류에서 작은 분류 순서'
-  }, taxonomySteps.map((step, index) => el('li', {
-    className: `taxonomy-step ${index === taxonomySteps.length - 1 ? 'is-current' : ''}`
-  }, [
-    el('span', { className: 'taxonomy-rank', text: step.rank }),
-    el('strong', { className: 'taxonomy-name', text: step.value }),
-    index === taxonomySteps.length - 1 ? el('span', { className: 'taxonomy-current-note', text: '현재 보고 있는 항목' }) : null
-  ].filter(Boolean))));
-  const taxonomy = [
-    flower.nameEn ? detailLine('영문명', flower.nameEn) : null,
-    el('p', { className: 'taxonomy-guide', text: '위쪽은 큰 분류, 아래로 갈수록 더 구체적인 분류예요.' }),
-    taxonomyHierarchy,
-    taxonomyData.taxonType ? el('p', { className: 'taxonomy-status', text: `분류 상태 · ${taxonomyData.taxonType}` }) : null,
-    taxonomyData.note ? el('p', { className: 'detail-subcopy', text: taxonomyData.note }) : null,
-    el('p', { className: 'taxonomy-source-note', text: '분류 기준 · 국명은 국립수목원 국가표준식물목록을 참고하고, 학명·상위 분류는 Kew POWO/WCVP를 우선하며 World Flora Online을 교차검증 자료로 사용했어요.' })
-  ].filter(Boolean);
   const environment = [flower.habitat ? el('p', { text: flower.habitat }) : null].filter(Boolean);
-  const care = flower.care ? [
-    el('dl', { className: 'detail-mini-facts' }, [
-      detailLine('햇빛', flower.care.sunlight),
-      detailLine('물 관리', flower.care.watering),
-      detailLine('난이도', flower.care.difficulty)
-    ].filter(Boolean))
-  ] : [];
 
   if (identification.length) { const section=infoDisclosure('구별 특징',identification,true);section.classList.add('detail-identification');layer.append(section); }
   const lookalikes = Array.isArray(flower.lookalikes) ? flower.lookalikes.filter((item) => item?.nameKo) : [];
@@ -6319,8 +6121,6 @@ function renderFlowerDetail(state, flower) {
     });
     layer.append(infoDisclosure('꽃말 자세히', languageChildren));
   }
-  if (taxonomy.some((item) => item?.childElementCount)) layer.append(infoDisclosure('분류 정보', taxonomy));
-  if (care.length) layer.append(infoDisclosure('기본 관리', care));
   if (flower.precautions) layer.append(infoDisclosure('주의사항', [el('p', { text: flower.precautions })]));
   if (flower.imageCredit?.license) {
     const creditParts = [flower.imageCredit.creator, flower.imageCredit.license, 'Wikimedia Commons'].filter(Boolean);
@@ -7099,7 +6899,7 @@ const { renderApp, updateHomeSearchResults, updateEncyclopediaResults, updateEve
 
 const {loadSettings,saveSettings,loadRecent,rememberFlower,clearRecent,loadVisits,saveVisits,applyTheme,applyTextSize}=__mods['js/preferences.js'];
 const preferences = loadSettings();
-function emptyFlowerFilters(overrides={}) {return {season:'',color:'',bloom:'',favoritesOnly:false,majorGroup:'',order:'',family:'',genus:'',petalShape:'',...overrides};}
+function emptyFlowerFilters(overrides={}) {return {season:'',favoritesOnly:false,...overrides};}
 
 const state = {
   settings: preferences,
@@ -7147,7 +6947,6 @@ const state = {
   photoPrepareVisible: false,
   detail: null,
   filtersOpen: false,
-  advancedFiltersOpen: false,
   eventFiltersOpen: false,
   recentDetailsOpen: false,
   recentClearPending: false,
@@ -7169,7 +6968,7 @@ let referenceImageController = null;
 let toastTimer = null;
 
 function render() {
-  const panels={'encyclopedia-filter-panel':'filtersOpen','encyclopedia-advanced-filter-panel':'advancedFiltersOpen','event-filter-panel':'eventFiltersOpen','recent-flower-panel':'recentDetailsOpen'};
+  const panels={'encyclopedia-filter-panel':'filtersOpen','event-filter-panel':'eventFiltersOpen','recent-flower-panel':'recentDetailsOpen'};
   for(const [id,key] of Object.entries(panels)) {const node=document.getElementById(id);if(node)state[key]=node.open;}
   applyTheme(state.settings.theme);
   applyTextSize(runtimeHooks.resolveTextSize(state,state.settings.bodyTextSize));
@@ -7869,17 +7668,7 @@ function handleClick(event) {
       const selectAction = target.dataset.selectAction || '';
       target.closest('details.inline-select')?.removeAttribute('open');
       if (selectAction === 'filter-encyclopedia') {
-        const keys = {
-          'flower-season-filter': 'season',
-          'flower-color-filter': 'color',
-          'flower-bloom-filter': 'bloom',
-          'flower-major-group-filter': 'majorGroup',
-          'flower-order-filter': 'order',
-          'flower-family-filter': 'family',
-          'flower-genus-filter': 'genus',
-          'flower-petal-shape-filter': 'petalShape'
-        };
-        if (keys[controlId]) state.encyclopediaFilters = { ...state.encyclopediaFilters, [keys[controlId]]: value };
+        if (controlId === 'flower-season-filter') state.encyclopediaFilters = { ...state.encyclopediaFilters, season: value };
         render();
       } else if (selectAction === 'sort-encyclopedia') {
         state.encyclopediaSort = ['default','name','bloom-early','bloom-late'].includes(value) ? value : 'default';
@@ -8162,14 +7951,7 @@ function handleChange(event) {
   if (input.dataset.action === 'filter-encyclopedia') {
     state.encyclopediaFilters = {
       season: document.getElementById('flower-season-filter')?.value || '',
-      color: document.getElementById('flower-color-filter')?.value || '',
-      bloom: document.getElementById('flower-bloom-filter')?.value || '',
-      favoritesOnly: Boolean(state.encyclopediaFilters.favoritesOnly),
-      majorGroup: document.getElementById('flower-major-group-filter')?.value || '',
-      order: document.getElementById('flower-order-filter')?.value || '',
-      family: document.getElementById('flower-family-filter')?.value || '',
-      genus: document.getElementById('flower-genus-filter')?.value || '',
-      petalShape: document.getElementById('flower-petal-shape-filter')?.value || ''
+      favoritesOnly: Boolean(state.encyclopediaFilters.favoritesOnly)
     };
     updateEncyclopediaResults(state);
     return;
