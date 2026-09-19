@@ -544,31 +544,6 @@ img { display: block; max-width: 100%; }
 .event-meta { color: var(--muted); font-size: .64rem; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 
-.event-tabs {
-  display: grid;
-  grid-template-columns: repeat(4,minmax(0,1fr));
-  gap: 0;
-  margin: 0 0 18px;
-  border-bottom: 1px solid var(--line);
-}
-.event-tab {
-  min-width: 0;
-  min-height: 42px;
-  padding: 7px 4px;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  border-radius: 0;
-  box-shadow: none;
-  background: transparent;
-  color: var(--muted);
-  font-size: .76rem;
-}
-.event-tab.btn-primary {
-  background: transparent;
-  color: var(--ink);
-  border-color: var(--accent);
-}
-.event-tab.btn-tertiary { color: var(--muted); }
 
 
 .search-field { display: block; position: relative; margin-bottom: 10px; }
@@ -609,18 +584,6 @@ img { display: block; max-width: 100%; }
 .filter-panel[open] > summary::after { content: "−"; }
 .filter-summary-hint { margin-left: auto; color: var(--muted-2); font-size: .61rem; font-weight: 500; }
 .filter-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; padding: 5px 0 12px; }
-.event-filters { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; padding: 5px 0 12px; }
-.event-flower-picker { grid-column: 1 / -1; }
-.event-flower-panel { min-width: 0; padding: 8px; display: grid; gap: 7px; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 8px 8px; background: var(--surface); }
-.event-flower-search input { width: 100%; min-width: 0; min-height: 42px; padding: 8px 9px 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--text); font-size: .75rem; }
-.event-flower-options { min-width: 0; display: grid; gap: 6px; }
-.event-selected-flower { min-width: 0; min-height: 42px; padding: 4px 6px 4px 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--accent); border-radius: 8px; background: var(--accent-soft); color: var(--accent-strong); font-size: .72rem; font-weight: 750; }
-.event-selected-flower > span { min-width: 0; overflow-wrap: anywhere; }
-.event-flower-clear { flex: 0 0 auto; min-height: 34px; padding: 5px 7px; border: 0; background: transparent; }
-.event-flower-choice-list { max-height: 176px; overflow-y: auto; display: grid; border-top: 1px solid var(--line-soft); }
-.event-flower-option { min-width: 0; min-height: 44px; padding: 9px 4px; border: 0; border-bottom: 1px solid var(--line-soft); background: transparent; color: var(--text); font: inherit; font-size: .75rem; text-align: left; cursor: pointer; overflow-wrap: anywhere; }
-.event-flower-option:hover { color: var(--accent-strong); background: var(--accent-soft); }
-.event-flower-empty { margin: 0; padding: 12px 4px; color: var(--muted); font-size: .72rem; }
 .filter-field { min-width: 0; display: grid; gap: 5px; color: var(--muted); font-size: .61rem; }
 .inline-select { position: relative; min-width: 0; width: 100%; }
 .inline-select[open] { z-index: 22; }
@@ -661,14 +624,6 @@ img { display: block; max-width: 100%; }
   border-radius: 0 0 8px 8px;
   background: var(--surface);
 }
-.event-flower-panel {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% - 1px);
-  left: 0;
-  right: 0;
-}
-.event-filters .inline-select-trigger { padding-left: 12px; }
 .inline-select-option { width: 100%; min-height: 40px; padding: 8px 9px; border: 0; border-bottom: 1px solid var(--line-soft); display: block; background: transparent; color: var(--text); font-size: .73rem; text-align: left; cursor: pointer; overflow-wrap: anywhere; }
 .inline-select-option:last-child { border-bottom: 0; }
 .inline-select-option:hover,
@@ -1166,8 +1121,7 @@ img { display: block; max-width: 100%; }
   .flower-rail { margin-inline: -14px; padding-inline: 14px; grid-auto-columns: minmax(132px, 43%); }
   .flower-grid { gap: 20px 10px; }
   .filter-grid { grid-template-columns: 1fr; }
-  .event-filters { grid-template-columns: 1fr; }
-  .event-row { grid-template-columns: 58px minmax(0,1fr) 10px; gap: 9px; }
+.event-row { grid-template-columns: 58px minmax(0,1fr) 10px; gap: 9px; }
   .event-meta { white-space: normal; }
   .detail-hero-wrap, .detail-intro, .detail-related { margin-inline: 0; padding-left: 14px; padding-right: 14px; }
   .detail-facts { margin-inline: 14px; }
@@ -1241,7 +1195,8 @@ body.is-modal-open { overflow: hidden; }
 .event-date-field { display: grid; gap: 6px; margin-bottom: 9px; color: var(--muted); font-size: .66rem; }
 .event-date-field input { min-height: 44px; width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--text); }
 .event-calendar-section .btn { width: 100%; }
-@media (max-width: 360px) { .event-filters { grid-template-columns: 1fr; } .event-calendar-section { margin-left: 14px; margin-right: 14px; } }
+@media (max-width: 360px) {
+.event-calendar-section { margin-left: 14px; margin-right: 14px; } }
 
 
 @media (max-width: 360px) {
@@ -1355,8 +1310,6 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
 .lookalike-link{justify-self:start;margin-top:2px}
 .bloom-flow{gap:4px}.bloom-step{min-width:0}.bloom-step>span:last-child{white-space:nowrap}.bloom-flow.is-compact{gap:5px}
 .event-error-state{display:flex;align-items:flex-start;flex-wrap:wrap;gap:12px}.event-error-copy{flex:1 1 200px}.event-error-state .btn{margin:0;align-self:center}
-.event-tab[aria-pressed=true],.event-tab[aria-pressed=true]:hover{background:var(--accent-strong);border-color:var(--accent-strong);color:#fff}.event-tab[aria-pressed=false]{color:var(--text);background:transparent}.event-tab{min-height:44px}
-[data-theme=dark] .event-tab[aria-pressed=true],[data-theme=dark] .event-tab[aria-pressed=true]:hover{background:var(--accent-strong);border-color:var(--accent-strong);color:var(--bg)}
 [data-theme=dark] .favorite-filter-toggle.is-active{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 [data-theme=dark] .feature-description,[data-theme=dark] .detail-summary,[data-theme=dark] .detail-disclosure-body{color:var(--text)}
 [data-theme=dark] .status-off-season,[data-theme=dark] .status-ended,[data-theme=dark] .status-unknown,[data-theme=dark] .nav-item:not(.is-active),[data-theme=dark] .search-glyph{color:var(--muted)}
@@ -1803,7 +1756,7 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
 .detail-intro h2, .detail-scientific, .species-standard, .detail-standard-name,
 .setting-row > span:first-child, .filter-summary-hint { overflow-wrap: anywhere; }
 .event-location, .event-meta { white-space: normal; }
-.btn, .event-tab, .favorite-filter-toggle { min-width: 0; max-width: 100%; }
+.btn, .favorite-filter-toggle { min-width: 0; max-width: 100%; }
 .btn { text-wrap: balance; }
 .setting-row { flex-wrap: wrap; }
 .setting-row .inline-select { min-width: min(150px, 48%); max-width: 100%; }
@@ -2093,6 +2046,29 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
   }
 }
 
+.image-credit-badge{
+  position:absolute;
+  right:7px;
+  bottom:7px;
+  z-index:4;
+  max-width:68%;
+  padding:3px 6px;
+  border-radius:6px;
+  background:rgba(20,24,20,.66);
+  color:#fff;
+  font-size:11px;
+  line-height:1.2;
+  font-weight:650;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  pointer-events:none;
+}
+.image-credit-badge[hidden]{display:none!important}
+.detail-hero-media{position:relative;display:block}
+.editorial-feature-media,.flower-poster-media{position:relative}
+:root[data-text-size="large"] .image-credit-badge{font-size:12px}
+
 /* V61 · 통합 DEV 테스트 도구 */
 .dev-tools-panel{margin:18px 0;padding:0;border:1px dashed var(--line);border-radius:12px;background:var(--surface-soft);color:var(--text)}
 .dev-tools-panel>summary{min-height:44px;padding:11px 13px;display:flex;align-items:center;font-size:.78rem;font-weight:800;cursor:pointer;color:var(--ink)}
@@ -2121,7 +2097,7 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
   <div id="app"></div>
   <script>"use strict";
 globalThis.__FLOWER_APP_DEV__=true;
-globalThis.__FLOWER_APP_DEV_PAYLOAD__={"audit":{"version":"V61","generatedAt":"2026-09-18T06:36:58.562Z","ok":true,"issues":[],"summary":{"total":0,"errors":0,"reviews":0}},"imageAssets":{"version":"V56","assets":[{"flowerId":"adonis","filename":"adonis-01.webp","path":"assets/flowers/adonis-01.webp","role":"local-fallback"},{"flowerId":"aster","filename":"aster-01.webp","path":"assets/flowers/aster-01.webp","role":"local-fallback"},{"flowerId":"azalea-korean","filename":"azalea-korean-01.webp","path":"assets/flowers/azalea-korean-01.webp","role":"local-fallback"},{"flowerId":"balloon-flower","filename":"balloon-flower-01.webp","path":"assets/flowers/balloon-flower-01.webp","role":"local-fallback"},{"flowerId":"camellia","filename":"camellia-01.webp","path":"assets/flowers/camellia-01.webp","role":"local-fallback"},{"flowerId":"canola","filename":"canola-01.webp","path":"assets/flowers/canola-01.webp","role":"local-fallback"},{"flowerId":"cherry-blossom","filename":"cherry-blossom-01.webp","path":"assets/flowers/cherry-blossom-01.webp","role":"local-fallback"},{"flowerId":"chrysanthemum","filename":"chrysanthemum-01.webp","path":"assets/flowers/chrysanthemum-01.webp","role":"local-fallback"},{"flowerId":"coreopsis","filename":"coreopsis-01.webp","path":"assets/flowers/coreopsis-01.webp","role":"local-fallback"},{"flowerId":"cosmos","filename":"cosmos-01.webp","path":"assets/flowers/cosmos-01.webp","role":"local-fallback"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-01.webp","path":"assets/flowers/crape-myrtle-01.webp","role":"local-fallback"},{"flowerId":"cyclamen","filename":"cyclamen-01.webp","path":"assets/flowers/cyclamen-01.webp","role":"local-fallback"},{"flowerId":"daffodil","filename":"daffodil-01.webp","path":"assets/flowers/daffodil-01.webp","role":"local-fallback"},{"flowerId":"dandelion","filename":"dandelion-01.webp","path":"assets/flowers/dandelion-01.webp","role":"local-fallback"},{"flowerId":"forsythia","filename":"forsythia-01.webp","path":"assets/flowers/forsythia-01.webp","role":"local-fallback"},{"flowerId":"gaura","filename":"gaura-01.webp","path":"assets/flowers/gaura-01.webp","role":"local-fallback"},{"flowerId":"gerbera","filename":"gerbera-01.webp","path":"assets/flowers/gerbera-01.webp","role":"local-fallback"},{"flowerId":"globe-amaranth","filename":"globe-amaranth-01.webp","path":"assets/flowers/globe-amaranth-01.webp","role":"local-fallback"},{"flowerId":"hellebore","filename":"hellebore-01.webp","path":"assets/flowers/hellebore-01.webp","role":"local-fallback"},{"flowerId":"hydrangea","filename":"hydrangea-01.webp","path":"assets/flowers/hydrangea-01.webp","role":"local-fallback"},{"flowerId":"iris","filename":"iris-01.webp","path":"assets/flowers/iris-01.webp","role":"local-fallback"},{"flowerId":"lavender","filename":"lavender-01.webp","path":"assets/flowers/lavender-01.webp","role":"local-fallback"},{"flowerId":"lily","filename":"lily-01.webp","path":"assets/flowers/lily-01.webp","role":"local-fallback"},{"flowerId":"lotus","filename":"lotus-01.webp","path":"assets/flowers/lotus-01.webp","role":"local-fallback"},{"flowerId":"magnolia","filename":"magnolia-01.webp","path":"assets/flowers/magnolia-01.webp","role":"local-fallback"},{"flowerId":"marigold","filename":"marigold-01.webp","path":"assets/flowers/marigold-01.webp","role":"local-fallback"},{"flowerId":"morning-glory","filename":"morning-glory-01.webp","path":"assets/flowers/morning-glory-01.webp","role":"local-fallback"},{"flowerId":"mugunghwa","filename":"mugunghwa-01.webp","path":"assets/flowers/mugunghwa-01.webp","role":"local-fallback"},{"flowerId":"peony","filename":"peony-01.webp","path":"assets/flowers/peony-01.webp","role":"local-fallback"},{"flowerId":"plum-blossom-red","filename":"plum-blossom-red-01.webp","path":"assets/flowers/plum-blossom-red-01.webp","role":"local-fallback"},{"flowerId":"poppy","filename":"poppy-01.webp","path":"assets/flowers/poppy-01.webp","role":"local-fallback"},{"flowerId":"red-spider-lily","filename":"red-spider-lily-01.webp","path":"assets/flowers/red-spider-lily-01.webp","role":"local-fallback"},{"flowerId":"rose","filename":"rose-01.webp","path":"assets/flowers/rose-01.webp","role":"local-fallback"},{"flowerId":"royal-azalea","filename":"royal-azalea-01.webp","path":"assets/flowers/royal-azalea-01.webp","role":"local-fallback"},{"flowerId":"salvia","filename":"salvia-01.webp","path":"assets/flowers/salvia-01.webp","role":"local-fallback"},{"flowerId":"shasta-daisy","filename":"shasta-daisy-01.webp","path":"assets/flowers/shasta-daisy-01.webp","role":"local-fallback"},{"flowerId":"silver-grass","filename":"silver-grass-01.webp","path":"assets/flowers/silver-grass-01.webp","role":"local-fallback"},{"flowerId":"snowdrop","filename":"snowdrop-01.webp","path":"assets/flowers/snowdrop-01.webp","role":"local-fallback"},{"flowerId":"sunflower","filename":"sunflower-01.webp","path":"assets/flowers/sunflower-01.webp","role":"local-fallback"},{"flowerId":"trumpet-creeper","filename":"trumpet-creeper-01.webp","path":"assets/flowers/trumpet-creeper-01.webp","role":"local-fallback"},{"flowerId":"tulip","filename":"tulip-01.webp","path":"assets/flowers/tulip-01.webp","role":"local-fallback"},{"flowerId":"ume","filename":"ume-01.webp","path":"assets/flowers/ume-01.webp","role":"local-fallback"},{"flowerId":"verbena","filename":"verbena-01.webp","path":"assets/flowers/verbena-01.webp","role":"local-fallback"},{"flowerId":"zinnia","filename":"zinnia-01.webp","path":"assets/flowers/zinnia-01.webp","role":"local-fallback"},{"flowerId":"wintersweet","filename":"wintersweet-01.webp","path":"assets/flowers/wintersweet-01.webp","role":"local-fallback"},{"flowerId":"sasanqua","filename":"sasanqua-01.webp","path":"assets/flowers/sasanqua-01.webp","role":"local-fallback"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-01.webp","path":"assets/flowers/cornelian-cherry-01.webp","role":"local-fallback"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-01.webp","path":"assets/flowers/chinese-fringe-tree-01.webp","role":"local-fallback"},{"flowerId":"leopard-plant","filename":"leopard-plant-01.webp","path":"assets/flowers/leopard-plant-01.webp","role":"local-fallback"},{"flowerId":"red-clover","filename":"red-clover-01.webp","path":"assets/flowers/red-clover-01.webp","role":"local-fallback","source":"user-provided","author":"사용자 직접 촬영","license":"사용자 제공 사진"},{"flowerId":null,"filename":"flower-fallback-01.webp","path":"assets/flowers/flower-fallback-01.webp","role":"generic-fallback"}]},"externalImages":{"version":"V56","images":[{"flowerId":"sunflower","filename":"sunflower-reference-01.webp","source":"Wikimedia Commons","author":"Reji Jacob","sourceUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","license":"Public domain","licenseUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg"},{"flowerId":"mugunghwa","filename":"mugunghwa-reference-01.webp","source":"Wikimedia Commons","author":"PapiPijuan","sourceUrl":"https://commons.wikimedia.org/wiki/File:Hibiscus_syriacus_Flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hibiscus_syriacus_Flower.jpg/960px-Hibiscus_syriacus_Flower.jpg"},{"flowerId":"rose","filename":"rose-reference-01.webp","source":"Wikimedia Commons","author":"Bontempi1953","sourceUrl":"https://commons.wikimedia.org/wiki/File:Rose_double.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rose_double.jpg/1280px-Rose_double.jpg"},{"flowerId":"tulip","filename":"tulip-reference-01.webp","source":"Wikimedia Commons","author":"DanilWikiUser","sourceUrl":"https://commons.wikimedia.org/wiki/File:20260506_Tulip_closeup.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/a/ae/20260506_Tulip_closeup.jpg"},{"flowerId":"cosmos","filename":"cosmos-reference-01.webp","source":"Wikimedia Commons","author":"Joydeep","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cosmos_bipinnatus_pink,_Burdwan,_West_Bengal,_India_10_01_2013.jpg","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg/960px-Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg"},{"flowerId":"zinnia","filename":"zinnia-reference-01.webp","source":"Wikimedia Commons","author":"Sara Nabih","sourceUrl":"https://commons.wikimedia.org/wiki/File:Zinnia_elegans_flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Zinnia_elegans_flower.jpg/960px-Zinnia_elegans_flower.jpg"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-reference-01.webp","source":"Wikimedia Commons","author":"Juan Carlos Fonseca Mata","sourceUrl":"https://commons.wikimedia.org/wiki/File:Lagerstroemia_indica_4.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lagerstroemia_indica_4.jpg/960px-Lagerstroemia_indica_4.jpg"},{"flowerId":"hydrangea","filename":"hydrangea-reference-01.webp","source":"Wikimedia Commons","author":"Michele Dorsey Walfred","sourceUrl":"https://commons.wikimedia.org/wiki/File:Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"},{"flowerId":"wintersweet","filename":"wintersweet-reference-01.webp","source":"Wikimedia Commons","author":"M a n u e l","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg"},{"flowerId":"sasanqua","filename":"sasanqua-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Camellia_sasanqua.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-reference-01.webp","source":"Wikimedia Commons","author":"Doctoroftcm","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cornus_officinalis.JPG","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-reference-01.webp","source":"Wikimedia Commons","author":"Stickpen","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"},{"flowerId":"leopard-plant","filename":"leopard-plant-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Farfugium_japonicum.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg"}]}};
+globalThis.__FLOWER_APP_DEV_PAYLOAD__={"audit":{"version":"V61","generatedAt":"2026-09-19T02:27:23.372Z","ok":true,"issues":[],"summary":{"total":0,"errors":0,"reviews":0}},"imageAssets":{"version":"V56","assets":[{"flowerId":"adonis","filename":"adonis-01.webp","path":"assets/flowers/adonis-01.webp","role":"local-fallback"},{"flowerId":"aster","filename":"aster-01.webp","path":"assets/flowers/aster-01.webp","role":"local-fallback"},{"flowerId":"azalea-korean","filename":"azalea-korean-01.webp","path":"assets/flowers/azalea-korean-01.webp","role":"local-fallback"},{"flowerId":"balloon-flower","filename":"balloon-flower-01.webp","path":"assets/flowers/balloon-flower-01.webp","role":"local-fallback"},{"flowerId":"camellia","filename":"camellia-01.webp","path":"assets/flowers/camellia-01.webp","role":"local-fallback"},{"flowerId":"canola","filename":"canola-01.webp","path":"assets/flowers/canola-01.webp","role":"local-fallback"},{"flowerId":"cherry-blossom","filename":"cherry-blossom-01.webp","path":"assets/flowers/cherry-blossom-01.webp","role":"local-fallback"},{"flowerId":"chrysanthemum","filename":"chrysanthemum-01.webp","path":"assets/flowers/chrysanthemum-01.webp","role":"local-fallback"},{"flowerId":"coreopsis","filename":"coreopsis-01.webp","path":"assets/flowers/coreopsis-01.webp","role":"local-fallback"},{"flowerId":"cosmos","filename":"cosmos-01.webp","path":"assets/flowers/cosmos-01.webp","role":"local-fallback"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-01.webp","path":"assets/flowers/crape-myrtle-01.webp","role":"local-fallback"},{"flowerId":"cyclamen","filename":"cyclamen-01.webp","path":"assets/flowers/cyclamen-01.webp","role":"local-fallback"},{"flowerId":"daffodil","filename":"daffodil-01.webp","path":"assets/flowers/daffodil-01.webp","role":"local-fallback"},{"flowerId":"dandelion","filename":"dandelion-01.webp","path":"assets/flowers/dandelion-01.webp","role":"local-fallback"},{"flowerId":"forsythia","filename":"forsythia-01.webp","path":"assets/flowers/forsythia-01.webp","role":"local-fallback"},{"flowerId":"gaura","filename":"gaura-01.webp","path":"assets/flowers/gaura-01.webp","role":"local-fallback"},{"flowerId":"gerbera","filename":"gerbera-01.webp","path":"assets/flowers/gerbera-01.webp","role":"local-fallback"},{"flowerId":"globe-amaranth","filename":"globe-amaranth-01.webp","path":"assets/flowers/globe-amaranth-01.webp","role":"local-fallback"},{"flowerId":"hellebore","filename":"hellebore-01.webp","path":"assets/flowers/hellebore-01.webp","role":"local-fallback"},{"flowerId":"hydrangea","filename":"hydrangea-01.webp","path":"assets/flowers/hydrangea-01.webp","role":"local-fallback"},{"flowerId":"iris","filename":"iris-01.webp","path":"assets/flowers/iris-01.webp","role":"local-fallback"},{"flowerId":"lavender","filename":"lavender-01.webp","path":"assets/flowers/lavender-01.webp","role":"local-fallback"},{"flowerId":"lily","filename":"lily-01.webp","path":"assets/flowers/lily-01.webp","role":"local-fallback"},{"flowerId":"lotus","filename":"lotus-01.webp","path":"assets/flowers/lotus-01.webp","role":"local-fallback"},{"flowerId":"magnolia","filename":"magnolia-01.webp","path":"assets/flowers/magnolia-01.webp","role":"local-fallback"},{"flowerId":"marigold","filename":"marigold-01.webp","path":"assets/flowers/marigold-01.webp","role":"local-fallback"},{"flowerId":"morning-glory","filename":"morning-glory-01.webp","path":"assets/flowers/morning-glory-01.webp","role":"local-fallback"},{"flowerId":"mugunghwa","filename":"mugunghwa-01.webp","path":"assets/flowers/mugunghwa-01.webp","role":"local-fallback"},{"flowerId":"peony","filename":"peony-01.webp","path":"assets/flowers/peony-01.webp","role":"local-fallback"},{"flowerId":"plum-blossom-red","filename":"plum-blossom-red-01.webp","path":"assets/flowers/plum-blossom-red-01.webp","role":"local-fallback"},{"flowerId":"poppy","filename":"poppy-01.webp","path":"assets/flowers/poppy-01.webp","role":"local-fallback"},{"flowerId":"red-spider-lily","filename":"red-spider-lily-01.webp","path":"assets/flowers/red-spider-lily-01.webp","role":"local-fallback"},{"flowerId":"rose","filename":"rose-01.webp","path":"assets/flowers/rose-01.webp","role":"local-fallback"},{"flowerId":"royal-azalea","filename":"royal-azalea-01.webp","path":"assets/flowers/royal-azalea-01.webp","role":"local-fallback"},{"flowerId":"salvia","filename":"salvia-01.webp","path":"assets/flowers/salvia-01.webp","role":"local-fallback"},{"flowerId":"shasta-daisy","filename":"shasta-daisy-01.webp","path":"assets/flowers/shasta-daisy-01.webp","role":"local-fallback"},{"flowerId":"silver-grass","filename":"silver-grass-01.webp","path":"assets/flowers/silver-grass-01.webp","role":"local-fallback"},{"flowerId":"snowdrop","filename":"snowdrop-01.webp","path":"assets/flowers/snowdrop-01.webp","role":"local-fallback"},{"flowerId":"sunflower","filename":"sunflower-01.webp","path":"assets/flowers/sunflower-01.webp","role":"local-fallback"},{"flowerId":"trumpet-creeper","filename":"trumpet-creeper-01.webp","path":"assets/flowers/trumpet-creeper-01.webp","role":"local-fallback"},{"flowerId":"tulip","filename":"tulip-01.webp","path":"assets/flowers/tulip-01.webp","role":"local-fallback"},{"flowerId":"ume","filename":"ume-01.webp","path":"assets/flowers/ume-01.webp","role":"local-fallback"},{"flowerId":"verbena","filename":"verbena-01.webp","path":"assets/flowers/verbena-01.webp","role":"local-fallback"},{"flowerId":"zinnia","filename":"zinnia-01.webp","path":"assets/flowers/zinnia-01.webp","role":"local-fallback"},{"flowerId":"wintersweet","filename":"wintersweet-01.webp","path":"assets/flowers/wintersweet-01.webp","role":"local-fallback"},{"flowerId":"sasanqua","filename":"sasanqua-01.webp","path":"assets/flowers/sasanqua-01.webp","role":"local-fallback"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-01.webp","path":"assets/flowers/cornelian-cherry-01.webp","role":"local-fallback"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-01.webp","path":"assets/flowers/chinese-fringe-tree-01.webp","role":"local-fallback"},{"flowerId":"leopard-plant","filename":"leopard-plant-01.webp","path":"assets/flowers/leopard-plant-01.webp","role":"local-fallback"},{"flowerId":"red-clover","filename":"red-clover-01.webp","path":"assets/flowers/red-clover-01.webp","role":"local-fallback","source":"user-provided","author":"사용자 직접 촬영","license":"사용자 제공 사진"},{"flowerId":null,"filename":"flower-fallback-01.webp","path":"assets/flowers/flower-fallback-01.webp","role":"generic-fallback"}]},"externalImages":{"version":"V56","images":[{"flowerId":"sunflower","filename":"sunflower-reference-01.webp","source":"Wikimedia Commons","author":"Reji Jacob","sourceUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","license":"Public domain","licenseUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg"},{"flowerId":"mugunghwa","filename":"mugunghwa-reference-01.webp","source":"Wikimedia Commons","author":"PapiPijuan","sourceUrl":"https://commons.wikimedia.org/wiki/File:Hibiscus_syriacus_Flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hibiscus_syriacus_Flower.jpg/960px-Hibiscus_syriacus_Flower.jpg"},{"flowerId":"rose","filename":"rose-reference-01.webp","source":"Wikimedia Commons","author":"Bontempi1953","sourceUrl":"https://commons.wikimedia.org/wiki/File:Rose_double.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rose_double.jpg/1280px-Rose_double.jpg"},{"flowerId":"tulip","filename":"tulip-reference-01.webp","source":"Wikimedia Commons","author":"DanilWikiUser","sourceUrl":"https://commons.wikimedia.org/wiki/File:20260506_Tulip_closeup.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/a/ae/20260506_Tulip_closeup.jpg"},{"flowerId":"cosmos","filename":"cosmos-reference-01.webp","source":"Wikimedia Commons","author":"Joydeep","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cosmos_bipinnatus_pink,_Burdwan,_West_Bengal,_India_10_01_2013.jpg","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg/960px-Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg"},{"flowerId":"zinnia","filename":"zinnia-reference-01.webp","source":"Wikimedia Commons","author":"Sara Nabih","sourceUrl":"https://commons.wikimedia.org/wiki/File:Zinnia_elegans_flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Zinnia_elegans_flower.jpg/960px-Zinnia_elegans_flower.jpg"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-reference-01.webp","source":"Wikimedia Commons","author":"Juan Carlos Fonseca Mata","sourceUrl":"https://commons.wikimedia.org/wiki/File:Lagerstroemia_indica_4.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lagerstroemia_indica_4.jpg/960px-Lagerstroemia_indica_4.jpg"},{"flowerId":"hydrangea","filename":"hydrangea-reference-01.webp","source":"Wikimedia Commons","author":"Michele Dorsey Walfred","sourceUrl":"https://commons.wikimedia.org/wiki/File:Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"},{"flowerId":"wintersweet","filename":"wintersweet-reference-01.webp","source":"Wikimedia Commons","author":"M a n u e l","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg"},{"flowerId":"sasanqua","filename":"sasanqua-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Camellia_sasanqua.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-reference-01.webp","source":"Wikimedia Commons","author":"Doctoroftcm","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cornus_officinalis.JPG","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-reference-01.webp","source":"Wikimedia Commons","author":"Stickpen","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"},{"flowerId":"leopard-plant","filename":"leopard-plant-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Farfugium_japonicum.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg"}]}};
 const __mods=Object.create(null);
 __mods["js/config.js"] = (() => {
 const APP_CONFIG = Object.freeze({
@@ -2733,17 +2709,22 @@ return { hooks, installRuntimeHooks };
 
 __mods["js/dateUtils.js"] = (() => {
 const DAY_MS = 86400000;
+function getSeoulDateParts(date = new Date()) {
+  const day = new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(date);
+  const [year,month,dayOfMonth]=day.split('-').map(Number);
+  return {year,month,day:dayOfMonth,key:day};
+}
 
 function parseMonthDay(value, year) {
   if (!/^\d{2}-\d{2}$/.test(value || '')) return null;
   const [month, day] = value.split('-').map(Number);
-  const parsed = new Date(year, month - 1, day, 12, 0, 0, 0);
-  if (parsed.getMonth() !== month - 1 || parsed.getDate() !== day) return null;
+  const parsed = new Date(Date.UTC(year, month - 1, day, 12, 0, 0, 0));
+  if (parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) return null;
   return parsed;
 }
 
 function getSeason(date = new Date()) {
-  const month = date.getMonth() + 1;
+  const {month} = getSeoulDateParts(date);
   if ([3, 4, 5].includes(month)) return '봄';
   if ([6, 7, 8].includes(month)) return '여름';
   if ([9, 10, 11].includes(month)) return '가을';
@@ -2799,19 +2780,17 @@ function formatBloomPeriod(bloom) {
 
 function getBloomWindow(bloom, now = new Date()) {
   if (!bloom?.start || !bloom?.end) return null;
-  const year = now.getFullYear();
+  const parts = getSeoulDateParts(now);
+  const year = parts.year;
   let start = parseMonthDay(bloom.start, year);
   let end = parseMonthDay(bloom.end, year);
   if (!start || !end) return null;
 
   const crossesYear = bloom.start > bloom.end;
   if (crossesYear) {
-    const nowMd = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    if (nowMd >= bloom.start) {
-      end = parseMonthDay(bloom.end, year + 1);
-    } else {
-      start = parseMonthDay(bloom.start, year - 1);
-    }
+    const nowMd = `${String(parts.month).padStart(2, '0')}-${String(parts.day).padStart(2, '0')}`;
+    if (nowMd >= bloom.start) end = parseMonthDay(bloom.end, year + 1);
+    else start = parseMonthDay(bloom.start, year - 1);
   }
   return { start, end, crossesYear };
 }
@@ -2821,7 +2800,8 @@ function bloomState(stage,code,priority,days) {return {stage,code,priority,days,
 function getBloomStatus(bloom, now = new Date()) {
   const window=getBloomWindow(bloom,now);
   if(!window) return {code:'unknown',label:'정보 없음',priority:9,days:null,stage:-1};
-  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate(),12);
+  const parts=getSeoulDateParts(now);
+  const today=new Date(Date.UTC(parts.year,parts.month-1,parts.day,12));
   const elapsed=Math.floor((today-window.start)/DAY_MS);
   const duration=Math.max(1,Math.round((window.end-window.start)/DAY_MS)+1);
   const remaining=Math.floor((window.end-today)/DAY_MS),edge=Math.min(14,Math.max(1,Math.floor(duration*.2)));
@@ -3943,26 +3923,9 @@ function eventDateKey(value) {
   return parseApiDate(value) ? String(value).replace(/[^0-9]/g, '') : '';
 }
 
-function getSeoulWeekend(now = new Date()) {
-  const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(now);
-  const date = new Date(`${today}T00:00:00Z`);
-  const day = date.getUTCDay();
-  // Sunday belongs to the weekend that began yesterday; Monday starts the next week.
-  date.setUTCDate(date.getUTCDate() + (day === 0 ? -1 : 6 - day));
-  const start = date.toISOString().slice(0, 10).replaceAll('-', '');
-  date.setUTCDate(date.getUTCDate() + 1);
-  return { start, end: date.toISOString().slice(0, 10).replaceAll('-', '') };
-}
-
-function matchesEventDateFilter(event, filter = {}, now = new Date()) {
-  if (filter.status === 'ongoing' && event.status?.code !== 'ongoing') return false;
-  if (filter.status === 'upcoming' && event.status?.code !== 'upcoming') return false;
+function matchesEventDateFilter(event, filter = {}) {
   const start = eventDateKey(event.startDate);
   const end = eventDateKey(event.endDate);
-  if (filter.status === 'weekend') {
-    const weekend = getSeoulWeekend(now);
-    if (!start || !end || start > end || start > weekend.end || end < weekend.start) return false;
-  }
   if (filter.date) {
     const selected = eventDateKey(filter.date);
     if (!selected || !start || !end || selected < start || selected > end) return false;
@@ -4095,7 +4058,7 @@ function getDirectFlowerEvents(events, flower, { includeEnded = false } = {}) {
 }
 
 const EVENT_RELEVANCE_CONFIG = RELEVANCE;
-return { "canUseEventSchedule": canUseEventSchedule, "normalizeEvent": normalizeEvent, "calculateEventRelevance": calculateEventRelevance, "getEvents": getEvents, "getEventDetail": getEventDetail, "getRecommendedEvents": getRecommendedEvents, "getOngoingEvents": getOngoingEvents, "getRelatedEvents": getRelatedEvents, "getDirectFlowerEvents": getDirectFlowerEvents, "KOREA_REGIONS": KOREA_REGIONS, "normalizeRegionName": normalizeRegionName, "getSeoulWeekend": getSeoulWeekend, "matchesEventDateFilter": matchesEventDateFilter, "EVENT_RELEVANCE_CONFIG": EVENT_RELEVANCE_CONFIG };
+return { "canUseEventSchedule": canUseEventSchedule, "normalizeEvent": normalizeEvent, "calculateEventRelevance": calculateEventRelevance, "getEvents": getEvents, "getEventDetail": getEventDetail, "getRecommendedEvents": getRecommendedEvents, "getOngoingEvents": getOngoingEvents, "getRelatedEvents": getRelatedEvents, "getDirectFlowerEvents": getDirectFlowerEvents, "KOREA_REGIONS": KOREA_REGIONS, "normalizeRegionName": normalizeRegionName, "matchesEventDateFilter": matchesEventDateFilter, "EVENT_RELEVANCE_CONFIG": EVENT_RELEVANCE_CONFIG };
 })();
 
 __mods["js/imageService.js"] = (() => {
@@ -4358,6 +4321,20 @@ function imageState(message, alt, className = '') {
   });
 }
 
+function imageCreditBadge(credit, imageNode, fallbackSrc = '') {
+  const source = /^https:\/\//i.test(credit?.sourceUrl || '') ? 'Wikimedia Commons' : '';
+  const text = [credit?.license, source].filter(Boolean).join(' · ');
+  if (!text || imageNode?.tagName !== 'IMG') return null;
+  const badge = el('span', { className: 'image-credit-badge', text, title: text });
+  const hideForFallback = () => {
+    const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
+    badge.hidden = Boolean(imageNode.dataset.fallbackApplied || (offline && fallbackSrc));
+  };
+  imageNode.addEventListener('error', () => queueMicrotask(hideForFallback));
+  hideForFallback();
+  return badge;
+}
+
 function image(src, alt, className = '', fallbackSrc = '') {
   const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
   const resolvedSrc = offline && fallbackSrc ? fallbackSrc : (src || fallbackSrc);
@@ -4392,12 +4369,12 @@ function image(src, alt, className = '', fallbackSrc = '') {
   if (img.complete && img.naturalWidth) queueMicrotask(markLoaded);
   return img;
 }
-return { "$": $, "el": el, "button": button, "image": image };
+return { "$": $, "el": el, "button": button, "image": image, "imageCreditBadge": imageCreditBadge };
 })();
 
 __mods["js/ui/components.js"] = (() => {
 const { formatApiDate, getBloomStatus, parseApiDate } = __mods["js/dateUtils.js"];
-const { el, button, image } = __mods["js/ui/dom.js"];
+const { el, button, image, imageCreditBadge } = __mods["js/ui/dom.js"];
 
 function statusBadge(status) {
   return el('span', {
@@ -4484,6 +4461,7 @@ function flowerListRow(flower, state, { compact = false, trailing = '' } = {}) {
 function flowerPoster(flower, state, { rail = false, showBloomFlow = true } = {}) {
   const bloom = getBloomStatus(flower.bloom, state.currentDate);
   const scientificName = flower.scientificName || flower.taxonomy?.acceptedName || '';
+  const posterImage = image(flower.image, `${primaryFlowerName(flower)} 참고 이미지`, 'flower-poster-image', flower.localImage);
   return el('button', {
     type: 'button',
     className: `flower-poster ${rail ? 'flower-poster-rail' : ''}`,
@@ -4491,7 +4469,8 @@ function flowerPoster(flower, state, { rail = false, showBloomFlow = true } = {}
     ariaLabel: `${primaryFlowerName(flower)} 상세 정보 보기`
   }, [
     el('span', { className: 'flower-poster-media' }, [
-      image(flower.image, `${primaryFlowerName(flower)} 참고 이미지`, 'flower-poster-image', flower.localImage)
+      posterImage,
+      imageCreditBadge(flower.imageCredit, posterImage, flower.localImage)
     ]),
     el('span', { className: 'flower-poster-copy' }, [
       el('span', { className: 'flower-poster-title' }, [
@@ -4709,7 +4688,7 @@ const { selectTodayFlower } = __mods["js/todayFlower.js"];
 const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { getFlowerRelaySnapshot } = __mods["js/flowerRelay.js"];
 const { getOngoingEvents } = __mods["js/eventService.js"];
-const { el, button, image } = __mods["js/ui/dom.js"];
+const { el, button, image, imageCreditBadge } = __mods["js/ui/dom.js"];
 const { bloomFlow, sectionHeader, emptyState, eventErrorState, primaryFlowerName, flowerPoster, eventListRow, renderSkeletonRows } = __mods["js/ui/components.js"];
 const { topSeasonFlowers, selectControl } = __mods["js/ui/screens/shared.js"];
 const { matchesFlowerSearch, normalizeSearch } = __mods["js/searchUtils.js"];
@@ -4724,9 +4703,10 @@ function getHomeRegions(events) {
 function homeFeature(flower, state, featureDate=state.currentDate) {
  const bloom=getBloomStatus(flower.bloom,featureDate), saved=state.favoriteFlowerIds.includes(flower.id);
  const save=button(saved?'저장됨':'저장','toggle-favorite',{kind:'tertiary',data:{flowerId:flower.id},extraClass:'save-button'});
+ const heroImage=image(flower.image,`${primaryFlowerName(flower)} 참고 이미지`,'editorial-feature-image',flower.localImage);
  save.setAttribute('aria-pressed',String(saved)); save.setAttribute('aria-label',`${primaryFlowerName(flower)} ${saved?'저장 해제':'저장'}`);
  return el('section',{className:'editorial-feature','aria-labelledby':'home-feature-title'},[
-  el('button',{type:'button',className:'editorial-feature-media',dataset:{action:'open-flower',flowerId:flower.id},ariaLabel:`${primaryFlowerName(flower)} 꽃 정보 보기`},[image(flower.image,`${primaryFlowerName(flower)} 참고 이미지`,'editorial-feature-image',flower.localImage)]),
+  el('button',{type:'button',className:'editorial-feature-media',dataset:{action:'open-flower',flowerId:flower.id},ariaLabel:`${primaryFlowerName(flower)} 꽃 정보 보기`},[heroImage,imageCreditBadge(flower.imageCredit,heroImage,flower.localImage)]),
   el('div',{className:'editorial-feature-copy'},[
    el('div',{className:'editorial-feature-meta'},[el('span',{className:'section-label',text:'오늘 눈여겨볼 꽃'}),save]),
    el('h1',{id:'home-feature-title',text:primaryFlowerName(flower)}),
@@ -5255,93 +5235,17 @@ return { "renderEncyclopedia": renderEncyclopedia, "updateEncyclopediaResults": 
 })();
 
 __mods["js/ui/screens/events.js"] = (() => {
-const { FLOWERS, getFlowerById } = __mods["js/data.js"];
-const { getRecommendedEvents, getRelatedEvents, getDirectFlowerEvents, KOREA_REGIONS, matchesEventDateFilter, getSeoulWeekend } = __mods["js/eventService.js"];
-const { normalizeSearch, matchesFlowerSearch } = __mods["js/searchUtils.js"];
+const { getRecommendedEvents, matchesEventDateFilter } = __mods["js/eventService.js"];
+const { normalizeSearch } = __mods["js/searchUtils.js"];
 const { $, el, button } = __mods["js/ui/dom.js"];
 const { sectionHeader, emptyState, eventErrorState, eventListRow, renderSkeletonRows } = __mods["js/ui/components.js"];
-const { pageHeader, selectControl } = __mods["js/ui/screens/shared.js"];
+const { pageHeader } = __mods["js/ui/screens/shared.js"];
 
-function eventFlowerLabel(flower) {
-  return flower.standardNameKo && flower.standardNameKo !== flower.nameKo
-    ? `${flower.standardNameKo} (${flower.nameKo})`
-    : flower.standardNameKo || flower.nameKo;
-}
-
-function renderEventFlowerChoices(state) {
-  const selected = getFlowerById(state.eventFilter.flower);
-  const query = state.eventFlowerSearchQuery || '';
-  const matches = [...FLOWERS]
-    .filter((flower) => flower.id !== selected?.id && matchesFlowerSearch(flower, query))
-    .sort(__mods['js/flowerViewData.js'].compareFlowerNames);
-  const wrap = el('div', { id: 'event-flower-options', className: 'event-flower-options' });
-  if (selected) {
-    wrap.append(el('div', { className: 'event-selected-flower' }, [
-      el('span', { text: `선택됨 · ${eventFlowerLabel(selected)}` }),
-      button('선택 해제', 'clear-event-flower', { kind: 'tertiary', extraClass: 'event-flower-clear' })
-    ]));
-  }
-  const list = el('div', { className: 'event-flower-choice-list', role: 'listbox', ariaLabel: '행사 꽃 선택 결과' });
-  if (matches.length) {
-    matches.forEach((flower) => list.append(el('button', {
-      type: 'button',
-      className: 'event-flower-option',
-      role: 'option',
-      'aria-selected': 'false',
-      dataset: { action: 'set-event-flower', flowerId: flower.id },
-      text: eventFlowerLabel(flower)
-    })));
-  } else if (!selected || query) {
-    list.append(el('p', { className: 'event-flower-empty', text: '검색한 꽃이 없어요.' }));
-  }
-  wrap.append(list);
-  return wrap;
-}
-
-function updateEventFlowerChoices(state, root = document) {
-  const current = $('#event-flower-options', root);
-  if (current) current.replaceWith(renderEventFlowerChoices(state));
-}
-
-function renderEventFlowerPicker(state) {
-  const selected = getFlowerById(state.eventFilter.flower);
-  return el('div', { className: 'event-flower-picker filter-field' }, [
-    el('span', { text: '꽃 검색·선택' }),
-    el('input', { id: 'event-flower-filter', type: 'hidden', value: selected?.id || '' }),
-    el('details', { className: 'inline-select event-flower-select' }, [
-      el('summary', {
-        className: 'inline-select-trigger',
-        dataset: { action: 'toggle-inline-select' },
-        ariaLabel: `꽃 검색·선택: ${selected ? eventFlowerLabel(selected) : '꽃 선택'}`,
-        'aria-controls': 'event-flower-panel'
-      }, [el('span', { className: 'inline-select-value', text: selected ? eventFlowerLabel(selected) : '꽃 선택' })]),
-      el('div', { id: 'event-flower-panel', className: 'event-flower-panel' }, [
-        el('label', { className: 'event-flower-search' }, [
-          el('span', { className: 'visually-hidden', text: '행사 꽃 검색' }),
-          el('input', { id: 'event-flower-search-filter', type: 'search', value: state.eventFlowerSearchQuery || '', placeholder: '꽃 이름 검색', autocomplete: 'off' })
-        ]),
-        renderEventFlowerChoices(state)
-      ])
-    ])
-  ]);
-}
 function filterEvents(state) {
   const query = normalizeSearch(state.eventSearchQuery);
-  const baseEvents = getRecommendedEvents(state.events, {
-    includeEnded: ['all', 'weekend'].includes(state.eventFilter.status),
-    includeUnverified: state.eventFilter.status === 'all'
-  });
+  const baseEvents = getRecommendedEvents(state.events);
   return baseEvents.filter((event) => {
-    if (!matchesEventDateFilter(event, state.eventFilter, state.currentDate || new Date())) return false;
-    if (state.eventFilter.flower) {
-      const flower = getFlowerById(state.eventFilter.flower);
-      const relatedEvents = state.eventFilter.directFlowerOnly
-        ? getDirectFlowerEvents([event], flower, { includeEnded: true })
-        : getRelatedEvents([event], flower, { includeEnded: true });
-      if (!flower || !relatedEvents.length) return false;
-    }
-    if (state.eventFilter.region && event.region !== state.eventFilter.region) return false;
-    if (state.eventFilter.subRegion && event.subRegion !== state.eventFilter.subRegion) return false;
+    if (!matchesEventDateFilter(event, state.eventFilter)) return false;
     if (query) {
       const haystack = normalizeSearch([event.title, event.description, event.region, event.subRegion, event.place, event.address, ...(event.keywords || [])].join(' '));
       if (!haystack.includes(query)) return false;
@@ -5360,57 +5264,26 @@ function renderEvents(state) {
     const checked = new Date(snapshot.verification.checkedAt);
     const dateLabel = Number.isNaN(checked.getTime()) ? '확인일 없음' : new Intl.DateTimeFormat('ko-KR',{ timeZone:'Asia/Seoul',year:'numeric',month:'long',day:'numeric' }).format(checked);
     main.append(el('p', { className:'weather-note', text:`한국관광공사 자료 ${state.events.length}건 중 꽃·정원 행사를 보여드려요. ${dateLabel} 출처 대조 자료이며, 방문 전 최신 공지를 확인해 주세요.` }));
-    if (quality?.stale || state.events.some(event => event.verification?.status === 'stale')) main.append(el('p', { className:'weather-note',text:'확인 후 7일이 지나 다시 확인이 필요해요. 전체 탭에서 이전 자료를 볼 수 있어요.' }));
   }
   if (quality?.truncated) main.append(el('p', { className:'weather-note',text:`전체 ${quality.total}건 중 ${quality.received}건을 조회했어요. 일부 행사가 누락될 수 있어요.` }));
   if (quality?.rejected) main.append(el('p', { className:'weather-note',text:`일정·장소를 확인할 수 없는 ${quality.rejected}건은 제외했어요.` }));
+
   main.append(el('label', { className: 'search-field search-prominent' }, [
     el('span', { className: 'search-glyph', 'aria-hidden': 'true' }),
     el('span', { className: 'visually-hidden', text: '행사 검색' }),
     el('input', { id: 'event-search', type: 'search', value: state.eventSearchQuery, placeholder: '행사명, 지역 또는 주소 검색', autocomplete: 'off' })
   ]));
 
-  const tabs = el('div', { className: 'event-tabs', role: 'group', 'aria-label': '행사 상태 필터' });
-  [['weekend','이번 주말'], ['ongoing','진행 중'], ['upcoming','예정'], ['all','전체']].forEach(([value, label]) => {
-    const tab = button(label, 'set-event-status', {
-      kind: state.eventFilter.status === value ? 'primary' : 'tertiary',
-      extraClass: 'event-tab',
-      data: { status: value }
-    });
-    tab.setAttribute('aria-pressed', String(state.eventFilter.status === value));
-    tabs.append(tab);
-  });
-  main.append(tabs);
-  if (state.eventFilter.status === 'weekend') {
-    const weekend = getSeoulWeekend(state.currentDate || new Date());
-    const label = (value) => `${Number(value.slice(4, 6))}월 ${Number(value.slice(6, 8))}일`;
-    main.append(el('p', { className:'weather-note', text:`한국 시간 ${label(weekend.start)}(토)~${label(weekend.end)}(일)에 기간이 겹치는 행사예요.` }));
-  }
   const eventDateSection = el('section', { className: 'event-date-field', 'aria-labelledby': 'event-date-filter-label' }, [
     el('div', { className: 'event-date-field-heading' }, [
       el('span', { id: 'event-date-filter-label', text: '찾아볼 날짜 (선택 사항)' }),
       button('날짜 비우기', 'clear-event-date', { kind: 'tertiary', disabled: !state.eventFilter.date, extraClass: 'event-date-clear' })
     ]),
-    el('p', { id: 'event-date-filter-note', className: 'event-date-filter-note', text: '선택한 상태·지역·날짜 조건을 함께 적용해요. 날짜를 비우면 기간 제한을 해제해요.' }),
+    el('p', { id: 'event-date-filter-note', className: 'event-date-filter-note', text: '날짜를 선택하면 해당 날짜에 열리는 행사만 보여줘요. 날짜를 비우면 기간 제한을 해제해요.' }),
     __mods['js/calendar.js'].renderEventFilterCalendar(state)
   ]);
   main.append(eventDateSection);
 
-  const subRegions = [...new Set(state.events
-    .filter((event) => !state.eventFilter.region || event.region === state.eventFilter.region)
-    .map((event) => event.subRegion).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ko'));
-  const sourceRegions = [...new Set(state.events.map((event) => event.region)
-    .filter((region) => region && !KOREA_REGIONS.includes(region)))].sort((a, b) => a.localeCompare(b, 'ko'));
-  const filters = el('details', { id:'event-filter-panel',className:'filter-panel',open:state.eventFiltersOpen?'':null }, [
-    el('summary', {}, [el('span', { text: '세부 필터' }), el('span', { className: 'filter-summary-hint', text: '꽃 · 시·도 · 시·군·구' })]),
-    el('div', { className: 'event-filters' }, [
-      renderEventFlowerPicker(state),
-      selectControl('시·도', 'event-region-filter', [['','전국'], ...KOREA_REGIONS.map((region) => [region, region]), ...sourceRegions.map((region) => [region, region])], state.eventFilter.region, 'filter-events'),
-      selectControl('시·군·구', 'event-subregion-filter', [['','전체'], ...subRegions.map((region) => [region, region])], state.eventFilter.subRegion, 'filter-events')
-    ]),
-    button('필터 초기화', 'reset-events', { kind: 'tertiary', extraClass: 'btn-small filter-reset' })
-  ]);
-  main.append(filters);
   main.append(el('section', { id: 'event-results', className: 'content-section event-results', 'aria-label': '행사 검색 결과', 'aria-live': 'polite', 'aria-atomic': 'false' }));
   updateEventResults(state, main);
   return main;
@@ -5441,7 +5314,7 @@ function updateEventResults(state, root = document) {
   }
   if (state.eventsError) results.append(eventErrorState(state.eventsError));
 }
-return { "renderEvents": renderEvents, "updateEventResults": updateEventResults, "updateEventFlowerChoices": updateEventFlowerChoices, "filterEvents": filterEvents };
+return { "renderEvents": renderEvents, "updateEventResults": updateEventResults, "filterEvents": filterEvents };
 })();
 
 __mods["js/calendar.js"] = (() => {
@@ -5717,15 +5590,15 @@ function installStyles(){
 .bloom-calendar-day,.event-filter-calendar-day{border-radius:var(--radius-small)!important}
 .bloom-calendar-day{padding:0!important;grid-template-rows:1fr!important}
 .bloom-calendar-markers{display:none!important}
-.bloom-calendar-day.is-full-bloom{background:var(--accent-soft)!important;color:var(--ink)!important}
-.bloom-calendar-day.is-full-bloom.has-flower-event{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--accent-strong) 18%,transparent) 0,color-mix(in srgb,var(--accent-strong) 18%,transparent) 2px,transparent 2px,transparent 6px),var(--accent-soft)!important}
-.bloom-calendar-day.is-selected,.bloom-calendar-day.is-today.is-selected,.event-filter-calendar-day.is-selected{border-radius:var(--radius-small)!important;box-shadow:inset 0 0 0 2px var(--ink)!important}
+.bloom-calendar-day.is-full-bloom{background:#DDE6D8!important;color:var(--ink)!important}
+.bloom-calendar-day.is-full-bloom.has-flower-event{background:repeating-linear-gradient(135deg,color-mix(in srgb,#71816A 30%,transparent) 0,color-mix(in srgb,#71816A 30%,transparent) 2px,transparent 2px,transparent 6px),#DDE6D8!important}
+.bloom-calendar-day.is-selected,.bloom-calendar-day.is-today.is-selected,.event-filter-calendar-day.is-selected{border-radius:var(--radius-small)!important;box-shadow:inset 0 0 0 2px #71816A!important}
 .bloom-calendar-day.is-selected{background:var(--surface-soft)!important}
-.bloom-calendar-day.is-full-bloom.is-selected{background:var(--accent-soft)!important}
-.bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--accent-strong) 18%,transparent) 0,color-mix(in srgb,var(--accent-strong) 18%,transparent) 2px,transparent 2px,transparent 6px),var(--accent-soft)!important}
+.bloom-calendar-day.is-full-bloom.is-selected{background:#DDE6D8!important}
+.bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{background:repeating-linear-gradient(135deg,color-mix(in srgb,#71816A 30%,transparent) 0,color-mix(in srgb,#71816A 30%,transparent) 2px,transparent 2px,transparent 6px),#DDE6D8!important}
 .calendar-day{border-radius:var(--radius-small)!important}
-[data-theme=dark] .bloom-calendar-day.is-full-bloom{background:var(--surface-tint)!important}
-[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event,[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--accent) 20%,transparent) 0,color-mix(in srgb,var(--accent) 20%,transparent) 2px,transparent 2px,transparent 6px),var(--surface-tint)!important}
+[data-theme=dark] .bloom-calendar-day.is-full-bloom{background:color-mix(in srgb,#DDE6D8 34%,var(--surface))!important}
+[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event,[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{background:repeating-linear-gradient(135deg,color-mix(in srgb,#A8B8A0 38%,transparent) 0,color-mix(in srgb,#A8B8A0 38%,transparent) 2px,transparent 2px,transparent 6px),color-mix(in srgb,#DDE6D8 34%,var(--surface))!important}
 `;
  document.head.append(style);
 }
@@ -5855,44 +5728,10 @@ return {renderBloomCalendar,isFullBloomDate};
 
 __mods["js/calendarColorPatch.js"] = (() => {
 const calendar=__mods['js/calendar.js'];
-const {FLOWERS}=__mods['js/data.js'];
-
-const COLOR_MAP=Object.freeze({
- '흰색':{fill:'#F1EFE6',stripe:'#A9A396'},
- '노랑':{fill:'#F2D867',stripe:'#B88900'},
- '분홍':{fill:'#EAAFC3',stripe:'#B65E7D'},
- '빨강':{fill:'#DC8B91',stripe:'#A3414A'},
- '보라':{fill:'#B6A0D4',stripe:'#76569A'},
- '파랑':{fill:'#9DBDE1',stripe:'#557EAD'},
- '주황':{fill:'#EAB16F',stripe:'#B66D29'},
- '초록':{fill:'#A9C68D',stripe:'#648247'},
- '연두':{fill:'#C7D98C',stripe:'#7B9448'},
- '갈색':{fill:'#BEA083',stripe:'#7D5E40'},
- '검정':{fill:'#A2A29D',stripe:'#555550'}
-});
-
-function getFlowerColors(flower){
- const primary=flower?.colors?.[0] || '';
- return COLOR_MAP[primary] || {fill:'#B8C9A7',stripe:'#6E845C'};
-}
-
+const SAGE=Object.freeze({fill:'#DDE6D8',stripe:'#71816A'});
+function getFlowerColors(){ return SAGE; }
 const baseRender=calendar.renderBloomCalendar;
-calendar.renderBloomCalendar=(state)=>{
- const layer=baseRender(state);
- const flower=FLOWERS.find(item=>item.id===state.selectedBloomFlowerId) || null;
- if(!flower) return layer;
- const {fill,stripe}=getFlowerColors(flower);
- layer.querySelectorAll('.bloom-calendar-day.is-full-bloom').forEach(day=>{
-  const background=day.classList.contains('has-flower-event')
-   ? `repeating-linear-gradient(135deg,${stripe}55 0,${stripe}55 2px,transparent 2px,transparent 6px),${fill}`
-   : fill;
-  day.style.setProperty('--bloom-fill',fill);
-  day.style.setProperty('--bloom-stripe',stripe);
-  day.style.setProperty('background',background,'important');
- });
- return layer;
-};
-
+calendar.renderBloomCalendar=(state)=>baseRender(state);
 return {getFlowerColors};
 })();
 
@@ -5908,7 +5747,7 @@ function installTodayStyles(){
 .event-filter-calendar-day.is-today{
  position:relative!important;
  color:var(--text)!important;
- outline:2px solid var(--ink)!important;
+ outline:2px solid #A8B8A0!important;
  outline-offset:-3px!important;
 }
 .bloom-calendar-day.is-today::after,
@@ -5920,7 +5759,7 @@ function installTodayStyles(){
  z-index:3;
  padding:1px 3px;
  border-radius:4px;
- background:var(--ink);
+ background:#71816A;
  color:var(--bg);
  font-size:.42rem;
  line-height:1.15;
@@ -5930,9 +5769,9 @@ function installTodayStyles(){
 }
 .bloom-calendar-day.is-today.is-selected,
 .event-filter-calendar-day.is-today.is-selected{
- outline:2px solid var(--ink)!important;
+ outline:2px solid #A8B8A0!important;
  outline-offset:-3px!important;
- box-shadow:inset 0 0 0 1px var(--bg),inset 0 0 0 3px var(--ink)!important;
+ box-shadow:inset 0 0 0 1px var(--bg),inset 0 0 0 3px #71816A!important;
 }
 @media(max-width:359px){
  .bloom-calendar-day.is-today::after,
@@ -6023,7 +5862,7 @@ return {markWeekendDays};
 __mods["js/ui/screens/details.js"] = (() => {
 const { formatBloomPeriod, getBloomStatus, parseApiDate } = __mods["js/dateUtils.js"];
 const { getRelatedEvents, canUseEventSchedule } = __mods["js/eventService.js"];
-const { el, button, image } = __mods["js/ui/dom.js"];
+const { el, button, image, imageCreditBadge } = __mods["js/ui/dom.js"];
 const { statusBadge, sectionHeader, emptyState, primaryFlowerName, otherNameLine, eventListRow, renderSkeletonRows, detailLine, infoDisclosure, formatEventRange, eventVerificationText } = __mods["js/ui/components.js"];
 const { petalShapeValues } = __mods["js/flowerViewData.js"];
 function renderLookalikeCard(item) {
@@ -6050,6 +5889,7 @@ function renderLookalikeCard(item) {
 }
 function renderFlowerDetail(state, flower) {
   const bloom = getBloomStatus(flower.bloom, state.currentDate);
+  const heroImage = image(flower.image, `${primaryFlowerName(flower)} 참고 이미지`, 'detail-hero', flower.localImage);
   const layer = el('section', {
     className: 'detail-layer', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'flower-detail-title'
   }, [
@@ -6059,7 +5899,10 @@ function renderFlowerDetail(state, flower) {
       el('span', { className: 'detail-top-spacer' })
     ]),
     el('div', { className: 'detail-hero-wrap' }, [
-      image(flower.image, `${primaryFlowerName(flower)} 참고 이미지`, 'detail-hero', flower.localImage)
+      el('span', { className: 'detail-hero-media' }, [
+        heroImage,
+        imageCreditBadge(flower.imageCredit, heroImage, flower.localImage)
+      ])
     ]),
     el('header', { className: 'detail-intro' }, [
       el('div', { className: 'detail-status-row' }, [
@@ -6286,10 +6129,10 @@ __mods["js/ui/screens.js"] = (() => {
 const { renderHome, updateHomeSearchResults } = __mods["js/ui/screens/home.js"];
 const { renderCapture } = __mods["js/ui/screens/capture.js"];
 const { renderEncyclopedia, updateEncyclopediaResults } = __mods["js/ui/screens/encyclopedia.js"];
-const { renderEvents, updateEventResults, updateEventFlowerChoices } = __mods["js/ui/screens/events.js"];
+const { renderEvents, updateEventResults } = __mods["js/ui/screens/events.js"];
 const { renderFlowerDetail, renderEventDetail } = __mods["js/ui/screens/details.js"];
 const { renderAppHeader, renderBottomNav } = __mods["js/ui/screens/shell.js"];
-return { "renderHome": renderHome, "updateHomeSearchResults": updateHomeSearchResults, "renderCapture": renderCapture, "renderEncyclopedia": renderEncyclopedia, "updateEncyclopediaResults": updateEncyclopediaResults, "renderEvents": renderEvents, "updateEventResults": updateEventResults, "updateEventFlowerChoices": updateEventFlowerChoices, "renderFlowerDetail": renderFlowerDetail, "renderEventDetail": renderEventDetail, "renderAppHeader": renderAppHeader, "renderBottomNav": renderBottomNav };
+return { "renderHome": renderHome, "updateHomeSearchResults": updateHomeSearchResults, "renderCapture": renderCapture, "renderEncyclopedia": renderEncyclopedia, "updateEncyclopediaResults": updateEncyclopediaResults, "renderEvents": renderEvents, "updateEventResults": updateEventResults, "renderFlowerDetail": renderFlowerDetail, "renderEventDetail": renderEventDetail, "renderAppHeader": renderAppHeader, "renderBottomNav": renderBottomNav };
 })();
 
 __mods["js/devTools.js"] = (() => {
@@ -6677,7 +6520,7 @@ return {renderSettings};
 __mods["js/ui.js"] = (() => {
 const { getFlowerById } = __mods["js/data.js"];
 const { el } = __mods["js/ui/dom.js"];
-const { renderHome, updateHomeSearchResults, renderCapture, renderEvents, renderEncyclopedia, updateEncyclopediaResults, updateEventResults, updateEventFlowerChoices, renderFlowerDetail, renderEventDetail, renderAppHeader, renderBottomNav } = __mods["js/ui/screens.js"];
+const { renderHome, updateHomeSearchResults, renderCapture, renderEvents, renderEncyclopedia, updateEncyclopediaResults, updateEventResults, renderFlowerDetail, renderEventDetail, renderAppHeader, renderBottomNav } = __mods["js/ui/screens.js"];
 
 
 
@@ -6864,7 +6707,7 @@ function focusMain() {
   main.setAttribute('tabindex', '-1');
   main.focus({ preventScroll: true });
 }
-return { "renderApp": renderApp, "focusMain": focusMain, "updateHomeSearchResults": updateHomeSearchResults, "updateEncyclopediaResults": updateEncyclopediaResults, "updateEventResults": updateEventResults, "updateEventFlowerChoices": updateEventFlowerChoices };
+return { "renderApp": renderApp, "focusMain": focusMain, "updateHomeSearchResults": updateHomeSearchResults, "updateEncyclopediaResults": updateEncyclopediaResults, "updateEventResults": updateEventResults };
 })();
 
 __mods["js/download.js"] = (() => {
@@ -6895,7 +6738,7 @@ const { hydrateReferenceImages } = __mods["js/imageService.js"];
 const { loadDiscoveries, loadFavorites, saveFavorites } = __mods["js/storage.js"];
 const { loadCollection,addObservation,updateObservation,deleteObservation,exportBackup,parseBackup,previewImport,importBackup,createThumbnail } = __mods["js/observations.js"];
 const { debounce } = __mods["js/searchUtils.js"];
-const { renderApp, updateHomeSearchResults, updateEncyclopediaResults, updateEventResults, updateEventFlowerChoices } = __mods["js/ui.js"];
+const { renderApp, updateHomeSearchResults, updateEncyclopediaResults, updateEventResults } = __mods["js/ui.js"];
 
 const {loadSettings,saveSettings,loadRecent,rememberFlower,clearRecent,loadVisits,saveVisits,applyTheme,applyTextSize}=__mods['js/preferences.js'];
 const preferences = loadSettings();
@@ -6913,11 +6756,10 @@ const state = {
   selectedCandidateId: null,
   analysisResult: null,
   events: [],
-  eventFilter: { status: 'ongoing', flower: '', region: preferences.region || '', subRegion: '', date: '' },
+  eventFilter: { date: '' },
   eventCalendarMonth: '',
   searchQuery: '',
   eventSearchQuery: '',
-  eventFlowerSearchQuery: '',
   encyclopediaFilters: emptyFlowerFilters(),
   encyclopediaSort: 'default',
   discoveredFlowers: loadDiscoveries(),
@@ -6947,7 +6789,6 @@ const state = {
   photoPrepareVisible: false,
   detail: null,
   filtersOpen: false,
-  eventFiltersOpen: false,
   recentDetailsOpen: false,
   recentClearPending: false,
   photoPickerOpen: false,
@@ -6968,7 +6809,7 @@ let referenceImageController = null;
 let toastTimer = null;
 
 function render() {
-  const panels={'encyclopedia-filter-panel':'filtersOpen','event-filter-panel':'eventFiltersOpen','recent-flower-panel':'recentDetailsOpen'};
+  const panels={'encyclopedia-filter-panel':'filtersOpen','recent-flower-panel':'recentDetailsOpen'};
   for(const [id,key] of Object.entries(panels)) {const node=document.getElementById(id);if(node)state[key]=node.open;}
   applyTheme(state.settings.theme);
   applyTextSize(runtimeHooks.resolveTextSize(state,state.settings.bodyTextSize));
@@ -7676,14 +7517,6 @@ function handleClick(event) {
       } else if (selectAction === 'set-home-region') {
         state.userRegion = value.slice(0, 60);
         render();
-      } else if (selectAction === 'filter-events') {
-        if (controlId === 'event-region-filter') {
-          const previousRegion = state.eventFilter.region || '';
-          state.eventFilter = { ...state.eventFilter, region: value, subRegion: previousRegion === value ? state.eventFilter.subRegion : '' };
-        } else if (controlId === 'event-subregion-filter') {
-          state.eventFilter = { ...state.eventFilter, subRegion: value };
-        }
-        render();
       } else if (selectAction === 'setting-select') {
         const key = target.dataset.key;
         if (!['region','theme','bodyTextSize'].includes(key)) break;
@@ -7692,7 +7525,6 @@ function handleClick(event) {
           state.settings = next;
           if (key === 'region') {
             state.userRegion = value;
-            state.eventFilter = { ...state.eventFilter, region: value, subRegion: '' };
           }
           render();
         } else {
@@ -7792,9 +7624,8 @@ function handleClick(event) {
       break;
     case 'go-events': switchTab('events'); break;
     case 'go-all-events':
-      state.eventFilter = { ...state.eventFilter, status: 'all', flower: '', region: state.userRegion || '', subRegion: '', date: '', directFlowerOnly: false };
+      state.eventFilter = { date: '' };
       state.eventSearchQuery = '';
-      state.eventFlowerSearchQuery = '';
       switchTab('events');
       break;
     case 'go-encyclopedia': switchTab('encyclopedia'); break;
@@ -7804,10 +7635,7 @@ function handleClick(event) {
       if (!state.eventDetailLoading) openEventDetail(target.dataset.eventId, { fromHistory: true });
       break;
     case 'close-detail': closeDetail(); break;
-    case 'set-event-status':
-      state.eventFilter = { ...state.eventFilter, status: target.dataset.status || 'ongoing' };
-      render();
-      break;
+
     case 'event-filter-month':
       setEventCalendarMonth(target.dataset.month || '');
       render();
@@ -7822,15 +7650,7 @@ function handleClick(event) {
       state.eventFilter = { ...state.eventFilter, date: '' };
       render();
       break;
-    case 'set-event-flower':
-      if (!getFlowerById(target.dataset.flowerId)) break;
-      state.eventFilter = { ...state.eventFilter, flower: target.dataset.flowerId, directFlowerOnly: true };
-      render();
-      break;
-    case 'clear-event-flower':
-      state.eventFilter = { ...state.eventFilter, flower: '', directFlowerOnly: false };
-      render();
-      break;
+
     case 'trigger-camera': {
       state.photoPickerOpen = false;
       render();
@@ -7864,15 +7684,13 @@ function handleClick(event) {
       break;
     case 'confirm-candidate': confirmCandidate(target.dataset.flowerId); break;
     case 'candidate-events':
-      state.eventFilter = { status: 'all', flower: target.dataset.flowerId, region: state.userRegion || '', subRegion: '', date: '', directFlowerOnly: true };
+      state.eventFilter = { date: '' };
       state.eventSearchQuery = '';
-      state.eventFlowerSearchQuery = '';
       switchTab('events');
       break;
     case 'flower-events-all':
-      state.eventFilter = { status: 'all', flower: target.dataset.flowerId, region: '', subRegion: '', date: '', directFlowerOnly: true };
+      state.eventFilter = { date: '' };
       state.eventSearchQuery = '';
-      state.eventFlowerSearchQuery = '';
       switchTab('events');
       break;
     case 'add-event-calendar': {
@@ -7917,13 +7735,6 @@ function handleClick(event) {
     case 'retry-events':
       loadEventData({ force: true });
       break;
-    case 'reset-events':
-      state.eventSearchQuery = '';
-      state.eventFlowerSearchQuery = '';
-      state.userRegion = '';
-      state.eventFilter = { status: 'ongoing', flower: '', region: '', subRegion: '', date: '', directFlowerOnly: false };
-      render();
-      break;
   }
 }
 
@@ -7935,7 +7746,7 @@ function handleChange(event) {
     if(!['region','theme','recentEnabled','bodyTextSize'].includes(key)) return;
     const value=input.dataset.action==='setting-toggle'?input.checked:input.value;
     const next={...state.settings,[key]:value};
-    if(saveSettings(next)) {state.settings=next;if(key==='region'){state.userRegion=value;state.eventFilter={...state.eventFilter,region:value,subRegion:''};} render();}
+    if(saveSettings(next)) {state.settings=next;if(key==='region')state.userRegion=value; render();}
     else {render();showToast('설정을 저장하지 못했어요.');}
     return;
   }
@@ -7966,20 +7777,6 @@ function handleChange(event) {
     render();
     return;
   }
-  if (input.dataset.action === 'filter-events') {
-    const previousRegion = state.eventFilter.region || '';
-    const nextRegion = document.getElementById('event-region-filter')?.value || '';
-    state.eventFilter = {
-      status: state.eventFilter.status || 'ongoing',
-      date: state.eventFilter.date || '',
-      flower: state.eventFilter.flower || '',
-      region: nextRegion,
-      subRegion: previousRegion === nextRegion ? (document.getElementById('event-subregion-filter')?.value || '') : '',
-      directFlowerOnly: Boolean(state.eventFilter.directFlowerOnly)
-    };
-    render();
-    return;
-  }
   if (input.dataset.action === 'filter-events-date') {
     state.eventFilter = { ...state.eventFilter, date: input.value || '' };
     updateEventResults(state);
@@ -7992,10 +7789,6 @@ function handleInput(event) {
   if(event.target.dataset.observationField && state.observationDraft) state.observationDraft[event.target.dataset.observationField]=event.target.value;
   if (event.target.id === 'flower-search' || event.target.id === 'home-flower-search') handleFlowerSearch(event.target.value);
   if (event.target.id === 'event-search') handleEventSearch(event.target.value);
-  if (event.target.id === 'event-flower-search-filter') {
-    state.eventFlowerSearchQuery = event.target.value;
-    updateEventFlowerChoices(state);
-  }
 }
 
 function trapModalFocus(event) {
