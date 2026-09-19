@@ -40,6 +40,8 @@ test('flower detail restores one labeled bloom period, scientific name, and habi
   assert.doesNotMatch(details, /button\('이 꽃 관찰 기록 남기기'/);
   assert.doesNotMatch(details, /검증 수준/);
   assert.match(details, /language\.note \? el\('p'/);
+  assert.doesNotMatch(details, /infoDisclosure\('분류 정보'/);
+  assert.doesNotMatch(details, /infoDisclosure\('기본 관리'/);
 });
 
 test('small flower posters render only a real scientific-name slot', () => {
@@ -56,13 +58,9 @@ test('event detail removes only the no-result minus icon and aligns top-level no
   assert.match(styles, /@media \(max-width: 400px\)[\s\S]*?\.detail-location-meta \{ margin-inline: 14px; \}/);
 });
 
-test('event flower query and single selection have separate state while the date filter remains unchanged', () => {
-  assert.match(main, /eventFlowerSearchQuery: ''/);
-  assert.match(main, /state\.eventFilter = \{ \.\.\.state\.eventFilter, flower: target\.dataset\.flowerId, directFlowerOnly: true \}/);
-  assert.match(events, /matchesFlowerSearch\(flower, query\)/);
-  assert.match(events, /className: 'event-selected-flower'/);
-  assert.match(events, /className: 'inline-select event-flower-select'/);
-  assert.doesNotMatch(events, /\(출처 표기\)/);
+test('event detailed filters are removed while the date filter remains unchanged', () => {
+  assert.doesNotMatch(main, /eventFlowerSearchQuery|set-event-flower|clear-event-flower|set-event-status/);
+  assert.doesNotMatch(events, /event-selected-flower|event-flower-select|event-region-filter|event-subregion-filter|event-filter-panel/);
   assert.match(main, /if \(input\.dataset\.action === 'filter-events-date'\)[\s\S]*?date: input\.value \|\| ''/);
 });
 
@@ -79,8 +77,7 @@ test('settings hide only the visible region row and keep recent clearing inside 
   assert.doesNotMatch(settings, /나의 관찰 기록/);
 });
 
-test('classification and event all-view styling use existing palette without box or shadow', () => {
-  assert.match(styles, /\.taxonomy-step\.is-current\s*\{[^}]*border:\s*1px solid var\(--accent\)[^}]*background:\s*var\(--accent-soft\)/s);
+test('event all-view styling uses the existing palette without box or shadow', () => {
   assert.match(styles, /\.event-view-all-link[\s\S]*?border:\s*0;[\s\S]*?background:\s*transparent;[\s\S]*?color:\s*var\(--accent-strong\);[\s\S]*?box-shadow:\s*none;/);
 });
 

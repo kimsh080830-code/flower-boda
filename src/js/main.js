@@ -10,11 +10,11 @@ const { hydrateReferenceImages } = __mods["js/imageService.js"];
 const { loadDiscoveries, loadFavorites, saveFavorites } = __mods["js/storage.js"];
 const { loadCollection,addObservation,updateObservation,deleteObservation,exportBackup,parseBackup,previewImport,importBackup,createThumbnail } = __mods["js/observations.js"];
 const { debounce } = __mods["js/searchUtils.js"];
-const { renderApp, updateHomeSearchResults, updateEncyclopediaResults, updateEventResults, updateEventFlowerChoices } = __mods["js/ui.js"];
+const { renderApp, updateHomeSearchResults, updateEncyclopediaResults, updateEventResults } = __mods["js/ui.js"];
 
 const {loadSettings,saveSettings,loadRecent,rememberFlower,clearRecent,loadVisits,saveVisits,applyTheme,applyTextSize}=__mods['js/preferences.js'];
 const preferences = loadSettings();
-function emptyFlowerFilters(overrides={}) {return {season:'',color:'',bloom:'',favoritesOnly:false,majorGroup:'',order:'',family:'',genus:'',petalShape:'',...overrides};}
+function emptyFlowerFilters(overrides={}) {return {season:'',favoritesOnly:false,...overrides};}
 
 const state = {
   settings: preferences,
@@ -28,11 +28,10 @@ const state = {
   selectedCandidateId: null,
   analysisResult: null,
   events: [],
-  eventFilter: { status: 'ongoing', flower: '', region: preferences.region || '', subRegion: '', date: '' },
+  eventFilter: { date: '' },
   eventCalendarMonth: '',
   searchQuery: '',
   eventSearchQuery: '',
-  eventFlowerSearchQuery: '',
   encyclopediaFilters: emptyFlowerFilters(),
   encyclopediaSort: 'default',
   discoveredFlowers: loadDiscoveries(),
@@ -62,8 +61,6 @@ const state = {
   photoPrepareVisible: false,
   detail: null,
   filtersOpen: false,
-  advancedFiltersOpen: false,
-  eventFiltersOpen: false,
   recentDetailsOpen: false,
   recentClearPending: false,
   photoPickerOpen: false,
@@ -84,7 +81,7 @@ let referenceImageController = null;
 let toastTimer = null;
 
 function render() {
-  const panels={'encyclopedia-filter-panel':'filtersOpen','encyclopedia-advanced-filter-panel':'advancedFiltersOpen','event-filter-panel':'eventFiltersOpen','recent-flower-panel':'recentDetailsOpen'};
+  const panels={'encyclopedia-filter-panel':'filtersOpen','recent-flower-panel':'recentDetailsOpen'};
   for(const [id,key] of Object.entries(panels)) {const node=document.getElementById(id);if(node)state[key]=node.open;}
   applyTheme(state.settings.theme);
   applyTextSize(runtimeHooks.resolveTextSize(state,state.settings.bodyTextSize));
@@ -784,31 +781,13 @@ function handleClick(event) {
       const selectAction = target.dataset.selectAction || '';
       target.closest('details.inline-select')?.removeAttribute('open');
       if (selectAction === 'filter-encyclopedia') {
-        const keys = {
-          'flower-season-filter': 'season',
-          'flower-color-filter': 'color',
-          'flower-bloom-filter': 'bloom',
-          'flower-major-group-filter': 'majorGroup',
-          'flower-order-filter': 'order',
-          'flower-family-filter': 'family',
-          'flower-genus-filter': 'genus',
-          'flower-petal-shape-filter': 'petalShape'
-        };
-        if (keys[controlId]) state.encyclopediaFilters = { ...state.encyclopediaFilters, [keys[controlId]]: value };
+        if (controlId === 'flower-season-filter') state.encyclopediaFilters = { ...state.encyclopediaFilters, season: value };
         render();
       } else if (selectAction === 'sort-encyclopedia') {
         state.encyclopediaSort = ['default','name','bloom-early','bloom-late'].includes(value) ? value : 'default';
         render();
       } else if (selectAction === 'set-home-region') {
         state.userRegion = value.slice(0, 60);
-        render();
-      } else if (selectAction === 'filter-events') {
-        if (controlId === 'event-region-filter') {
-          const previousRegion = state.eventFilter.region || '';
-          state.eventFilter = { ...state.eventFilter, region: value, subRegion: previousRegion === value ? state.eventFilter.subRegion : '' };
-        } else if (controlId === 'event-subregion-filter') {
-          state.eventFilter = { ...state.eventFilter, subRegion: value };
-        }
         render();
       } else if (selectAction === 'setting-select') {
         const key = target.dataset.key;
@@ -818,7 +797,6 @@ function handleClick(event) {
           state.settings = next;
           if (key === 'region') {
             state.userRegion = value;
-            state.eventFilter = { ...state.eventFilter, region: value, subRegion: '' };
           }
           render();
         } else {
@@ -918,9 +896,8 @@ function handleClick(event) {
       break;
     case 'go-events': switchTab('events'); break;
     case 'go-all-events':
-      state.eventFilter = { ...state.eventFilter, status: 'all', flower: '', region: state.userRegion || '', subRegion: '', date: '', directFlowerOnly: false };
+      state.eventFilter = { date: '' };
       state.eventSearchQuery = '';
-      state.eventFlowerSearchQuery = '';
       switchTab('events');
       break;
     case 'go-encyclopedia': switchTab('encyclopedia'); break;
@@ -930,10 +907,7 @@ function handleClick(event) {
       if (!state.eventDetailLoading) openEventDetail(target.dataset.eventId, { fromHistory: true });
       break;
     case 'close-detail': closeDetail(); break;
-    case 'set-event-status':
-      state.eventFilter = { ...state.eventFilter, status: target.dataset.status || 'ongoing' };
-      render();
-      break;
+
     case 'event-filter-month':
       setEventCalendarMonth(target.dataset.month || '');
       render();
@@ -948,15 +922,7 @@ function handleClick(event) {
       state.eventFilter = { ...state.eventFilter, date: '' };
       render();
       break;
-    case 'set-event-flower':
-      if (!getFlowerById(target.dataset.flowerId)) break;
-      state.eventFilter = { ...state.eventFilter, flower: target.dataset.flowerId, directFlowerOnly: true };
-      render();
-      break;
-    case 'clear-event-flower':
-      state.eventFilter = { ...state.eventFilter, flower: '', directFlowerOnly: false };
-      render();
-      break;
+
     case 'trigger-camera': {
       state.photoPickerOpen = false;
       render();
@@ -990,15 +956,13 @@ function handleClick(event) {
       break;
     case 'confirm-candidate': confirmCandidate(target.dataset.flowerId); break;
     case 'candidate-events':
-      state.eventFilter = { status: 'all', flower: target.dataset.flowerId, region: state.userRegion || '', subRegion: '', date: '', directFlowerOnly: true };
+      state.eventFilter = { date: '' };
       state.eventSearchQuery = '';
-      state.eventFlowerSearchQuery = '';
       switchTab('events');
       break;
     case 'flower-events-all':
-      state.eventFilter = { status: 'all', flower: target.dataset.flowerId, region: '', subRegion: '', date: '', directFlowerOnly: true };
+      state.eventFilter = { date: '' };
       state.eventSearchQuery = '';
-      state.eventFlowerSearchQuery = '';
       switchTab('events');
       break;
     case 'add-event-calendar': {
@@ -1043,13 +1007,6 @@ function handleClick(event) {
     case 'retry-events':
       loadEventData({ force: true });
       break;
-    case 'reset-events':
-      state.eventSearchQuery = '';
-      state.eventFlowerSearchQuery = '';
-      state.userRegion = '';
-      state.eventFilter = { status: 'ongoing', flower: '', region: '', subRegion: '', date: '', directFlowerOnly: false };
-      render();
-      break;
   }
 }
 
@@ -1061,7 +1018,7 @@ function handleChange(event) {
     if(!['region','theme','recentEnabled','bodyTextSize'].includes(key)) return;
     const value=input.dataset.action==='setting-toggle'?input.checked:input.value;
     const next={...state.settings,[key]:value};
-    if(saveSettings(next)) {state.settings=next;if(key==='region'){state.userRegion=value;state.eventFilter={...state.eventFilter,region:value,subRegion:''};} render();}
+    if(saveSettings(next)) {state.settings=next;if(key==='region')state.userRegion=value; render();}
     else {render();showToast('설정을 저장하지 못했어요.');}
     return;
   }
@@ -1077,14 +1034,7 @@ function handleChange(event) {
   if (input.dataset.action === 'filter-encyclopedia') {
     state.encyclopediaFilters = {
       season: document.getElementById('flower-season-filter')?.value || '',
-      color: document.getElementById('flower-color-filter')?.value || '',
-      bloom: document.getElementById('flower-bloom-filter')?.value || '',
-      favoritesOnly: Boolean(state.encyclopediaFilters.favoritesOnly),
-      majorGroup: document.getElementById('flower-major-group-filter')?.value || '',
-      order: document.getElementById('flower-order-filter')?.value || '',
-      family: document.getElementById('flower-family-filter')?.value || '',
-      genus: document.getElementById('flower-genus-filter')?.value || '',
-      petalShape: document.getElementById('flower-petal-shape-filter')?.value || ''
+      favoritesOnly: Boolean(state.encyclopediaFilters.favoritesOnly)
     };
     updateEncyclopediaResults(state);
     return;
@@ -1096,20 +1046,6 @@ function handleChange(event) {
   }
   if (input.dataset.action === 'set-home-region') {
     state.userRegion = typeof input.value === 'string' ? input.value.slice(0, 60) : '';
-    render();
-    return;
-  }
-  if (input.dataset.action === 'filter-events') {
-    const previousRegion = state.eventFilter.region || '';
-    const nextRegion = document.getElementById('event-region-filter')?.value || '';
-    state.eventFilter = {
-      status: state.eventFilter.status || 'ongoing',
-      date: state.eventFilter.date || '',
-      flower: state.eventFilter.flower || '',
-      region: nextRegion,
-      subRegion: previousRegion === nextRegion ? (document.getElementById('event-subregion-filter')?.value || '') : '',
-      directFlowerOnly: Boolean(state.eventFilter.directFlowerOnly)
-    };
     render();
     return;
   }
@@ -1125,10 +1061,6 @@ function handleInput(event) {
   if(event.target.dataset.observationField && state.observationDraft) state.observationDraft[event.target.dataset.observationField]=event.target.value;
   if (event.target.id === 'flower-search' || event.target.id === 'home-flower-search') handleFlowerSearch(event.target.value);
   if (event.target.id === 'event-search') handleEventSearch(event.target.value);
-  if (event.target.id === 'event-flower-search-filter') {
-    state.eventFlowerSearchQuery = event.target.value;
-    updateEventFlowerChoices(state);
-  }
 }
 
 function trapModalFocus(event) {

@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
-const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
+const [html, encyclopediaSource]=await Promise.all([
+  readFile(new URL('../index.html',import.meta.url),'utf8'),
+  readFile(new URL('../src/js/ui/screens/encyclopedia.js',import.meta.url),'utf8')
+]);
 const context=vm.createContext({Date,Intl,URL,URLSearchParams,DOMException,setTimeout,clearTimeout,location:{protocol:'https:',search:''},localStorage:{getItem:()=>null,setItem:()=>{},removeItem:()=>{}}});
 vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1].split('__mods["js/main.js"]')[0],context);
 const mods=vm.runInContext('__mods',context);
@@ -32,9 +35,11 @@ test('single and partial multi-letter Korean initial-consonant searches use conf
   assert.equal(search.matchesFlowerSearch(byId('rose'),'ㅂㄲ'),false);
 });
 
-test('petal-shape filtering stays unavailable when the V43 data has no explicit values',()=>{
-  assert.equal(flowers.some(flower=>view.petalShapeValues(flower).length),false);
-  assert.equal(mods['js/ui/screens/encyclopedia.js'].PETAL_SHAPE_OPTIONS.length,0);
+test('encyclopedia keeps season and saved filters without color, bloom, or advanced filters',()=>{
+  assert.match(encyclopediaSource,/flower-season-filter/);
+  assert.match(encyclopediaSource,/toggle-favorite-filter/);
+  assert.doesNotMatch(encyclopediaSource,/flower-(?:color|bloom|major-group|order|family|genus|petal-shape)-filter/);
+  assert.doesNotMatch(encyclopediaSource,/advanced-filter-panel|PETAL_SHAPE_OPTIONS/);
 });
 
 test('event detail normalization preserves actual operating hours and admission fees when supplied',()=>{

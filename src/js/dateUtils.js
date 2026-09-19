@@ -1,16 +1,21 @@
 __mods["js/dateUtils.js"] = (() => {
 const DAY_MS = 86400000;
+function getSeoulDateParts(date = new Date()) {
+  const day = new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(date);
+  const [year,month,dayOfMonth]=day.split('-').map(Number);
+  return {year,month,day:dayOfMonth,key:day};
+}
 
 function parseMonthDay(value, year) {
   if (!/^\d{2}-\d{2}$/.test(value || '')) return null;
   const [month, day] = value.split('-').map(Number);
-  const parsed = new Date(year, month - 1, day, 12, 0, 0, 0);
-  if (parsed.getMonth() !== month - 1 || parsed.getDate() !== day) return null;
+  const parsed = new Date(Date.UTC(year, month - 1, day, 12, 0, 0, 0));
+  if (parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) return null;
   return parsed;
 }
 
 function getSeason(date = new Date()) {
-  const month = date.getMonth() + 1;
+  const {month} = getSeoulDateParts(date);
   if ([3, 4, 5].includes(month)) return '봄';
   if ([6, 7, 8].includes(month)) return '여름';
   if ([9, 10, 11].includes(month)) return '가을';
@@ -66,19 +71,17 @@ function formatBloomPeriod(bloom) {
 
 function getBloomWindow(bloom, now = new Date()) {
   if (!bloom?.start || !bloom?.end) return null;
-  const year = now.getFullYear();
+  const parts = getSeoulDateParts(now);
+  const year = parts.year;
   let start = parseMonthDay(bloom.start, year);
   let end = parseMonthDay(bloom.end, year);
   if (!start || !end) return null;
 
   const crossesYear = bloom.start > bloom.end;
   if (crossesYear) {
-    const nowMd = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    if (nowMd >= bloom.start) {
-      end = parseMonthDay(bloom.end, year + 1);
-    } else {
-      start = parseMonthDay(bloom.start, year - 1);
-    }
+    const nowMd = `${String(parts.month).padStart(2, '0')}-${String(parts.day).padStart(2, '0')}`;
+    if (nowMd >= bloom.start) end = parseMonthDay(bloom.end, year + 1);
+    else start = parseMonthDay(bloom.start, year - 1);
   }
   return { start, end, crossesYear };
 }
@@ -88,7 +91,8 @@ function bloomState(stage,code,priority,days) {return {stage,code,priority,days,
 function getBloomStatus(bloom, now = new Date()) {
   const window=getBloomWindow(bloom,now);
   if(!window) return {code:'unknown',label:'정보 없음',priority:9,days:null,stage:-1};
-  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate(),12);
+  const parts=getSeoulDateParts(now);
+  const today=new Date(Date.UTC(parts.year,parts.month-1,parts.day,12));
   const elapsed=Math.floor((today-window.start)/DAY_MS);
   const duration=Math.max(1,Math.round((window.end-window.start)/DAY_MS)+1);
   const remaining=Math.floor((window.end-today)/DAY_MS),edge=Math.min(14,Math.max(1,Math.floor(duration*.2)));

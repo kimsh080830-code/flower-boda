@@ -26,7 +26,7 @@ test('event list heading is rendered before loading/error branches and has no im
 
 test('event date note is exact and described-by is connected to the monthly calendar group', () => {
   assert.match(events, /text: '찾아볼 날짜 \(선택 사항\)'/);
-  assert.match(events, /text: '선택한 상태·지역·날짜 조건을 함께 적용해요\. 날짜를 비우면 기간 제한을 해제해요\.'/);
+  assert.match(events, /text: '날짜를 선택하면 해당 날짜에 열리는 행사만 보여줘요\. 날짜를 비우면 기간 제한을 해제해요\.'/);
   assert.match(calendar, /'aria-describedby':'event-date-filter-note'/);
   assert.match(calendar, /'aria-labelledby':'event-date-filter-label'/);
 });

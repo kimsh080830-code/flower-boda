@@ -13,15 +13,15 @@ function installStyles(){
 .bloom-calendar-day,.event-filter-calendar-day{border-radius:var(--radius-small)!important}
 .bloom-calendar-day{padding:0!important;grid-template-rows:1fr!important}
 .bloom-calendar-markers{display:none!important}
-.bloom-calendar-day.is-full-bloom{background:var(--accent-soft)!important;color:var(--ink)!important}
-.bloom-calendar-day.is-full-bloom.has-flower-event{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--accent-strong) 18%,transparent) 0,color-mix(in srgb,var(--accent-strong) 18%,transparent) 2px,transparent 2px,transparent 6px),var(--accent-soft)!important}
-.bloom-calendar-day.is-selected,.bloom-calendar-day.is-today.is-selected,.event-filter-calendar-day.is-selected{border-radius:var(--radius-small)!important;box-shadow:inset 0 0 0 2px var(--ink)!important}
+.bloom-calendar-day.is-full-bloom{background:#DDE6D8!important;color:var(--ink)!important}
+.bloom-calendar-day.is-full-bloom.has-flower-event{background:repeating-linear-gradient(135deg,color-mix(in srgb,#71816A 30%,transparent) 0,color-mix(in srgb,#71816A 30%,transparent) 2px,transparent 2px,transparent 6px),#DDE6D8!important}
+.bloom-calendar-day.is-selected,.bloom-calendar-day.is-today.is-selected,.event-filter-calendar-day.is-selected{border-radius:var(--radius-small)!important;box-shadow:inset 0 0 0 2px #71816A!important}
 .bloom-calendar-day.is-selected{background:var(--surface-soft)!important}
-.bloom-calendar-day.is-full-bloom.is-selected{background:var(--accent-soft)!important}
-.bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--accent-strong) 18%,transparent) 0,color-mix(in srgb,var(--accent-strong) 18%,transparent) 2px,transparent 2px,transparent 6px),var(--accent-soft)!important}
+.bloom-calendar-day.is-full-bloom.is-selected{background:#DDE6D8!important}
+.bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{background:repeating-linear-gradient(135deg,color-mix(in srgb,#71816A 30%,transparent) 0,color-mix(in srgb,#71816A 30%,transparent) 2px,transparent 2px,transparent 6px),#DDE6D8!important}
 .calendar-day{border-radius:var(--radius-small)!important}
-[data-theme=dark] .bloom-calendar-day.is-full-bloom{background:var(--surface-tint)!important}
-[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event,[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--accent) 20%,transparent) 0,color-mix(in srgb,var(--accent) 20%,transparent) 2px,transparent 2px,transparent 6px),var(--surface-tint)!important}
+[data-theme=dark] .bloom-calendar-day.is-full-bloom{background:color-mix(in srgb,#DDE6D8 34%,var(--surface))!important}
+[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event,[data-theme=dark] .bloom-calendar-day.is-full-bloom.has-flower-event.is-selected{background:repeating-linear-gradient(135deg,color-mix(in srgb,#A8B8A0 38%,transparent) 0,color-mix(in srgb,#A8B8A0 38%,transparent) 2px,transparent 2px,transparent 6px),color-mix(in srgb,#DDE6D8 34%,var(--surface))!important}
 `;
  document.head.append(style);
 }
