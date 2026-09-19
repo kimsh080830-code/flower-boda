@@ -78,12 +78,12 @@ test('selected-date overlap includes both endpoints and rejects malformed dates'
 test('event search and selected date combine after detailed filters are removed', () => {
   const { events,ui } = frontend();
   const rows = [
-    {id:'match',title:'장미 정원축제',startDate:'20260905',endDate:'20260906',category:'flower',verification:{status:'source-checked',checkedAt:new Date().toISOString()}},
-    {id:'other',title:'국화 정원축제',startDate:'20260905',endDate:'20260906',category:'flower',verification:{status:'source-checked',checkedAt:new Date().toISOString()}}
+    {id:'match',title:'장미 정원축제',startDate:'20260918',endDate:'20260920',category:'flower',verification:{status:'source-checked',checkedAt:new Date().toISOString()}},
+    {id:'other',title:'국화 정원축제',startDate:'20260918',endDate:'20260920',category:'flower',verification:{status:'source-checked',checkedAt:new Date().toISOString()}}
   ].map(row=>events.normalizeEvent(row));
-  const state={events:rows,eventSearchQuery:'장미',eventFilter:{date:'2026-09-05'}};
+  const state={events:rows,eventSearchQuery:'장미',eventFilter:{date:'2026-09-19'}};
   assert.deepEqual(Array.from(ui.filterEvents(state),row=>row.id),['match']);
-  state.eventFilter.date='2026-09-07';
+  state.eventFilter.date='2026-09-21';
   assert.equal(ui.filterEvents(state).length,0);
 });
 
