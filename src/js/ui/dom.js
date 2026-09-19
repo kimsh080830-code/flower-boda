@@ -42,8 +42,11 @@ function imageState(message, alt, className = '') {
 }
 
 function imageCreditBadge(credit, imageNode, fallbackSrc = '') {
+  const selfShot = credit?.selfShot === true;
   const source = /^https:\/\//i.test(credit?.sourceUrl || '') ? 'Wikimedia Commons' : '';
-  const text = [credit?.license, source].filter(Boolean).join(' · ');
+  const text = selfShot
+    ? `촬영 · ${credit?.creator || '승현'}`
+    : [credit?.license, source].filter(Boolean).join(' · ');
   if (!text || imageNode?.tagName !== 'IMG') return null;
   const badge = el('span', { className: 'image-credit-badge', text, title: text });
   const hideForFallback = () => {

@@ -104,10 +104,13 @@ function renderFlowerDetail(state, flower) {
     layer.append(infoDisclosure('꽃말 자세히', languageChildren));
   }
   if (flower.precautions) layer.append(infoDisclosure('주의사항', [el('p', { text: flower.precautions })]));
-  if (flower.imageCredit?.license) {
-    const creditParts = [flower.imageCredit.creator, flower.imageCredit.license, 'Wikimedia Commons'].filter(Boolean);
+  if (flower.imageCredit?.selfShot === true || flower.imageCredit?.license) {
+    const selfShot = flower.imageCredit?.selfShot === true;
+    const creditParts = selfShot
+      ? ['촬영', flower.imageCredit.creator || '승현']
+      : [flower.imageCredit.creator, flower.imageCredit.license, 'Wikimedia Commons'].filter(Boolean);
     const creditChildren = [el('p', { text: creditParts.join(' · ') })];
-    if (/^https:\/\//i.test(flower.imageCredit.sourceUrl || '')) {
+    if (!selfShot && /^https:\/\//i.test(flower.imageCredit.sourceUrl || '')) {
       creditChildren.push(el('a', {
         href: flower.imageCredit.sourceUrl, target: '_blank', rel: 'noopener noreferrer',
         className: 'detail-source-link', text: '원본과 라이선스 확인'

@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const read = (relative) => readFile(new URL(relative, import.meta.url), 'utf8');
-const [details, events, settings, components, main, styles, template, v47Data, v47Snapshot] = await Promise.all([
+const [details, events, settings, components, main, styles, template, v47Data, v47Snapshot, dom] = await Promise.all([
   read('../src/js/ui/screens/details.js'),
   read('../src/js/ui/screens/events.js'),
   read('../src/js/ui/screens/settings.js'),
@@ -14,7 +14,8 @@ const [details, events, settings, components, main, styles, template, v47Data, v
   read('../src/styles.css'),
   read('../src/index.template.html'),
   read('../src/js/data.js'),
-  read('../src/js/eventSnapshot.js')
+  read('../src/js/eventSnapshot.js'),
+  read('../src/js/ui/dom.js')
 ]);
 const hash = (value) => createHash('sha256').update(value).digest('hex');
 const approvedFlowerHash = (source) => {
@@ -79,6 +80,13 @@ test('settings hide only the visible region row and keep recent clearing inside 
 
 test('event all-view styling uses the existing palette without box or shadow', () => {
   assert.match(styles, /\.event-view-all-link[\s\S]*?border:\s*0;[\s\S]*?background:\s*transparent;[\s\S]*?color:\s*var\(--accent-strong\);[\s\S]*?box-shadow:\s*none;/);
+});
+
+test('self-shot image credit uses the photographer label without inventing a license', () => {
+  assert.match(dom, /credit\?\.selfShot === true/);
+  assert.match(dom, /촬영 · \$\{credit\?\.creator \|\| '승현'\}/);
+  assert.match(details, /flower\.imageCredit\?\.selfShot === true/);
+  assert.match(details, /\['촬영', flower\.imageCredit\.creator \|\| '승현'\]/);
 });
 
 test('V61 DEV title changes while preserved in-app about text remains unchanged', () => {
