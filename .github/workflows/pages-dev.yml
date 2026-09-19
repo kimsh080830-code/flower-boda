@@ -1,4 +1,4 @@
-name: Validate dev build
+name: Validate and publish dev preview
 
 on:
   push:
@@ -8,6 +8,10 @@ on:
 
 permissions:
   contents: write
+
+concurrency:
+  group: gh-pages-publish
+  cancel-in-progress: false
 
 jobs:
   validate:
@@ -54,4 +58,26 @@ jobs:
           else
             git commit -m "build: generate index.html"
             git push origin HEAD:dev
+          fi
+
+      - name: Publish DEV preview under gh-pages/dev
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git clone --branch gh-pages --single-branch "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" publish
+          rm -rf publish/dev
+          mkdir -p publish/dev
+          cp index.html publish/dev/index.html
+          cp -R assets publish/dev/assets
+          touch publish/.nojekyll
+
+          cd publish
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dev .nojekyll
+          if git diff --cached --quiet; then
+            echo "DEV preview unchanged"
+          else
+            git commit -m "deploy dev preview: ${GITHUB_SHA}"
+            git push origin gh-pages
           fi
