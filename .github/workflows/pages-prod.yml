@@ -11,7 +11,7 @@ permissions:
 
 concurrency:
   group: gh-pages-publish
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -59,24 +59,24 @@ jobs:
             exit 1
           fi
 
-      - name: Prepare Pages artifact
-        run: |
-          rm -rf dist
-          mkdir -p dist
-          cp "index.prod.html" dist/index.html
-          cp -R assets dist/assets
-          touch dist/.nojekyll
-
-      - name: Publish gh-pages branch
+      - name: Publish production root and preserve dev preview
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd dist
-          git init
+          git clone --branch gh-pages --single-branch "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" publish
+
+          find publish -mindepth 1 -maxdepth 1 ! -name .git ! -name dev -exec rm -rf {} +
+          cp index.prod.html publish/index.html
+          cp -R assets publish/assets
+          touch publish/.nojekyll
+
+          cd publish
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "deploy: ${GITHUB_SHA}"
-          git branch -M gh-pages
-          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push --force origin gh-pages
+          if git diff --cached --quiet; then
+            echo "Production site unchanged"
+          else
+            git commit -m "deploy production: ${GITHUB_SHA}"
+            git push origin gh-pages
+          fi
