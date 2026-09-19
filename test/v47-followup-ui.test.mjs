@@ -20,12 +20,11 @@ test('home search suppresses the input-only focus box and keeps container focus-
   assert.match(styles, /\.home-find-search input:focus,[\s\S]*?\.home-find-search input:focus-visible\s*\{[^}]*border:\s*0;[^}]*outline:\s*0;[^}]*box-shadow:\s*none;/s);
 });
 
-test('event-only empty result keeps only its message while the top reset remains', () => {
+test('event empty result keeps only its message and detailed filter panel stays removed', () => {
   const emptyBranch = events.slice(events.indexOf("const message = state.events.length"), events.indexOf("if (state.eventsError) results.append"));
   assert.match(emptyBranch, /'조건에 맞는 행사가 없어요\.'/);
   assert.match(emptyBranch, /emptyState\(message\)/);
-  assert.doesNotMatch(emptyBranch, /필터 초기화|reset-events/);
-  assert.match(events, /button\('필터 초기화', 'reset-events', \{ kind: 'tertiary', extraClass: 'btn-small filter-reset' \}\)/);
+  assert.doesNotMatch(events, /event-filter-panel|reset-events|세부 필터/);
   assert.doesNotMatch(components, /function emptyState[\s\S]*?className: 'empty-icon'/);
   assert.match(components, /function emptyState[\s\S]*?state-panel empty-state/);
 });
@@ -59,17 +58,13 @@ test('simple option controls are anchored, single-open, and leave the observatio
   assert.match(styles, /\.inline-select\s*\{[^}]*position:\s*relative;/s);
   assert.match(styles, /\.inline-select-options\s*\{[^}]*position:\s*absolute;[^}]*top:\s*calc\(100% - 1px\);/s);
   assert.match(styles, /\.inline-select-options\s*\{[^}]*max-height:\s*220px;[^}]*overflow-y:\s*auto;/s);
-  assert.match(styles, /\.event-flower-panel\s*\{[^}]*position:\s*absolute;[^}]*top:\s*calc\(100% - 1px\);/s);
-  assert.match(styles, /\.event-filters \.inline-select-trigger \{ padding-left: 12px; \}/);
-  assert.match(styles, /\.event-flower-search input \{[^}]*padding:\s*8px 9px 8px 12px;/s);
   assert.match(main, /document\.querySelectorAll\('details\.inline-select\[open\]'\)/);
   assert.match(observations, /el\('select',\{id:'observation-flower'/);
 });
 
-test('event flower selection applies direct matching immediately without clearing other filters', () => {
-  assert.match(events, /className: 'inline-select event-flower-select'/);
-  assert.match(events, /id: 'event-flower-search-filter'/);
-  assert.match(main, /case 'set-event-flower':[\s\S]*?state\.eventFilter = \{ \.\.\.state\.eventFilter, flower: target\.dataset\.flowerId, directFlowerOnly: true \}/);
-  assert.match(main, /case 'clear-event-flower':[\s\S]*?state\.eventFilter = \{ \.\.\.state\.eventFilter, flower: '', directFlowerOnly: false \}/);
-  assert.match(main, /state\.eventFlowerSearchQuery = event\.target\.value;[\s\S]*?updateEventFlowerChoices\(state\)/);
+test('event screen removes detailed filters while keeping search and date calendar', () => {
+  assert.doesNotMatch(events, /event-flower-select|event-region-filter|event-subregion-filter|event-filter-panel/);
+  assert.doesNotMatch(main, /set-event-status|set-event-flower|clear-event-flower|reset-events/);
+  assert.match(events, /id: 'event-search'/);
+  assert.match(events, /renderEventFilterCalendar\(state\)/);
 });

@@ -10,7 +10,7 @@ function installTodayStyles(){
 .event-filter-calendar-day.is-today{
  position:relative!important;
  color:var(--text)!important;
- outline:2px solid var(--ink)!important;
+ outline:2px solid #A8B8A0!important;
  outline-offset:-3px!important;
 }
 .bloom-calendar-day.is-today::after,
@@ -22,7 +22,7 @@ function installTodayStyles(){
  z-index:3;
  padding:1px 3px;
  border-radius:4px;
- background:var(--ink);
+ background:#71816A;
  color:var(--bg);
  font-size:.42rem;
  line-height:1.15;
@@ -32,9 +32,9 @@ function installTodayStyles(){
 }
 .bloom-calendar-day.is-today.is-selected,
 .event-filter-calendar-day.is-today.is-selected{
- outline:2px solid var(--ink)!important;
+ outline:2px solid #A8B8A0!important;
  outline-offset:-3px!important;
- box-shadow:inset 0 0 0 1px var(--bg),inset 0 0 0 3px var(--ink)!important;
+ box-shadow:inset 0 0 0 1px var(--bg),inset 0 0 0 3px #71816A!important;
 }
 @media(max-width:359px){
  .bloom-calendar-day.is-today::after,

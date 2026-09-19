@@ -5,7 +5,7 @@ const { selectTodayFlower } = __mods["js/todayFlower.js"];
 const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { getFlowerRelaySnapshot } = __mods["js/flowerRelay.js"];
 const { getOngoingEvents } = __mods["js/eventService.js"];
-const { el, button, image } = __mods["js/ui/dom.js"];
+const { el, button, image, imageCreditBadge } = __mods["js/ui/dom.js"];
 const { bloomFlow, sectionHeader, emptyState, eventErrorState, primaryFlowerName, flowerPoster, eventListRow, renderSkeletonRows } = __mods["js/ui/components.js"];
 const { topSeasonFlowers, selectControl } = __mods["js/ui/screens/shared.js"];
 const { matchesFlowerSearch, normalizeSearch } = __mods["js/searchUtils.js"];
@@ -20,9 +20,10 @@ function getHomeRegions(events) {
 function homeFeature(flower, state, featureDate=state.currentDate) {
  const bloom=getBloomStatus(flower.bloom,featureDate), saved=state.favoriteFlowerIds.includes(flower.id);
  const save=button(saved?'저장됨':'저장','toggle-favorite',{kind:'tertiary',data:{flowerId:flower.id},extraClass:'save-button'});
+ const heroImage=image(flower.image,`${primaryFlowerName(flower)} 참고 이미지`,'editorial-feature-image',flower.localImage);
  save.setAttribute('aria-pressed',String(saved)); save.setAttribute('aria-label',`${primaryFlowerName(flower)} ${saved?'저장 해제':'저장'}`);
  return el('section',{className:'editorial-feature','aria-labelledby':'home-feature-title'},[
-  el('button',{type:'button',className:'editorial-feature-media',dataset:{action:'open-flower',flowerId:flower.id},ariaLabel:`${primaryFlowerName(flower)} 꽃 정보 보기`},[image(flower.image,`${primaryFlowerName(flower)} 참고 이미지`,'editorial-feature-image',flower.localImage)]),
+  el('button',{type:'button',className:'editorial-feature-media',dataset:{action:'open-flower',flowerId:flower.id},ariaLabel:`${primaryFlowerName(flower)} 꽃 정보 보기`},[heroImage,imageCreditBadge(flower.imageCredit,heroImage,flower.localImage)]),
   el('div',{className:'editorial-feature-copy'},[
    el('div',{className:'editorial-feature-meta'},[el('span',{className:'section-label',text:'오늘 눈여겨볼 꽃'}),save]),
    el('h1',{id:'home-feature-title',text:primaryFlowerName(flower)}),

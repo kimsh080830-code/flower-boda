@@ -141,26 +141,9 @@ function eventDateKey(value) {
   return parseApiDate(value) ? String(value).replace(/[^0-9]/g, '') : '';
 }
 
-function getSeoulWeekend(now = new Date()) {
-  const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(now);
-  const date = new Date(`${today}T00:00:00Z`);
-  const day = date.getUTCDay();
-  // Sunday belongs to the weekend that began yesterday; Monday starts the next week.
-  date.setUTCDate(date.getUTCDate() + (day === 0 ? -1 : 6 - day));
-  const start = date.toISOString().slice(0, 10).replaceAll('-', '');
-  date.setUTCDate(date.getUTCDate() + 1);
-  return { start, end: date.toISOString().slice(0, 10).replaceAll('-', '') };
-}
-
-function matchesEventDateFilter(event, filter = {}, now = new Date()) {
-  if (filter.status === 'ongoing' && event.status?.code !== 'ongoing') return false;
-  if (filter.status === 'upcoming' && event.status?.code !== 'upcoming') return false;
+function matchesEventDateFilter(event, filter = {}) {
   const start = eventDateKey(event.startDate);
   const end = eventDateKey(event.endDate);
-  if (filter.status === 'weekend') {
-    const weekend = getSeoulWeekend(now);
-    if (!start || !end || start > end || start > weekend.end || end < weekend.start) return false;
-  }
   if (filter.date) {
     const selected = eventDateKey(filter.date);
     if (!selected || !start || !end || selected < start || selected > end) return false;
@@ -293,5 +276,5 @@ function getDirectFlowerEvents(events, flower, { includeEnded = false } = {}) {
 }
 
 const EVENT_RELEVANCE_CONFIG = RELEVANCE;
-return { "canUseEventSchedule": canUseEventSchedule, "normalizeEvent": normalizeEvent, "calculateEventRelevance": calculateEventRelevance, "getEvents": getEvents, "getEventDetail": getEventDetail, "getRecommendedEvents": getRecommendedEvents, "getOngoingEvents": getOngoingEvents, "getRelatedEvents": getRelatedEvents, "getDirectFlowerEvents": getDirectFlowerEvents, "KOREA_REGIONS": KOREA_REGIONS, "normalizeRegionName": normalizeRegionName, "getSeoulWeekend": getSeoulWeekend, "matchesEventDateFilter": matchesEventDateFilter, "EVENT_RELEVANCE_CONFIG": EVENT_RELEVANCE_CONFIG };
+return { "canUseEventSchedule": canUseEventSchedule, "normalizeEvent": normalizeEvent, "calculateEventRelevance": calculateEventRelevance, "getEvents": getEvents, "getEventDetail": getEventDetail, "getRecommendedEvents": getRecommendedEvents, "getOngoingEvents": getOngoingEvents, "getRelatedEvents": getRelatedEvents, "getDirectFlowerEvents": getDirectFlowerEvents, "KOREA_REGIONS": KOREA_REGIONS, "normalizeRegionName": normalizeRegionName, "matchesEventDateFilter": matchesEventDateFilter, "EVENT_RELEVANCE_CONFIG": EVENT_RELEVANCE_CONFIG };
 })();

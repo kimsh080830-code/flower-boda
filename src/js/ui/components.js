@@ -1,6 +1,6 @@
 __mods["js/ui/components.js"] = (() => {
 const { formatApiDate, getBloomStatus, parseApiDate } = __mods["js/dateUtils.js"];
-const { el, button, image } = __mods["js/ui/dom.js"];
+const { el, button, image, imageCreditBadge } = __mods["js/ui/dom.js"];
 
 function statusBadge(status) {
   return el('span', {
@@ -87,6 +87,7 @@ function flowerListRow(flower, state, { compact = false, trailing = '' } = {}) {
 function flowerPoster(flower, state, { rail = false, showBloomFlow = true } = {}) {
   const bloom = getBloomStatus(flower.bloom, state.currentDate);
   const scientificName = flower.scientificName || flower.taxonomy?.acceptedName || '';
+  const posterImage = image(flower.image, `${primaryFlowerName(flower)} 참고 이미지`, 'flower-poster-image', flower.localImage);
   return el('button', {
     type: 'button',
     className: `flower-poster ${rail ? 'flower-poster-rail' : ''}`,
@@ -94,7 +95,8 @@ function flowerPoster(flower, state, { rail = false, showBloomFlow = true } = {}
     ariaLabel: `${primaryFlowerName(flower)} 상세 정보 보기`
   }, [
     el('span', { className: 'flower-poster-media' }, [
-      image(flower.image, `${primaryFlowerName(flower)} 참고 이미지`, 'flower-poster-image', flower.localImage)
+      posterImage,
+      imageCreditBadge(flower.imageCredit, posterImage, flower.localImage)
     ]),
     el('span', { className: 'flower-poster-copy' }, [
       el('span', { className: 'flower-poster-title' }, [

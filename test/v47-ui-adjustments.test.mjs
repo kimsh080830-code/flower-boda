@@ -58,13 +58,9 @@ test('event detail removes only the no-result minus icon and aligns top-level no
   assert.match(styles, /@media \(max-width: 400px\)[\s\S]*?\.detail-location-meta \{ margin-inline: 14px; \}/);
 });
 
-test('event flower query and single selection have separate state while the date filter remains unchanged', () => {
-  assert.match(main, /eventFlowerSearchQuery: ''/);
-  assert.match(main, /state\.eventFilter = \{ \.\.\.state\.eventFilter, flower: target\.dataset\.flowerId, directFlowerOnly: true \}/);
-  assert.match(events, /matchesFlowerSearch\(flower, query\)/);
-  assert.match(events, /className: 'event-selected-flower'/);
-  assert.match(events, /className: 'inline-select event-flower-select'/);
-  assert.doesNotMatch(events, /\(출처 표기\)/);
+test('event detailed filters are removed while the date filter remains unchanged', () => {
+  assert.doesNotMatch(main, /eventFlowerSearchQuery|set-event-flower|clear-event-flower|set-event-status/);
+  assert.doesNotMatch(events, /event-selected-flower|event-flower-select|event-region-filter|event-subregion-filter|event-filter-panel/);
   assert.match(main, /if \(input\.dataset\.action === 'filter-events-date'\)[\s\S]*?date: input\.value \|\| ''/);
 });
 

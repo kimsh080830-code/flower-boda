@@ -41,6 +41,20 @@ function imageState(message, alt, className = '') {
   });
 }
 
+function imageCreditBadge(credit, imageNode, fallbackSrc = '') {
+  const source = /^https:\/\//i.test(credit?.sourceUrl || '') ? 'Wikimedia Commons' : '';
+  const text = [credit?.license, source].filter(Boolean).join(' · ');
+  if (!text || imageNode?.tagName !== 'IMG') return null;
+  const badge = el('span', { className: 'image-credit-badge', text, title: text });
+  const hideForFallback = () => {
+    const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
+    badge.hidden = Boolean(imageNode.dataset.fallbackApplied || (offline && fallbackSrc));
+  };
+  imageNode.addEventListener('error', () => queueMicrotask(hideForFallback));
+  hideForFallback();
+  return badge;
+}
+
 function image(src, alt, className = '', fallbackSrc = '') {
   const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
   const resolvedSrc = offline && fallbackSrc ? fallbackSrc : (src || fallbackSrc);
@@ -75,5 +89,5 @@ function image(src, alt, className = '', fallbackSrc = '') {
   if (img.complete && img.naturalWidth) queueMicrotask(markLoaded);
   return img;
 }
-return { "$": $, "el": el, "button": button, "image": image };
+return { "$": $, "el": el, "button": button, "image": image, "imageCreditBadge": imageCreditBadge };
 })();

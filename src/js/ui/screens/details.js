@@ -1,7 +1,7 @@
 __mods["js/ui/screens/details.js"] = (() => {
 const { formatBloomPeriod, getBloomStatus, parseApiDate } = __mods["js/dateUtils.js"];
 const { getRelatedEvents, canUseEventSchedule } = __mods["js/eventService.js"];
-const { el, button, image } = __mods["js/ui/dom.js"];
+const { el, button, image, imageCreditBadge } = __mods["js/ui/dom.js"];
 const { statusBadge, sectionHeader, emptyState, primaryFlowerName, otherNameLine, eventListRow, renderSkeletonRows, detailLine, infoDisclosure, formatEventRange, eventVerificationText } = __mods["js/ui/components.js"];
 const { petalShapeValues } = __mods["js/flowerViewData.js"];
 function renderLookalikeCard(item) {
@@ -28,6 +28,7 @@ function renderLookalikeCard(item) {
 }
 function renderFlowerDetail(state, flower) {
   const bloom = getBloomStatus(flower.bloom, state.currentDate);
+  const heroImage = image(flower.image, `${primaryFlowerName(flower)} 참고 이미지`, 'detail-hero', flower.localImage);
   const layer = el('section', {
     className: 'detail-layer', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'flower-detail-title'
   }, [
@@ -37,7 +38,10 @@ function renderFlowerDetail(state, flower) {
       el('span', { className: 'detail-top-spacer' })
     ]),
     el('div', { className: 'detail-hero-wrap' }, [
-      image(flower.image, `${primaryFlowerName(flower)} 참고 이미지`, 'detail-hero', flower.localImage)
+      el('span', { className: 'detail-hero-media' }, [
+        heroImage,
+        imageCreditBadge(flower.imageCredit, heroImage, flower.localImage)
+      ])
     ]),
     el('header', { className: 'detail-intro' }, [
       el('div', { className: 'detail-status-row' }, [

@@ -101,7 +101,7 @@ test('light and dark palettes use the requested shared colors', () => {
     {'--bg': '#171C16', '--surface': '#20271E', '--surface-soft': '#263024', '--accent': '#A6BE80', '--accent-strong': '#89A56A', '--accent-soft': '#33412D', '--lime-point': '#C5DA8A', '--ink': '#F1F3E9', '--muted': '#B4BEAC', '--line': '#3A4636'}
   );
   assert.match(styles, /\.flower-relay-target\.is-complete \.flower-relay-placeholder \{[^}]*background: var\(--lime-point\)/);
-  assert.match(styles, /\[data-theme=dark\] \.event-tab\[aria-pressed=true\][^\n]*background:var\(--accent-strong\)/);
+  assert.doesNotMatch(styles, /\.event-tabs|\.event-tab/);
   assert.doesNotMatch(styles, /#713e50|#5e3242|#4f2938|rgba\(113,\s*62,\s*80|#9fc98d|#b0d89e/i);
 });
 

@@ -66,50 +66,25 @@ test('a missing events array does not become an empty successful feed', async ()
   await assert.rejects(events.getEvents(),/INVALID_RESPONSE/);
 });
 
-test('weekend boundaries use Seoul time, include the current Sunday and cross year boundaries', () => {
+test('selected-date overlap includes both endpoints and rejects malformed dates', () => {
   const { events } = frontend();
-  const cases = [
-    ['2026-09-04T14:59:59Z','20260905','20260906'],
-    ['2026-09-05T15:00:00Z','20260905','20260906'],
-    ['2026-09-06T15:00:00Z','20260912','20260913'],
-    ['2027-01-01T03:00:00Z','20270102','20270103']
-  ];
-  for (const [now,start,end] of cases) {
-    const actual = events.getSeoulWeekend(new Date(now));
-    assert.equal(actual.start,start);
-    assert.equal(actual.end,end);
-  }
-});
-
-test('weekend and selected-date overlap checks include both endpoints and reject malformed dates', () => {
-  const { events } = frontend();
-  const now = new Date('2026-09-04T00:00:00Z');
-  for (const [startDate,endDate,expected] of [
-    ['20260901','20260930',true], ['20260905','20260905',true], ['20260906','20260908',true],
-    ['20260901','20260904',false], ['20260907','20260930',false], ['', '20260906',false],
-    ['20260907','20260905',false]
-  ]) assert.equal(events.matchesEventDateFilter({startDate,endDate},{status:'weekend'},now),expected);
   const event = {startDate:'2026-09-05',endDate:'2026-09-06'};
-  assert.equal(events.matchesEventDateFilter(event,{status:'weekend',date:'2026-09-06'},now),true);
-  assert.equal(events.matchesEventDateFilter(event,{status:'weekend',date:'2026-09-07'},now),false);
-  assert.equal(events.matchesEventDateFilter(event,{date:'2026-02-30'},now),false);
+  assert.equal(events.matchesEventDateFilter(event,{date:'2026-09-05'}),true);
+  assert.equal(events.matchesEventDateFilter(event,{date:'2026-09-06'}),true);
+  assert.equal(events.matchesEventDateFilter(event,{date:'2026-09-07'}),false);
+  assert.equal(events.matchesEventDateFilter(event,{date:'2026-02-30'}),false);
 });
 
-test('flower, region, subregion, search and date filters combine without dropping weekend Saturday on Sunday', () => {
+test('event search and selected date combine after detailed filters are removed', () => {
   const { events,ui } = frontend();
-  const base = { title:'장미 정원축제',startDate:'20260905',endDate:'20260906',region:'서울',subRegion:'중구',category:'flower' };
   const rows = [
-    { ...base,id:'match',endDate:'20260905' }, { ...base,id:'different-region',region:'경기' },
-    { ...base,id:'different-subregion',subRegion:'종로구' }, { ...base,id:'later',startDate:'20260907',endDate:'20260910' }
+    {id:'match',title:'장미 정원축제',startDate:'20260905',endDate:'20260906',category:'flower',verification:{status:'source-checked',checkedAt:new Date().toISOString()}},
+    {id:'other',title:'국화 정원축제',startDate:'20260905',endDate:'20260906',category:'flower',verification:{status:'source-checked',checkedAt:new Date().toISOString()}}
   ].map(row=>events.normalizeEvent(row));
-  rows[0].status = { code:'ended',rank:9 };
-  const state = {events:rows,currentDate:new Date('2026-09-06T00:00:00Z'),eventSearchQuery:'정원',
-    eventFilter:{status:'weekend',flower:'rose',region:'서울',subRegion:'중구',date:'2026-09-05'}};
+  const state={events:rows,eventSearchQuery:'장미',eventFilter:{date:'2026-09-05'}};
   assert.deepEqual(Array.from(ui.filterEvents(state),row=>row.id),['match']);
-  state.eventFilter.date = '2026-09-06';
+  state.eventFilter.date='2026-09-07';
   assert.equal(ui.filterEvents(state).length,0);
-  state.eventFilter = {...state.eventFilter,status:'all',date:'2026-09-05'};
-  assert.equal(ui.filterEvents(state).length,1);
 });
 
 test('a detail error preserves the list row and a later retry clears the error without losing omitted list facts', async () => {
