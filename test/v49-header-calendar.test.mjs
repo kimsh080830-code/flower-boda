@@ -60,14 +60,13 @@ test('header/date and calendar CSS remain unboxed and have narrow-screen coverag
  assert.match(styles,/\.app-date-context\s*\{[^}]*grid-column:\s*1[^}]*min-width:\s*0[^}]*width:\s*fit-content[^}]*max-width:\s*100%[^}]*justify-items:\s*center[^}]*justify-self:\s*start[^}]*overflow:\s*hidden[^}]*text-align:\s*center/s);
  assert.match(styles,/\.header-actions\s*\{[^}]*grid-column:\s*2[^}]*gap:\s*0/s);
  assert.match(styles,/\.bloom-calendar-button,\.settings-button\{[^}]*width:44px[^}]*height:44px/s);
- assert.match(styles,/\.bloom-calendar-icon\{--bloom-calendar-icon:url\("data:image\/svg\+xml/);
- assert.match(styles,/%3Cellipse%20cx%3D%2212%22%20cy%3D%2212\.8%22/);
- assert.equal((styles.match(/%3Cellipse/g)||[]).filter(Boolean).length>=5,true);
+ assert.match(styles,/\.bloom-calendar-icon\{width:24px;height:24px;--bloom-calendar-icon:url\("data:image\/png;base64,/);
  assert.match(styles,/\.app-date-context time\{[^}]*max-width:100%[^}]*text-overflow:ellipsis[^}]*color:var\(--ink\)/s);
  assert.match(styles,/\.app-season-context\{[^}]*color:var\(--muted\)/s);
  assert.match(styles,/\.app-date-context time\{[^}]*font-size:\.9rem/s);
  assert.match(styles,/@media\(max-width:359px\)\{[^}]*\.app-date-context time\{font-size:\.82rem\}/s);
  assert.match(styles,/\.bloom-calendar-icon,\.settings-slider-icon\{[^}]*width:22px[^}]*height:22px[^}]*background:currentColor/s);
+ assert.match(styles,/\.bloom-calendar-icon\{width:24px;height:24px;/);
  assert.doesNotMatch(styles,/\.app-date-context\s*\{[^}]*width:\s*\d+px/s);
  assert.match(styles,/\.bloom-calendar-grid\{[^}]*repeat\(7,minmax\(0,1fr\)\)/s);
  assert.doesNotMatch(styles,/\.app-date-context\{[^}]*box-shadow/s);
