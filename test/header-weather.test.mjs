@@ -15,11 +15,11 @@ function weatherModule() {
   return vm.runInContext('__mods["js/weatherService.js"]',context);
 }
 
-function renderHeader(currentWeather) {
+function renderHeader(currentWeather,currentWeatherStatus=currentWeather?'ready':'loading') {
   const context=vm.createContext({Date,Intl,Number});
   vm.runInContext(`const __mods=Object.create(null);\n${dateSource}\n__mods["js/ui/dom.js"]={el:(tag,props={},children=[])=>({tag,props,children})};\n${shellSource}`,context);
   const shell=vm.runInContext('__mods["js/ui/screens/shell.js"]',context);
-  return shell.renderAppHeader({currentDate:new Date('2026-09-21T12:00:00+09:00'),currentWeather});
+  return shell.renderAppHeader({currentDate:new Date('2026-09-21T12:00:00+09:00'),currentWeather,currentWeatherStatus});
 }
 
 function dateContext(header) {return header.children[0].children[0];}
@@ -60,12 +60,18 @@ test('weather API failure is contained',async()=>{
   assert.equal(result,null);
 });
 
-test('header keeps the date and season when weather is unavailable',()=>{
-  const date=dateContext(renderHeader(null));
+test('header keeps the weather line visible while current weather is loading',()=>{
+  const date=dateContext(renderHeader(null,'loading'));
   assert.equal(date.tag,'div');
   assert.equal(date.props.dataset,undefined);
   assert.equal(date.children[0].props.text,'2026.09.21');
-  assert.equal(date.children[1].props.text,'가을');
+  assert.equal(date.children[1].props.text,'가을 · 날씨 불러오는 중…');
+});
+
+test('header keeps the weather line visible when current weather fails',()=>{
+  const date=dateContext(renderHeader(null,'error'));
+  assert.equal(date.children[0].props.text,'2026.09.21');
+  assert.equal(date.children[1].props.text,'가을 · 날씨 정보 없음');
 });
 
 test('header shows date first and compact weather on the second line',()=>{

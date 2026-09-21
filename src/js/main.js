@@ -26,6 +26,7 @@ const state = {
   currentDate: new Date(),
   currentSeason: getSeason(new Date()),
   currentWeather: null,
+  currentWeatherStatus: 'loading',
   selectedFlower: null,
   selectedCandidateId: null,
   analysisResult: null,
@@ -1224,7 +1225,11 @@ function init() {
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>applyTheme(state.settings.theme));
   stopDateTracking=runtimeHooks.startDateTracking({state,refreshCurrentDate});
   render();
-  void loadCurrentWeather().then(weather=>{if(weather){state.currentWeather=weather;render();}});
+  void loadCurrentWeather().then(weather=>{
+    state.currentWeather=weather;
+    state.currentWeatherStatus=weather?'ready':'error';
+    render();
+  });
   if(state.detail?.type==='flower') state.recentFlowerIds=rememberFlower(state.detail.id,state.settings.recentEnabled);
   loadEventData();
   if (!new URLSearchParams(location.search).has('noRemoteImages')) loadReferenceImages();

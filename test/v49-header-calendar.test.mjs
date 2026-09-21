@@ -21,6 +21,8 @@ test('global header keeps date informational and provides separate bloom calenda
  assert.match(shell,/weather\?\.condition && Number\.isFinite\(weather\.temperature\)/);
  assert.match(shell,/\`\$\{weather\.condition\} · \$\{weather\.temperature\}°\`/);
  assert.match(shell,/className:'app-season-context',text:contextText/);
+ assert.match(shell,/날씨 불러오는 중…/);
+ assert.match(shell,/날씨 정보 없음/);
  assert.match(shell,/getSeason\(state\.currentDate\)/);
  assert.doesNotMatch(shell,/date\.solarTerm/);
  assert.match(shell,/className:'bloom-calendar-button'.*action:'open-bloom-calendar'.*ariaLabel:'만개달력'/);
@@ -37,6 +39,12 @@ test('date presentation keeps legacy season compatibility while exposing officia
  assert.equal(d.getSolarTerm(new Date('2026-09-06T12:00:00+09:00')),'처서');
  assert.equal(d.getSolarTerm(new Date('2026-09-23T12:00:00+09:00')),'추분');
 });
+test('weather lifecycle keeps an explicit loading, ready or error state',()=>{
+ assert.match(main,/currentWeatherStatus:\s*'loading'/);
+ assert.match(main,/state\.currentWeatherStatus=weather\?'ready':'error'/);
+ assert.match(main,/state\.currentWeather=weather/);
+});
+
 test('all tabs share the single shell header and the dedicated action opens one common bloom calendar',()=>{
  assert.equal((html.match(/function renderAppHeader\(/g)||[]).length,1);
  assert.match(main,/case 'open-bloom-calendar'/);

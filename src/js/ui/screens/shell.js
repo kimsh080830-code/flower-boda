@@ -5,8 +5,13 @@ function renderAppHeader(state) {
   const date=getDatePresentation(state.currentDate);
   const season=getSeason(state.currentDate);
   const weather=state.currentWeather;
+  const weatherStatus=state.currentWeatherStatus || (weather ? 'ready' : 'loading');
   const weatherText=weather?.condition && Number.isFinite(weather.temperature) ? `${weather.condition} · ${weather.temperature}°` : '';
-  const contextText=weatherText ? `${season} · ${weatherText}` : season;
+  const contextText=weatherStatus==='ready' && weatherText
+    ? `${season} · ${weatherText}`
+    : weatherStatus==='error'
+      ? `${season} · 날씨 정보 없음`
+      : `${season} · 날씨 불러오는 중…`;
   return el('header', { className: 'app-header' }, [
     el('div', { className: 'app-header-inner' }, [
       el('div',{className:'app-date-context'},[
