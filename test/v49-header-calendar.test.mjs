@@ -49,7 +49,7 @@ test('header/date and calendar CSS remain unboxed and have narrow-screen coverag
  assert.match(styles,/\.app-date-context\{[^}]*border:\s*0[^}]*background:\s*transparent/s);
  assert.match(styles,/\.app-header-inner\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\) auto/s);
  assert.match(styles,/\.app-header-inner\s*\{[^}]*min-height:\s*58px/s);
- assert.match(styles,/\.app-date-context\s*\{[^}]*grid-column:\s*1[^}]*min-width:\s*0[^}]*width:\s*100%[^}]*justify-items:\s*center[^}]*overflow:\s*hidden[^}]*text-align:\s*center/s);
+ assert.match(styles,/\.app-date-context\s*\{[^}]*grid-column:\s*1[^}]*min-width:\s*0[^}]*width:\s*fit-content[^}]*max-width:\s*100%[^}]*justify-items:\s*center[^}]*justify-self:\s*start[^}]*overflow:\s*hidden[^}]*text-align:\s*center/s);
  assert.match(styles,/\.header-actions\s*\{[^}]*grid-column:\s*2[^}]*gap:\s*0/s);
  assert.match(styles,/\.bloom-calendar-button,\.settings-button\{[^}]*width:44px[^}]*height:44px/s);
  assert.match(styles,/\.bloom-calendar-icon\{--bloom-calendar-icon:url\("data:image\/svg\+xml/);

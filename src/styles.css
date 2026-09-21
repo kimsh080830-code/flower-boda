@@ -91,12 +91,14 @@ img { display: block; max-width: 100%; }
 .app-date-context {
   grid-column: 1;
   min-width: 0;
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   min-height: 44px;
   padding: 0;
   display: grid;
   place-content: center;
   justify-items: center;
+  justify-self: start;
   gap: 3px;
   overflow: hidden;
   border: 0;
