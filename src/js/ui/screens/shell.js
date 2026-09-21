@@ -1,16 +1,15 @@
 __mods["js/ui/screens/shell.js"] = (() => {
 const { el } = __mods["js/ui/dom.js"];
 function renderAppHeader(state) {
-  const {getDatePresentation,getSeason}=__mods['js/dateUtils.js'];
+  const {getDatePresentation}=__mods['js/dateUtils.js'];
   const date=getDatePresentation(state.currentDate);
-  const season=getSeason(state.currentDate);
   const weather=state.currentWeather;
-  const weatherText=weather?.condition && Number.isFinite(weather.temperature) ? ` · ${weather.condition} ${weather.temperature}°` : '';
+  const weatherText=weather?.condition && Number.isFinite(weather.temperature) ? `${weather.condition} · ${weather.temperature}°` : '';
   return el('header', { className: 'app-header' }, [
     el('div', { className: 'app-header-inner' }, [
       el('div',{className:'app-date-context'},[
-        el('time',{dateTime:date.day,text:`${date.label}${weatherText}`}),
-        el('small',{className:'app-season-context',text:`${season} · ${date.solarTerm}`})
+        el('time',{dateTime:date.day,text:date.label}),
+        el('small',{className:'app-season-context',text:weatherText})
       ]),
       el('div',{className:'header-actions'},[
         el('button',{type:'button',className:'bloom-calendar-button',dataset:{action:'open-bloom-calendar'},ariaLabel:'만개달력'},[el('span',{className:'bloom-calendar-icon','aria-hidden':'true'})]),

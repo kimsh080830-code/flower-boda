@@ -60,19 +60,19 @@ test('weather API failure is contained',async()=>{
   assert.equal(result,null);
 });
 
-test('header keeps date, season and solar term when weather is unavailable',()=>{
+test('header keeps the date and omits the weather line when weather is unavailable',()=>{
   const date=dateContext(renderHeader(null));
   assert.equal(date.tag,'div');
   assert.equal(date.props.dataset,undefined);
   assert.equal(date.children[0].props.text,'2026.09.21');
-  assert.equal(date.children[1].props.text,'가을 · 백로');
+  assert.equal(date.children[1].props.text,'');
 });
 
-test('header appends short weather text without changing its second line',()=>{
+test('header shows date first and compact weather on the second line',()=>{
   const header=renderHeader({condition:'맑음',temperature:24});
   const date=dateContext(header);
-  assert.equal(date.children[0].props.text,'2026.09.21 · 맑음 24°');
-  assert.equal(date.children[1].props.text,'가을 · 백로');
+  assert.equal(date.children[0].props.text,'2026.09.21');
+  assert.equal(date.children[1].props.text,'맑음 · 24°');
   const [calendarButton,settingsButton]=header.children[0].children[1].children;
   assert.equal(calendarButton.props.ariaLabel,'만개달력');
   assert.equal(calendarButton.props.dataset.action,'open-bloom-calendar');
@@ -80,8 +80,8 @@ test('header appends short weather text without changing its second line',()=>{
   assert.equal(settingsButton.props.dataset.action,'go-settings');
 });
 
-test('header keeps the full year, weather and temperature for its longest supported label',()=>{
+test('header keeps the full year and moves the longest supported weather label to line two',()=>{
   const date=dateContext(renderHeader({condition:'구름 조금',temperature:24}));
-  assert.equal(date.children[0].props.text,'2026.09.21 · 구름 조금 24°');
-  assert.equal(date.children[1].props.text,'가을 · 백로');
+  assert.equal(date.children[0].props.text,'2026.09.21');
+  assert.equal(date.children[1].props.text,'구름 조금 · 24°');
 });

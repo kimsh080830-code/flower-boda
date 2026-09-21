@@ -17,10 +17,11 @@ test('global header keeps date informational and provides separate bloom calenda
  const dateLine=shell.split('\n').find(line=>line.includes("className:'app-date-context'")) || '';
  assert.match(dateLine,/el\('div'/);
  assert.doesNotMatch(dateLine,/button|open-bloom-calendar/);
- assert.match(shell,/dateTime:date\.day,text:`\$\{date\.label\}\$\{weatherText\}`/);
+ assert.match(shell,/dateTime:date\.day,text:date\.label/);
  assert.match(shell,/weather\?\.condition && Number\.isFinite\(weather\.temperature\)/);
- assert.match(shell,/text:`\$\{season\} · \$\{date\.solarTerm\}`/);
- assert.match(shell,/getSeason\(state\.currentDate\)/);
+ assert.match(shell,/\`\$\{weather\.condition\} · \$\{weather\.temperature\}°\`/);
+ assert.match(shell,/className:'app-season-context',text:weatherText/);
+ assert.doesNotMatch(shell,/date\.solarTerm|getSeason\(state\.currentDate\)/);
  assert.match(shell,/className:'bloom-calendar-button'.*action:'open-bloom-calendar'.*ariaLabel:'만개달력'/);
  assert.equal((shell.match(/action:'open-bloom-calendar'/g)||[]).length,1);
  assert.match(shell,/action:'go-settings'/);
