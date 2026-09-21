@@ -20,8 +20,9 @@ test('global header keeps date informational and provides separate bloom calenda
  assert.match(shell,/dateTime:date\.day,text:date\.label/);
  assert.match(shell,/weather\?\.condition && Number\.isFinite\(weather\.temperature\)/);
  assert.match(shell,/\`\$\{weather\.condition\} · \$\{weather\.temperature\}°\`/);
- assert.match(shell,/className:'app-season-context',text:weatherText/);
- assert.doesNotMatch(shell,/date\.solarTerm|getSeason\(state\.currentDate\)/);
+ assert.match(shell,/className:'app-season-context',text:contextText/);
+ assert.match(shell,/getSeason\(state\.currentDate\)/);
+ assert.doesNotMatch(shell,/date\.solarTerm/);
  assert.match(shell,/className:'bloom-calendar-button'.*action:'open-bloom-calendar'.*ariaLabel:'만개달력'/);
  assert.equal((shell.match(/action:'open-bloom-calendar'/g)||[]).length,1);
  assert.match(shell,/action:'go-settings'/);
@@ -48,13 +49,14 @@ test('header/date and calendar CSS remain unboxed and have narrow-screen coverag
  assert.match(styles,/\.app-date-context\{[^}]*border:\s*0[^}]*background:\s*transparent/s);
  assert.match(styles,/\.app-header-inner\s*\{[^}]*grid-template-columns:\s*minmax\(0,1fr\) auto/s);
  assert.match(styles,/\.app-header-inner\s*\{[^}]*min-height:\s*58px/s);
- assert.match(styles,/\.app-date-context\s*\{[^}]*grid-column:\s*1[^}]*min-width:\s*0[^}]*width:\s*100%[^}]*overflow:\s*hidden[^}]*text-align:\s*left/s);
+ assert.match(styles,/\.app-date-context\s*\{[^}]*grid-column:\s*1[^}]*min-width:\s*0[^}]*width:\s*100%[^}]*justify-items:\s*center[^}]*overflow:\s*hidden[^}]*text-align:\s*center/s);
  assert.match(styles,/\.header-actions\s*\{[^}]*grid-column:\s*2[^}]*gap:\s*0/s);
  assert.match(styles,/\.bloom-calendar-button,\.settings-button\{[^}]*width:44px[^}]*height:44px/s);
  assert.match(styles,/\.bloom-calendar-icon\{--bloom-calendar-icon:url\("data:image\/svg\+xml/);
  assert.match(styles,/\.app-date-context time\{[^}]*max-width:100%[^}]*text-overflow:ellipsis[^}]*color:var\(--ink\)/s);
  assert.match(styles,/\.app-season-context\{[^}]*color:var\(--muted\)/s);
- assert.match(styles,/@media\(max-width:359px\)\{[^}]*\.app-date-context time\{font-size:\.76rem\}/s);
+ assert.match(styles,/\.app-date-context time\{[^}]*font-size:\.9rem/s);
+ assert.match(styles,/@media\(max-width:359px\)\{[^}]*\.app-date-context time\{font-size:\.82rem\}/s);
  assert.match(styles,/\.bloom-calendar-icon,\.settings-slider-icon\{[^}]*width:22px[^}]*height:22px[^}]*background:currentColor/s);
  assert.doesNotMatch(styles,/\.app-date-context\s*\{[^}]*width:\s*\d+px/s);
  assert.match(styles,/\.bloom-calendar-grid\{[^}]*repeat\(7,minmax\(0,1fr\)\)/s);
