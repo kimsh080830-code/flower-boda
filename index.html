@@ -92,47 +92,27 @@ img { display: block; max-width: 100%; }
   min-height: 58px;
   padding: 9px 18px;
   display: grid;
-  grid-template-columns: minmax(0,1fr) auto 44px;
+  grid-template-columns: minmax(0,1fr) auto;
   align-items: center;
-  gap: 8px;
-}
-.brand-block {
-  min-width: 0;
-  min-height: 44px;
-  display: grid;
-  align-content: center;
-  gap: 1px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.brand-block:active { opacity: .72; }
-.app-brand {
-  color: var(--ink);
-  font-size: 1rem;
-  line-height: 1.15;
-  font-weight: 800;
-  letter-spacing: -.035em;
+  gap: 4px;
 }
 .app-date-context {
+  grid-column: 1;
   min-width: 0;
+  width: 100%;
   min-height: 44px;
   padding: 0;
   display: grid;
-  place-content: center end;
+  place-content: center start;
   gap: 3px;
+  overflow: hidden;
   border: 0;
   background: transparent;
-  color: var(--muted);
+  color: var(--ink);
   line-height: 1.2;
-  text-align: right;
-  cursor: pointer;
+  text-align: left;
 }
+.header-actions { grid-column: 2; display: flex; flex: 0 0 auto; align-items: center; gap: 0; }
 
 .screen {
   width: min(100%, var(--max-width));
@@ -1249,8 +1229,8 @@ body.is-modal-open { overflow: hidden; }
 @media(max-width:360px) { .personal-actions .btn { flex:1 1 auto; } .observation-record-heading { gap:8px; } }
 
 
-.app-header-inner{gap:8px}.app-date-context{white-space:nowrap;max-width:none}
-.settings-button{flex:0 0 44px;width:44px;height:44px;border:0;background:transparent;font-size:24px;color:var(--ink);border-radius:var(--radius-control);cursor:pointer}
+.app-date-context{white-space:nowrap;max-width:none}
+.bloom-calendar-button,.settings-button{flex:0 0 44px;width:44px;height:44px;border:0;background:transparent;font-size:24px;color:var(--ink);border-radius:var(--radius-control);cursor:pointer}
 .home-screen{padding-top:12px}.home-find-panel{margin-bottom:12px}.editorial-feature-image{aspect-ratio:16/8;max-height:240px;object-fit:cover}
 .editorial-feature-copy h1{margin:0;font-size:1.65rem;letter-spacing:-.04em}.editorial-feature-meta .save-button{margin-left:auto;min-height:44px}
 .feature-description{margin:0;line-height:1.5}
@@ -1272,7 +1252,7 @@ body.is-modal-open { overflow: hidden; }
 .bloom-calendar-heading{min-height:56px;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:8px}.bloom-calendar-heading strong{text-align:center;color:var(--ink);font-size:.9rem}.bloom-calendar-month-button{width:44px;height:44px;border:0;background:transparent;border-radius:0;color:var(--text);font-size:1.35rem;cursor:pointer}
 .bloom-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}.bloom-calendar-weekday,.bloom-calendar-day,.bloom-calendar-empty{min-width:0;display:grid;place-items:center}.bloom-calendar-weekday{height:32px;color:var(--muted);font-size:.7rem}.bloom-calendar-day{height:42px;border-radius:50%;color:var(--text);font-size:.8rem;font-variant-numeric:tabular-nums}.bloom-calendar-day.is-today{font-weight:800;color:var(--accent-strong);outline:1px solid var(--accent);outline-offset:-6px}
 [data-theme=dark] .bloom-calendar-panel{background:var(--bg)}
-@media(max-width:359px){.bloom-calendar-panel{padding-left:12px;padding-right:12px}.bloom-calendar-day{height:40px}.app-brand{font-size:.94rem}.app-date-context time{font-size:.66rem}.app-season-context{font-size:.56rem}}
+@media(max-width:359px){.bloom-calendar-panel{padding-left:12px;padding-right:12px}.bloom-calendar-day{height:40px}.app-date-context time{font-size:.76rem}.app-season-context{font-size:.6rem}}
 .calendar-heading{display:flex;justify-content:space-between;align-items:center}.calendar-heading .btn{width:44px;min-height:44px}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}.calendar-weekday{text-align:center;color:var(--muted);font-size:.72rem;padding:8px 0}.calendar-day{min-width:0;height:44px;display:grid;place-items:center;border:0;border-radius:var(--radius-small);background:var(--surface-soft);font:inherit;font-size:.82rem;color:var(--text);cursor:pointer}.calendar-day[aria-pressed=true]{background:var(--accent-strong);color:white}.calendar-day.is-disabled{background:transparent;color:var(--muted-2);cursor:default;pointer-events:none}.visit-selection{font-size:.78rem}.event-calendar-section>.btn{width:100%;margin-top:8px;min-height:46px}
 button:not(:disabled){transition:transform .12s ease,background-color .16s ease,color .16s ease}button:active:not(:disabled){transform:translateY(1px)}.screen{animation:screen-enter .16s ease-out}.save-button[aria-pressed=true]{color:var(--accent-strong);background:var(--accent-soft)}@keyframes screen-enter{from{opacity:.75;transform:translateY(3px)}to{opacity:1;transform:none}}
 .section-action,.btn-small{min-height:44px}.detail-favorite-button{min-height:44px}.status{white-space:nowrap}button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
@@ -1290,9 +1270,9 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
 .feature-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px}
 .editorial-feature-copy{padding:12px 14px;gap:9px}
 
-.app-date-context{display:grid;justify-items:end;gap:3px;white-space:nowrap;padding:0;border:0;border-radius:0;background:transparent}
-.app-date-context time{font-size:.72rem;font-weight:650;font-variant-numeric:tabular-nums}.app-season-context{font-size:.61rem;font-weight:500;color:var(--muted)}
-.settings-button{display:grid;place-items:center}.settings-slider-icon{width:22px;height:22px;background:currentColor;mask:var(--settings-icon) center/contain no-repeat;-webkit-mask:var(--settings-icon) center/contain no-repeat}
+.app-date-context{display:grid;justify-items:start;gap:3px;white-space:nowrap;padding:0;border:0;border-radius:0;background:transparent}
+.app-date-context time{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-size:.82rem;font-weight:650;font-variant-numeric:tabular-nums}.app-season-context{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.65rem;font-weight:500;color:var(--muted)}
+.bloom-calendar-button,.settings-button{display:grid;place-items:center}.bloom-calendar-icon,.settings-slider-icon{width:22px;height:22px;background:currentColor;mask-position:center;mask-size:contain;mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:contain;-webkit-mask-repeat:no-repeat}.bloom-calendar-icon{mask-image:var(--bloom-calendar-icon);-webkit-mask-image:var(--bloom-calendar-icon)}.settings-slider-icon{mask-image:var(--settings-icon);-webkit-mask-image:var(--settings-icon)}
 .feature-context{margin:10px 0;display:grid;gap:6px;font-size:.75rem;line-height:1.5}.feature-context>div{display:flex;gap:10px;min-width:0}.feature-context dt{flex:0 0 78px;color:var(--muted)}.feature-context dd{margin:0;min-width:0;color:var(--text)}.feature-context>div:last-child dd{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .feature-identification{margin:12px 0 5px;padding:12px 0 6px;border-top:1px solid var(--line)}.feature-identification h2{margin:0 0 5px;font-size:.87rem;font-weight:800;color:var(--ink)}.feature-identification p{margin:0;font-size:.8rem;line-height:1.65;color:var(--text)}
 .detail-identification>summary{font-size:1rem;font-weight:800;color:var(--ink)}.detail-identification .detail-disclosure-body>p:first-child{font-size:.9rem;line-height:1.8;color:var(--text);font-weight:550}
@@ -1314,9 +1294,10 @@ button:not(:disabled){transition:transform .12s ease,background-color .16s ease,
 [data-theme=dark] .feature-description,[data-theme=dark] .detail-summary,[data-theme=dark] .detail-disclosure-body{color:var(--text)}
 [data-theme=dark] .status-off-season,[data-theme=dark] .status-ended,[data-theme=dark] .status-unknown,[data-theme=dark] .nav-item:not(.is-active),[data-theme=dark] .search-glyph{color:var(--muted)}
 [data-theme=dark] .status-upcoming{color:#e4c28d}[data-theme=dark] .form-error{color:var(--error-text)}
-@media(max-width:359px){.app-date-context time{font-size:.69rem}.app-season-context{font-size:.58rem}.bloom-flow:not(.is-compact){font-size:.6rem;gap:2px}}
+@media(max-width:359px){.app-date-context time{font-size:.76rem}.app-season-context{font-size:.6rem}.bloom-flow:not(.is-compact){font-size:.6rem;gap:2px}}
 
 .settings-slider-icon{--settings-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%206h3m4%200h9M4%2012h9m4%200h3M4%2018h3m4%200h9%22/%3E%3Ccircle%20cx%3D%229%22%20cy%3D%226%22%20r%3D%222%22/%3E%3Ccircle%20cx%3D%2215%22%20cy%3D%2212%22%20r%3D%222%22/%3E%3Ccircle%20cx%3D%229%22%20cy%3D%2218%22%20r%3D%222%22/%3E%3C/svg%3E")}
+.bloom-calendar-icon{--bloom-calendar-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223.5%22%20y%3D%224.5%22%20width%3D%2217%22%20height%3D%2216%22%20rx%3D%222%22/%3E%3Cpath%20d%3D%22M7%202.5v4M17%202.5v4M3.5%209h17%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212.5%22%20r%3D%221.35%22/%3E%3Ccircle%20cx%3D%2214%22%20cy%3D%2214.5%22%20r%3D%221.35%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2216.5%22%20r%3D%221.35%22/%3E%3Ccircle%20cx%3D%2210%22%20cy%3D%2214.5%22%20r%3D%221.35%22/%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2214.5%22%20r%3D%22.7%22/%3E%3C/svg%3E")}
 
 .bloom-symbol-4{--bloom-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12%2021V10M12%2010C8%2010%208%205%2010%203L12%205L14%203C16%205%2016%2010%2012%2010ZM12%2016L7%2013M12%2018L17%2015M5%2020L7%2019M18%2020L20%2021%22/%3E%3C/svg%3E")}
 
@@ -2097,7 +2078,7 @@ html[data-text-size="large"] .feature-description { -webkit-line-clamp: 3; }
   <div id="app"></div>
   <script>"use strict";
 globalThis.__FLOWER_APP_DEV__=true;
-globalThis.__FLOWER_APP_DEV_PAYLOAD__={"audit":{"version":"V61","generatedAt":"2026-09-19T15:11:26.893Z","ok":true,"issues":[],"summary":{"total":0,"errors":0,"reviews":0}},"imageAssets":{"version":"V56","assets":[{"flowerId":"adonis","filename":"adonis-01.webp","path":"assets/flowers/adonis-01.webp","role":"local-fallback"},{"flowerId":"aster","filename":"aster-01.webp","path":"assets/flowers/aster-01.webp","role":"local-fallback"},{"flowerId":"azalea-korean","filename":"azalea-korean-01.webp","path":"assets/flowers/azalea-korean-01.webp","role":"local-fallback"},{"flowerId":"balloon-flower","filename":"balloon-flower-01.webp","path":"assets/flowers/balloon-flower-01.webp","role":"local-fallback"},{"flowerId":"camellia","filename":"camellia-01.webp","path":"assets/flowers/camellia-01.webp","role":"local-fallback"},{"flowerId":"canola","filename":"canola-01.webp","path":"assets/flowers/canola-01.webp","role":"local-fallback"},{"flowerId":"cherry-blossom","filename":"cherry-blossom-01.webp","path":"assets/flowers/cherry-blossom-01.webp","role":"local-fallback"},{"flowerId":"chrysanthemum","filename":"chrysanthemum-01.webp","path":"assets/flowers/chrysanthemum-01.webp","role":"local-fallback"},{"flowerId":"coreopsis","filename":"coreopsis-01.webp","path":"assets/flowers/coreopsis-01.webp","role":"local-fallback"},{"flowerId":"cosmos","filename":"cosmos-01.webp","path":"assets/flowers/cosmos-01.webp","role":"local-fallback"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-01.webp","path":"assets/flowers/crape-myrtle-01.webp","role":"local-fallback"},{"flowerId":"cyclamen","filename":"cyclamen-01.webp","path":"assets/flowers/cyclamen-01.webp","role":"local-fallback"},{"flowerId":"daffodil","filename":"daffodil-01.webp","path":"assets/flowers/daffodil-01.webp","role":"local-fallback"},{"flowerId":"dandelion","filename":"dandelion-01.webp","path":"assets/flowers/dandelion-01.webp","role":"local-fallback"},{"flowerId":"forsythia","filename":"forsythia-01.webp","path":"assets/flowers/forsythia-01.webp","role":"local-fallback"},{"flowerId":"gaura","filename":"gaura-01.webp","path":"assets/flowers/gaura-01.webp","role":"local-fallback"},{"flowerId":"gerbera","filename":"gerbera-01.webp","path":"assets/flowers/gerbera-01.webp","role":"local-fallback"},{"flowerId":"globe-amaranth","filename":"globe-amaranth-01.webp","path":"assets/flowers/globe-amaranth-01.webp","role":"local-fallback"},{"flowerId":"hellebore","filename":"hellebore-01.webp","path":"assets/flowers/hellebore-01.webp","role":"local-fallback"},{"flowerId":"hydrangea","filename":"hydrangea-01.webp","path":"assets/flowers/hydrangea-01.webp","role":"local-fallback"},{"flowerId":"iris","filename":"iris-01.webp","path":"assets/flowers/iris-01.webp","role":"local-fallback"},{"flowerId":"lavender","filename":"lavender-01.webp","path":"assets/flowers/lavender-01.webp","role":"local-fallback"},{"flowerId":"lily","filename":"lily-01.webp","path":"assets/flowers/lily-01.webp","role":"local-fallback"},{"flowerId":"lotus","filename":"lotus-01.webp","path":"assets/flowers/lotus-01.webp","role":"local-fallback"},{"flowerId":"magnolia","filename":"magnolia-01.webp","path":"assets/flowers/magnolia-01.webp","role":"local-fallback"},{"flowerId":"marigold","filename":"marigold-01.webp","path":"assets/flowers/marigold-01.webp","role":"local-fallback"},{"flowerId":"morning-glory","filename":"morning-glory-01.webp","path":"assets/flowers/morning-glory-01.webp","role":"local-fallback"},{"flowerId":"mugunghwa","filename":"mugunghwa-01.webp","path":"assets/flowers/mugunghwa-01.webp","role":"local-fallback"},{"flowerId":"peony","filename":"peony-01.webp","path":"assets/flowers/peony-01.webp","role":"local-fallback"},{"flowerId":"plum-blossom-red","filename":"plum-blossom-red-01.webp","path":"assets/flowers/plum-blossom-red-01.webp","role":"local-fallback"},{"flowerId":"poppy","filename":"poppy-01.webp","path":"assets/flowers/poppy-01.webp","role":"local-fallback"},{"flowerId":"red-spider-lily","filename":"red-spider-lily-01.webp","path":"assets/flowers/red-spider-lily-01.webp","role":"local-fallback"},{"flowerId":"rose","filename":"rose-01.webp","path":"assets/flowers/rose-01.webp","role":"local-fallback"},{"flowerId":"royal-azalea","filename":"royal-azalea-01.webp","path":"assets/flowers/royal-azalea-01.webp","role":"local-fallback"},{"flowerId":"salvia","filename":"salvia-01.webp","path":"assets/flowers/salvia-01.webp","role":"local-fallback"},{"flowerId":"shasta-daisy","filename":"shasta-daisy-01.webp","path":"assets/flowers/shasta-daisy-01.webp","role":"local-fallback"},{"flowerId":"silver-grass","filename":"silver-grass-01.webp","path":"assets/flowers/silver-grass-01.webp","role":"local-fallback"},{"flowerId":"snowdrop","filename":"snowdrop-01.webp","path":"assets/flowers/snowdrop-01.webp","role":"local-fallback"},{"flowerId":"sunflower","filename":"sunflower-01.webp","path":"assets/flowers/sunflower-01.webp","role":"local-fallback"},{"flowerId":"trumpet-creeper","filename":"trumpet-creeper-01.webp","path":"assets/flowers/trumpet-creeper-01.webp","role":"local-fallback"},{"flowerId":"tulip","filename":"tulip-01.webp","path":"assets/flowers/tulip-01.webp","role":"local-fallback"},{"flowerId":"ume","filename":"ume-01.webp","path":"assets/flowers/ume-01.webp","role":"local-fallback"},{"flowerId":"verbena","filename":"verbena-01.webp","path":"assets/flowers/verbena-01.webp","role":"local-fallback"},{"flowerId":"zinnia","filename":"zinnia-01.webp","path":"assets/flowers/zinnia-01.webp","role":"local-fallback"},{"flowerId":"wintersweet","filename":"wintersweet-01.webp","path":"assets/flowers/wintersweet-01.webp","role":"local-fallback"},{"flowerId":"sasanqua","filename":"sasanqua-01.webp","path":"assets/flowers/sasanqua-01.webp","role":"local-fallback"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-01.webp","path":"assets/flowers/cornelian-cherry-01.webp","role":"local-fallback"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-01.webp","path":"assets/flowers/chinese-fringe-tree-01.webp","role":"local-fallback"},{"flowerId":"leopard-plant","filename":"leopard-plant-01.webp","path":"assets/flowers/leopard-plant-01.webp","role":"local-fallback"},{"flowerId":"red-clover","filename":"red-clover-01.webp","path":"assets/flowers/red-clover-01.webp","role":"local-fallback","source":"user-provided","author":"사용자 직접 촬영","license":"사용자 제공 사진"},{"flowerId":null,"filename":"flower-fallback-01.webp","path":"assets/flowers/flower-fallback-01.webp","role":"generic-fallback"}]},"externalImages":{"version":"V56","images":[{"flowerId":"sunflower","filename":"sunflower-reference-01.webp","source":"Wikimedia Commons","author":"Reji Jacob","sourceUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","license":"Public domain","licenseUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg"},{"flowerId":"mugunghwa","filename":"mugunghwa-reference-01.webp","source":"Wikimedia Commons","author":"PapiPijuan","sourceUrl":"https://commons.wikimedia.org/wiki/File:Hibiscus_syriacus_Flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hibiscus_syriacus_Flower.jpg/960px-Hibiscus_syriacus_Flower.jpg"},{"flowerId":"rose","filename":"rose-reference-01.webp","source":"Wikimedia Commons","author":"Bontempi1953","sourceUrl":"https://commons.wikimedia.org/wiki/File:Rose_double.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rose_double.jpg/1280px-Rose_double.jpg"},{"flowerId":"tulip","filename":"tulip-reference-01.webp","source":"Wikimedia Commons","author":"DanilWikiUser","sourceUrl":"https://commons.wikimedia.org/wiki/File:20260506_Tulip_closeup.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/a/ae/20260506_Tulip_closeup.jpg"},{"flowerId":"cosmos","filename":"cosmos-reference-01.webp","source":"Wikimedia Commons","author":"Joydeep","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cosmos_bipinnatus_pink,_Burdwan,_West_Bengal,_India_10_01_2013.jpg","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg/960px-Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg"},{"flowerId":"zinnia","filename":"zinnia-reference-01.webp","source":"Wikimedia Commons","author":"Sara Nabih","sourceUrl":"https://commons.wikimedia.org/wiki/File:Zinnia_elegans_flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Zinnia_elegans_flower.jpg/960px-Zinnia_elegans_flower.jpg"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-reference-01.webp","source":"Wikimedia Commons","author":"Juan Carlos Fonseca Mata","sourceUrl":"https://commons.wikimedia.org/wiki/File:Lagerstroemia_indica_4.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lagerstroemia_indica_4.jpg/960px-Lagerstroemia_indica_4.jpg"},{"flowerId":"hydrangea","filename":"hydrangea-reference-01.webp","source":"Wikimedia Commons","author":"Michele Dorsey Walfred","sourceUrl":"https://commons.wikimedia.org/wiki/File:Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"},{"flowerId":"wintersweet","filename":"wintersweet-reference-01.webp","source":"Wikimedia Commons","author":"M a n u e l","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg"},{"flowerId":"sasanqua","filename":"sasanqua-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Camellia_sasanqua.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-reference-01.webp","source":"Wikimedia Commons","author":"Doctoroftcm","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cornus_officinalis.JPG","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-reference-01.webp","source":"Wikimedia Commons","author":"Stickpen","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"},{"flowerId":"leopard-plant","filename":"leopard-plant-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Farfugium_japonicum.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg"}]}};
+globalThis.__FLOWER_APP_DEV_PAYLOAD__={"audit":{"version":"V61","generatedAt":"2026-09-21T02:26:44.385Z","ok":true,"issues":[],"summary":{"total":0,"errors":0,"reviews":0}},"imageAssets":{"version":"V56","assets":[{"flowerId":"adonis","filename":"adonis-01.webp","path":"assets/flowers/adonis-01.webp","role":"local-fallback"},{"flowerId":"aster","filename":"aster-01.webp","path":"assets/flowers/aster-01.webp","role":"local-fallback"},{"flowerId":"azalea-korean","filename":"azalea-korean-01.webp","path":"assets/flowers/azalea-korean-01.webp","role":"local-fallback"},{"flowerId":"balloon-flower","filename":"balloon-flower-01.webp","path":"assets/flowers/balloon-flower-01.webp","role":"local-fallback"},{"flowerId":"camellia","filename":"camellia-01.webp","path":"assets/flowers/camellia-01.webp","role":"local-fallback"},{"flowerId":"canola","filename":"canola-01.webp","path":"assets/flowers/canola-01.webp","role":"local-fallback"},{"flowerId":"cherry-blossom","filename":"cherry-blossom-01.webp","path":"assets/flowers/cherry-blossom-01.webp","role":"local-fallback"},{"flowerId":"chrysanthemum","filename":"chrysanthemum-01.webp","path":"assets/flowers/chrysanthemum-01.webp","role":"local-fallback"},{"flowerId":"coreopsis","filename":"coreopsis-01.webp","path":"assets/flowers/coreopsis-01.webp","role":"local-fallback"},{"flowerId":"cosmos","filename":"cosmos-01.webp","path":"assets/flowers/cosmos-01.webp","role":"local-fallback"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-01.webp","path":"assets/flowers/crape-myrtle-01.webp","role":"local-fallback"},{"flowerId":"cyclamen","filename":"cyclamen-01.webp","path":"assets/flowers/cyclamen-01.webp","role":"local-fallback"},{"flowerId":"daffodil","filename":"daffodil-01.webp","path":"assets/flowers/daffodil-01.webp","role":"local-fallback"},{"flowerId":"dandelion","filename":"dandelion-01.webp","path":"assets/flowers/dandelion-01.webp","role":"local-fallback"},{"flowerId":"forsythia","filename":"forsythia-01.webp","path":"assets/flowers/forsythia-01.webp","role":"local-fallback"},{"flowerId":"gaura","filename":"gaura-01.webp","path":"assets/flowers/gaura-01.webp","role":"local-fallback"},{"flowerId":"gerbera","filename":"gerbera-01.webp","path":"assets/flowers/gerbera-01.webp","role":"local-fallback"},{"flowerId":"globe-amaranth","filename":"globe-amaranth-01.webp","path":"assets/flowers/globe-amaranth-01.webp","role":"local-fallback"},{"flowerId":"hellebore","filename":"hellebore-01.webp","path":"assets/flowers/hellebore-01.webp","role":"local-fallback"},{"flowerId":"hydrangea","filename":"hydrangea-01.webp","path":"assets/flowers/hydrangea-01.webp","role":"local-fallback"},{"flowerId":"iris","filename":"iris-01.webp","path":"assets/flowers/iris-01.webp","role":"local-fallback"},{"flowerId":"lavender","filename":"lavender-01.webp","path":"assets/flowers/lavender-01.webp","role":"local-fallback"},{"flowerId":"lily","filename":"lily-01.webp","path":"assets/flowers/lily-01.webp","role":"local-fallback"},{"flowerId":"lotus","filename":"lotus-01.webp","path":"assets/flowers/lotus-01.webp","role":"local-fallback"},{"flowerId":"magnolia","filename":"magnolia-01.webp","path":"assets/flowers/magnolia-01.webp","role":"local-fallback"},{"flowerId":"marigold","filename":"marigold-01.webp","path":"assets/flowers/marigold-01.webp","role":"local-fallback"},{"flowerId":"morning-glory","filename":"morning-glory-01.webp","path":"assets/flowers/morning-glory-01.webp","role":"local-fallback"},{"flowerId":"mugunghwa","filename":"mugunghwa-01.webp","path":"assets/flowers/mugunghwa-01.webp","role":"local-fallback"},{"flowerId":"peony","filename":"peony-01.webp","path":"assets/flowers/peony-01.webp","role":"local-fallback"},{"flowerId":"plum-blossom-red","filename":"plum-blossom-red-01.webp","path":"assets/flowers/plum-blossom-red-01.webp","role":"local-fallback"},{"flowerId":"poppy","filename":"poppy-01.webp","path":"assets/flowers/poppy-01.webp","role":"local-fallback"},{"flowerId":"red-spider-lily","filename":"red-spider-lily-01.webp","path":"assets/flowers/red-spider-lily-01.webp","role":"local-fallback"},{"flowerId":"rose","filename":"rose-01.webp","path":"assets/flowers/rose-01.webp","role":"local-fallback"},{"flowerId":"royal-azalea","filename":"royal-azalea-01.webp","path":"assets/flowers/royal-azalea-01.webp","role":"local-fallback"},{"flowerId":"salvia","filename":"salvia-01.webp","path":"assets/flowers/salvia-01.webp","role":"local-fallback"},{"flowerId":"shasta-daisy","filename":"shasta-daisy-01.webp","path":"assets/flowers/shasta-daisy-01.webp","role":"local-fallback"},{"flowerId":"silver-grass","filename":"silver-grass-01.webp","path":"assets/flowers/silver-grass-01.webp","role":"local-fallback"},{"flowerId":"snowdrop","filename":"snowdrop-01.webp","path":"assets/flowers/snowdrop-01.webp","role":"local-fallback"},{"flowerId":"sunflower","filename":"sunflower-01.webp","path":"assets/flowers/sunflower-01.webp","role":"local-fallback"},{"flowerId":"trumpet-creeper","filename":"trumpet-creeper-01.webp","path":"assets/flowers/trumpet-creeper-01.webp","role":"local-fallback"},{"flowerId":"tulip","filename":"tulip-01.webp","path":"assets/flowers/tulip-01.webp","role":"local-fallback"},{"flowerId":"ume","filename":"ume-01.webp","path":"assets/flowers/ume-01.webp","role":"local-fallback"},{"flowerId":"verbena","filename":"verbena-01.webp","path":"assets/flowers/verbena-01.webp","role":"local-fallback"},{"flowerId":"zinnia","filename":"zinnia-01.webp","path":"assets/flowers/zinnia-01.webp","role":"local-fallback"},{"flowerId":"wintersweet","filename":"wintersweet-01.webp","path":"assets/flowers/wintersweet-01.webp","role":"local-fallback"},{"flowerId":"sasanqua","filename":"sasanqua-01.webp","path":"assets/flowers/sasanqua-01.webp","role":"local-fallback"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-01.webp","path":"assets/flowers/cornelian-cherry-01.webp","role":"local-fallback"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-01.webp","path":"assets/flowers/chinese-fringe-tree-01.webp","role":"local-fallback"},{"flowerId":"leopard-plant","filename":"leopard-plant-01.webp","path":"assets/flowers/leopard-plant-01.webp","role":"local-fallback"},{"flowerId":"red-clover","filename":"red-clover-01.webp","path":"assets/flowers/red-clover-01.webp","role":"local-fallback","source":"user-provided","author":"사용자 직접 촬영","license":"사용자 제공 사진"},{"flowerId":null,"filename":"flower-fallback-01.webp","path":"assets/flowers/flower-fallback-01.webp","role":"generic-fallback"}]},"externalImages":{"version":"V56","images":[{"flowerId":"sunflower","filename":"sunflower-reference-01.webp","source":"Wikimedia Commons","author":"Reji Jacob","sourceUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","license":"Public domain","licenseUrl":"https://commons.wikimedia.org/wiki/File:Sunflower_-a_close_up_view.jpg","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Sunflower_-a_close_up_view.jpg/1280px-Sunflower_-a_close_up_view.jpg"},{"flowerId":"mugunghwa","filename":"mugunghwa-reference-01.webp","source":"Wikimedia Commons","author":"PapiPijuan","sourceUrl":"https://commons.wikimedia.org/wiki/File:Hibiscus_syriacus_Flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Hibiscus_syriacus_Flower.jpg/960px-Hibiscus_syriacus_Flower.jpg"},{"flowerId":"rose","filename":"rose-reference-01.webp","source":"Wikimedia Commons","author":"Bontempi1953","sourceUrl":"https://commons.wikimedia.org/wiki/File:Rose_double.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rose_double.jpg/1280px-Rose_double.jpg"},{"flowerId":"tulip","filename":"tulip-reference-01.webp","source":"Wikimedia Commons","author":"DanilWikiUser","sourceUrl":"https://commons.wikimedia.org/wiki/File:20260506_Tulip_closeup.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/a/ae/20260506_Tulip_closeup.jpg"},{"flowerId":"cosmos","filename":"cosmos-reference-01.webp","source":"Wikimedia Commons","author":"Joydeep","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cosmos_bipinnatus_pink,_Burdwan,_West_Bengal,_India_10_01_2013.jpg","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg/960px-Cosmos_bipinnatus_pink%2C_Burdwan%2C_West_Bengal%2C_India_10_01_2013.jpg"},{"flowerId":"zinnia","filename":"zinnia-reference-01.webp","source":"Wikimedia Commons","author":"Sara Nabih","sourceUrl":"https://commons.wikimedia.org/wiki/File:Zinnia_elegans_flower.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Zinnia_elegans_flower.jpg/960px-Zinnia_elegans_flower.jpg"},{"flowerId":"crape-myrtle","filename":"crape-myrtle-reference-01.webp","source":"Wikimedia Commons","author":"Juan Carlos Fonseca Mata","sourceUrl":"https://commons.wikimedia.org/wiki/File:Lagerstroemia_indica_4.jpg","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Lagerstroemia_indica_4.jpg/960px-Lagerstroemia_indica_4.jpg"},{"flowerId":"hydrangea","filename":"hydrangea-reference-01.webp","source":"Wikimedia Commons","author":"Michele Dorsey Walfred","sourceUrl":"https://commons.wikimedia.org/wiki/File:Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg/1280px-Blue_Hydrangea_Mathilda_Gutges_-blueflower.jpg"},{"flowerId":"wintersweet","filename":"wintersweet-reference-01.webp","source":"Wikimedia Commons","author":"M a n u e l","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chimonanthus_praecox_(18248235374).jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chimonanthus_praecox_(18248235374).jpg"},{"flowerId":"sasanqua","filename":"sasanqua-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Camellia_sasanqua.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Camellia_sasanqua.jpg"},{"flowerId":"cornelian-cherry","filename":"cornelian-cherry-reference-01.webp","source":"Wikimedia Commons","author":"Doctoroftcm","sourceUrl":"https://commons.wikimedia.org/wiki/File:Cornus_officinalis.JPG","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Cornus_officinalis.JPG"},{"flowerId":"chinese-fringe-tree","filename":"chinese-fringe-tree-reference-01.webp","source":"Wikimedia Commons","author":"Stickpen","sourceUrl":"https://commons.wikimedia.org/wiki/File:Chionanthus_retusus.jpg","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","attributionRequired":false,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Chionanthus_retusus.jpg"},{"flowerId":"leopard-plant","filename":"leopard-plant-reference-01.webp","source":"Wikimedia Commons","author":"Juni","sourceUrl":"https://commons.wikimedia.org/wiki/File:Farfugium_japonicum.jpg","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","attributionRequired":true,"storage":"remote-reference","url":"https://commons.wikimedia.org/wiki/Special:Redirect/file/Farfugium_japonicum.jpg"}]}};
 const __mods=Object.create(null);
 __mods["js/config.js"] = (() => {
 const APP_CONFIG = Object.freeze({
@@ -2691,6 +2672,8 @@ const hooks = {
   beforeObservationSave: () => {},
   handleAction: () => false,
   handleChange: () => false,
+  syncDateState: () => false,
+  startDateTracking: () => () => {},
   todayFlowerContext: ({ date, storage }) => ({ date, storage }),
   relaySnapshot: (snapshot) => snapshot,
   resolveSyntheticAction: (_snapshot, action) => action,
@@ -2844,6 +2827,62 @@ function formatApiDate(value) {
   return new Intl.DateTimeFormat('ko-KR', { month: 'short', day: 'numeric' }).format(date);
 }
 return { "parseMonthDay": parseMonthDay, "getSeason": getSeason, "getDatePresentation": getDatePresentation, "getSolarTerm": getSolarTerm, "BLOOM_STAGES": BLOOM_STAGES, "formatBloomPeriod": formatBloomPeriod, "getBloomWindow": getBloomWindow, "getBloomStatus": getBloomStatus, "parseApiDate": parseApiDate, "getEventStatus": getEventStatus, "formatApiDate": formatApiDate };
+})();
+
+__mods["js/weatherService.js"] = (() => {
+const WEATHER_ENDPOINT='https://api.open-meteo.com/v1/forecast';
+const WEATHER_TIMEOUT_MS=8000;
+let currentWeatherPromise=null;
+
+function weatherCondition(code) {
+  if(code===0) return '맑음';
+  if(code===1 || code===2) return '구름 조금';
+  if(code===3 || code===45 || code===48) return '흐림';
+  if((code>=51 && code<=67) || (code>=80 && code<=82) || code>=95) return '비';
+  if((code>=71 && code<=77) || code===85 || code===86) return '눈';
+  return '';
+}
+
+function requestCurrentPosition(geolocation) {
+  return new Promise((resolve,reject)=>{
+    if(!geolocation?.getCurrentPosition) {reject(new Error('Geolocation unavailable'));return;}
+    geolocation.getCurrentPosition(
+      position=>resolve(position?.coords),
+      reject,
+      {enableHighAccuracy:false,timeout:8000,maximumAge:30*60*1000}
+    );
+  });
+}
+
+async function fetchCurrentWeather(coords,{fetchImpl=globalThis.fetch,setTimer=setTimeout,clearTimer=clearTimeout}={}) {
+  const latitude=Number(coords?.latitude),longitude=Number(coords?.longitude);
+  if(!Number.isFinite(latitude) || !Number.isFinite(longitude) || Math.abs(latitude)>90 || Math.abs(longitude)>180 || typeof fetchImpl!=='function') throw new Error('Invalid weather request');
+  const params=new URLSearchParams({latitude:String(latitude),longitude:String(longitude),current:'temperature_2m,weather_code',forecast_days:'1'});
+  const controller=new AbortController();
+  const timer=setTimer(()=>controller.abort(),WEATHER_TIMEOUT_MS);
+  try {
+    const response=await fetchImpl(`${WEATHER_ENDPOINT}?${params}`,{signal:controller.signal,headers:{Accept:'application/json'}});
+    if(!response?.ok) throw new Error('Weather request failed');
+    const payload=await response.json();
+    const temperature=Number(payload?.current?.temperature_2m);
+    const condition=weatherCondition(Number(payload?.current?.weather_code));
+    if(!Number.isFinite(temperature) || !condition) throw new Error('Invalid weather response');
+    return {condition,temperature:Math.round(temperature)};
+  } finally {
+    clearTimer(timer);
+  }
+}
+
+function loadCurrentWeather({geolocation=globalThis.navigator?.geolocation,fetchImpl=globalThis.fetch,setTimer=setTimeout,clearTimer=clearTimeout}={}) {
+  if(!currentWeatherPromise) {
+    currentWeatherPromise=requestCurrentPosition(geolocation)
+      .then(coords=>fetchCurrentWeather(coords,{fetchImpl,setTimer,clearTimer}))
+      .catch(()=>null);
+  }
+  return currentWeatherPromise;
+}
+
+return { weatherCondition, requestCurrentPosition, fetchCurrentWeather, loadCurrentWeather };
 })();
 
 __mods["js/flowerService.js"] = (() => {
@@ -6086,22 +6125,21 @@ return { "renderFlowerDetail": renderFlowerDetail, "renderEventDetail": renderEv
 __mods["js/ui/screens/shell.js"] = (() => {
 const { el } = __mods["js/ui/dom.js"];
 function renderAppHeader(state) {
-  const date=__mods['js/dateUtils.js'].getDatePresentation(state.currentDate);
+  const {getDatePresentation,getSeason}=__mods['js/dateUtils.js'];
+  const date=getDatePresentation(state.currentDate);
+  const season=getSeason(state.currentDate);
+  const weather=state.currentWeather;
+  const weatherText=weather?.condition && Number.isFinite(weather.temperature) ? ` · ${weather.condition} ${weather.temperature}°` : '';
   return el('header', { className: 'app-header' }, [
     el('div', { className: 'app-header-inner' }, [
-      el('button', {
-        type: 'button',
-        className: 'brand-block',
-        dataset: { action: 'go-home' },
-        ariaLabel: '홈으로 이동'
-      }, [
-        el('strong', { className: 'app-brand', text: '꽃을 보다' })
+      el('div',{className:'app-date-context'},[
+        el('time',{dateTime:date.day,text:`${date.label}${weatherText}`}),
+        el('small',{className:'app-season-context',text:`${season} · ${date.solarTerm}`})
       ]),
-      el('button',{type:'button',className:'app-date-context',dataset:{action:'open-bloom-calendar'},ariaLabel:`개화 달력 열기, ${date.label}, ${date.season} · ${date.solarTerm}`},[
-        el('time',{dateTime:date.day,text:date.label}),
-        el('small',{className:'app-season-context',text:`${date.season} · ${date.solarTerm}`})
-      ]),
-      el('button',{type:'button',className:'settings-button',dataset:{action:'go-settings'},ariaLabel:'설정'},[el('span',{className:'settings-slider-icon','aria-hidden':'true'})])
+      el('div',{className:'header-actions'},[
+        el('button',{type:'button',className:'bloom-calendar-button',dataset:{action:'open-bloom-calendar'},ariaLabel:'만개달력'},[el('span',{className:'bloom-calendar-icon','aria-hidden':'true'})]),
+        el('button',{type:'button',className:'settings-button',dataset:{action:'go-settings'},ariaLabel:'설정'},[el('span',{className:'settings-slider-icon','aria-hidden':'true'})])
+      ])
     ])
   ]);
 }
@@ -6151,6 +6189,7 @@ const { installRuntimeHooks } = __mods["js/runtimeHooks.js"];
 
 const runtime = { forceNetworkFailure:false };
 const devStorage = createMemoryStorage();
+const SEOUL_OFFSET_MS=9*60*60*1000;
 const DUPLICATE_CODES = new Set(['DUPLICATE_ID','DUPLICATE_SCIENTIFIC_NAME','ACCEPTED_NAME_CONFLICT','SYNONYM_CONFLICT','DATA_LINK_DUPLICATE']);
 const IMAGE_CODES = new Set(['IMAGE_MISSING','IMAGE_PATH_INVALID','IMAGE_PATH_NOT_FOUND','IMAGE_MANIFEST_MISSING','IMAGE_FILENAME_INVALID','ORPHAN_IMAGE_FILE','STALE_IMAGE_PATH_REFERENCE','DATA_LINK_MISMATCH']);
 const LICENSE_CODES = new Set(['LICENSE_MISSING']);
@@ -6228,9 +6267,10 @@ function runDevAudit(kind,flowers=[]) {
   return '';
 }
 
-function createState() {
+function createState(now=new Date()) {
   return {
-    devTodayFlowerDate: getDatePresentation(new Date()).day,
+    devTodayFlowerDate: getDatePresentation(now).day,
+    devTodayFlowerDateMode: 'auto',
     devTodayFlowerReport: '',
     devAuditReport: '',
     devNetworkFailure: false,
@@ -6249,8 +6289,36 @@ function shiftDevTodayDate(state, offset, render) {
   const base=devTodayDate(state);
   const next=new Date(base.getFullYear(),base.getMonth(),base.getDate()+offset,12);
   state.devTodayFlowerDate=getDatePresentation(next).day;
+  state.devTodayFlowerDateMode='manual';
   state.devTodayFlowerReport='';
   render();
+}
+
+function syncDevTodayFlowerDate(state,now=new Date()) {
+  if(state.devTodayFlowerDateMode==='manual') return false;
+  const today=getDatePresentation(now).day;
+  if(state.devTodayFlowerDate===today) return false;
+  state.devTodayFlowerDate=today;
+  state.devTodayFlowerReport='';
+  return true;
+}
+
+function millisecondsUntilNextSeoulDay(now=new Date()) {
+  const current=now instanceof Date ? now : new Date(now);
+  const [year,month,day]=getDatePresentation(current).day.split('-').map(Number);
+  const nextMidnight=Date.UTC(year,month-1,day+1)-SEOUL_OFFSET_MS;
+  return Math.max(1000,nextMidnight-current.getTime()+1000);
+}
+
+function startDevTodayFlowerDateTracking({refreshCurrentDate,now=()=>new Date(),setTimer=setTimeout,clearTimer=clearTimeout}={}) {
+  if(!APP_CONFIG.DEV_MODE || typeof refreshCurrentDate!=='function') return ()=>{};
+  let timer=null;
+  const schedule=()=>{
+    if(timer!==null) clearTimer(timer);
+    timer=setTimer(()=>{timer=null;refreshCurrentDate();schedule();},millisecondsUntilNextSeoulDay(now()));
+  };
+  schedule();
+  return ()=>{if(timer!==null){clearTimer(timer);timer=null;}};
 }
 
 function formatTodaySimulation(rows) {
@@ -6313,11 +6381,11 @@ function runTodayTest(state, kind, render) {
   render();
 }
 
-function handleAction({action,target,state,render}) {
+function handleAction({action,target,state,render,now=new Date()}) {
   switch(action) {
     case 'dev-today-prev': shiftDevTodayDate(state,-1,render); return true;
     case 'dev-today-next': shiftDevTodayDate(state,1,render); return true;
-    case 'dev-today-reset': resetDevTodayFlowerStorage();state.devTodayFlowerDate=getDatePresentation(new Date()).day;state.devTodayFlowerReport='';render();return true;
+    case 'dev-today-reset': resetDevTodayFlowerStorage();state.devTodayFlowerDateMode='auto';state.devTodayFlowerDate=getDatePresentation(now).day;state.devTodayFlowerReport='';render();return true;
     case 'dev-today-simulate': runTodayTest(state,'simulate',render); return true;
     case 'dev-today-zero': runTodayTest(state,'zero',render); return true;
     case 'dev-today-one': runTodayTest(state,'one',render); return true;
@@ -6342,7 +6410,7 @@ function handleAction({action,target,state,render}) {
 function handleChange({input,state,render}) {
   if(input.dataset.action!=='dev-today-date') return false;
   const parsed=parseApiDate(input.value);
-  if(parsed) {state.devTodayFlowerDate=getDatePresentation(parsed).day;state.devTodayFlowerReport='';render();}
+  if(parsed) {state.devTodayFlowerDate=getDatePresentation(parsed).day;state.devTodayFlowerDateMode='manual';state.devTodayFlowerReport='';render();}
   return true;
 }
 
@@ -6370,6 +6438,8 @@ installRuntimeHooks({
   beforeObservationSave: state => { if(state.devObservationSaveFailure) throw new Error('DEV 테스트: 관찰 기록 저장 실패'); },
   handleAction,
   handleChange,
+  syncDateState: ({state,now}) => syncDevTodayFlowerDate(state,now),
+  startDateTracking: startDevTodayFlowerDateTracking,
   todayFlowerContext: ({state,date,storage}) => ({date:parseApiDate(state.devTodayFlowerDate) || date,storage:getDevTodayFlowerStorage() || storage}),
   relaySnapshot,
   resolveSyntheticAction: (snapshot,action) => snapshot.synthetic ? 'dev-noop' : action,
@@ -6377,7 +6447,7 @@ installRuntimeHooks({
   renderSettingsExtra: state => __mods['js/ui/screens/devTools.js']?.renderDevTools?.(state) || null
 });
 
-return { setForceNetworkFailure, shouldForceNetworkFailure, getDevPayload, getDevTodayFlowerStorage, runDuplicateCheck, runDevAudit };
+return { setForceNetworkFailure, shouldForceNetworkFailure, getDevPayload, getDevTodayFlowerStorage, runDuplicateCheck, runDevAudit, createState, syncDevTodayFlowerDate, millisecondsUntilNextSeoulDay, startDevTodayFlowerDateTracking, handleAction, handleChange };
 })();
 
 __mods["js/ui/screens/devTools.js"] = (() => {
@@ -6737,6 +6807,7 @@ const { APP_CONFIG } = __mods["js/config.js"];
 const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { FLOWERS, getFlowerById } = __mods["js/data.js"];
 const { getSeason, getDatePresentation, parseApiDate } = __mods["js/dateUtils.js"];
+const { loadCurrentWeather } = __mods["js/weatherService.js"];
 const { getFlowerRelaySnapshot, startFlowerRelay } = __mods["js/flowerRelay.js"];
 const { analyzeFlower, preprocessImage, validateImageFile, FlowerServiceError } = __mods["js/flowerService.js"];
 const { getEvents, getEventDetail } = __mods["js/eventService.js"];
@@ -6758,6 +6829,7 @@ const state = {
   currentTab: 'home',
   currentDate: new Date(),
   currentSeason: getSeason(new Date()),
+  currentWeather: null,
   selectedFlower: null,
   selectedCandidateId: null,
   analysisResult: null,
@@ -6813,6 +6885,7 @@ let eventDetailController = null;
 let photoPrepareToken = 0;
 let referenceImageController = null;
 let toastTimer = null;
+let stopDateTracking = null;
 
 function render() {
   const panels={'encyclopedia-filter-panel':'filtersOpen','recent-flower-panel':'recentDetailsOpen'};
@@ -7889,8 +7962,10 @@ function initHistory() {
 
 function refreshCurrentDate() {
   const now=new Date(),getDate=__mods['js/dateUtils.js'].getDatePresentation;
-  if(getDate(now).day===getDate(state.currentDate).day)return;
-  state.currentDate=now;state.currentSeason=getSeason(now);render();
+  const currentDateChanged=getDate(now).day!==getDate(state.currentDate).day;
+  if(currentDateChanged) {state.currentDate=now;state.currentSeason=getSeason(now);}
+  const runtimeDateChanged=runtimeHooks.syncDateState({state,now});
+  if(currentDateChanged || runtimeDateChanged) render();
 }
 function init() {
   initHistory();
@@ -7943,6 +8018,7 @@ function init() {
     }
   });
   window.addEventListener('beforeunload', () => {
+    stopDateTracking?.();
     if (state.photo?.objectUrl) URL.revokeObjectURL(state.photo.objectUrl);
     analysisController?.abort();
     eventController?.abort();
@@ -7950,7 +8026,9 @@ function init() {
     referenceImageController?.abort();
   });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>applyTheme(state.settings.theme));
+  stopDateTracking=runtimeHooks.startDateTracking({state,refreshCurrentDate});
   render();
+  void loadCurrentWeather().then(weather=>{if(weather){state.currentWeather=weather;render();}});
   if(state.detail?.type==='flower') state.recentFlowerIds=rememberFlower(state.detail.id,state.settings.recentEnabled);
   loadEventData();
   if (!new URLSearchParams(location.search).has('noRemoteImages')) loadReferenceImages();
