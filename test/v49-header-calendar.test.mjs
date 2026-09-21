@@ -61,6 +61,8 @@ test('header/date and calendar CSS remain unboxed and have narrow-screen coverag
  assert.match(styles,/\.header-actions\s*\{[^}]*grid-column:\s*2[^}]*gap:\s*0/s);
  assert.match(styles,/\.bloom-calendar-button,\.settings-button\{[^}]*width:44px[^}]*height:44px/s);
  assert.match(styles,/\.bloom-calendar-icon\{--bloom-calendar-icon:url\("data:image\/svg\+xml/);
+ assert.match(styles,/%3Cellipse%20cx%3D%2212%22%20cy%3D%2212\.8%22/);
+ assert.equal((styles.match(/%3Cellipse/g)||[]).filter(Boolean).length>=5,true);
  assert.match(styles,/\.app-date-context time\{[^}]*max-width:100%[^}]*text-overflow:ellipsis[^}]*color:var\(--ink\)/s);
  assert.match(styles,/\.app-season-context\{[^}]*color:var\(--muted\)/s);
  assert.match(styles,/\.app-date-context time\{[^}]*font-size:\.9rem/s);
