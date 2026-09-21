@@ -5,6 +5,8 @@ const hooks = {
   beforeObservationSave: () => {},
   handleAction: () => false,
   handleChange: () => false,
+  syncDateState: () => false,
+  startDateTracking: () => () => {},
   todayFlowerContext: ({ date, storage }) => ({ date, storage }),
   relaySnapshot: (snapshot) => snapshot,
   resolveSyntheticAction: (_snapshot, action) => action,

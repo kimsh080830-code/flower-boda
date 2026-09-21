@@ -8,6 +8,7 @@ const { installRuntimeHooks } = __mods["js/runtimeHooks.js"];
 
 const runtime = { forceNetworkFailure:false };
 const devStorage = createMemoryStorage();
+const SEOUL_OFFSET_MS=9*60*60*1000;
 const DUPLICATE_CODES = new Set(['DUPLICATE_ID','DUPLICATE_SCIENTIFIC_NAME','ACCEPTED_NAME_CONFLICT','SYNONYM_CONFLICT','DATA_LINK_DUPLICATE']);
 const IMAGE_CODES = new Set(['IMAGE_MISSING','IMAGE_PATH_INVALID','IMAGE_PATH_NOT_FOUND','IMAGE_MANIFEST_MISSING','IMAGE_FILENAME_INVALID','ORPHAN_IMAGE_FILE','STALE_IMAGE_PATH_REFERENCE','DATA_LINK_MISMATCH']);
 const LICENSE_CODES = new Set(['LICENSE_MISSING']);
@@ -85,9 +86,10 @@ function runDevAudit(kind,flowers=[]) {
   return '';
 }
 
-function createState() {
+function createState(now=new Date()) {
   return {
-    devTodayFlowerDate: getDatePresentation(new Date()).day,
+    devTodayFlowerDate: getDatePresentation(now).day,
+    devTodayFlowerDateMode: 'auto',
     devTodayFlowerReport: '',
     devAuditReport: '',
     devNetworkFailure: false,
@@ -106,8 +108,36 @@ function shiftDevTodayDate(state, offset, render) {
   const base=devTodayDate(state);
   const next=new Date(base.getFullYear(),base.getMonth(),base.getDate()+offset,12);
   state.devTodayFlowerDate=getDatePresentation(next).day;
+  state.devTodayFlowerDateMode='manual';
   state.devTodayFlowerReport='';
   render();
+}
+
+function syncDevTodayFlowerDate(state,now=new Date()) {
+  if(state.devTodayFlowerDateMode==='manual') return false;
+  const today=getDatePresentation(now).day;
+  if(state.devTodayFlowerDate===today) return false;
+  state.devTodayFlowerDate=today;
+  state.devTodayFlowerReport='';
+  return true;
+}
+
+function millisecondsUntilNextSeoulDay(now=new Date()) {
+  const current=now instanceof Date ? now : new Date(now);
+  const [year,month,day]=getDatePresentation(current).day.split('-').map(Number);
+  const nextMidnight=Date.UTC(year,month-1,day+1)-SEOUL_OFFSET_MS;
+  return Math.max(1000,nextMidnight-current.getTime()+1000);
+}
+
+function startDevTodayFlowerDateTracking({refreshCurrentDate,now=()=>new Date(),setTimer=setTimeout,clearTimer=clearTimeout}={}) {
+  if(!APP_CONFIG.DEV_MODE || typeof refreshCurrentDate!=='function') return ()=>{};
+  let timer=null;
+  const schedule=()=>{
+    if(timer!==null) clearTimer(timer);
+    timer=setTimer(()=>{timer=null;refreshCurrentDate();schedule();},millisecondsUntilNextSeoulDay(now()));
+  };
+  schedule();
+  return ()=>{if(timer!==null){clearTimer(timer);timer=null;}};
 }
 
 function formatTodaySimulation(rows) {
@@ -170,11 +200,11 @@ function runTodayTest(state, kind, render) {
   render();
 }
 
-function handleAction({action,target,state,render}) {
+function handleAction({action,target,state,render,now=new Date()}) {
   switch(action) {
     case 'dev-today-prev': shiftDevTodayDate(state,-1,render); return true;
     case 'dev-today-next': shiftDevTodayDate(state,1,render); return true;
-    case 'dev-today-reset': resetDevTodayFlowerStorage();state.devTodayFlowerDate=getDatePresentation(new Date()).day;state.devTodayFlowerReport='';render();return true;
+    case 'dev-today-reset': resetDevTodayFlowerStorage();state.devTodayFlowerDateMode='auto';state.devTodayFlowerDate=getDatePresentation(now).day;state.devTodayFlowerReport='';render();return true;
     case 'dev-today-simulate': runTodayTest(state,'simulate',render); return true;
     case 'dev-today-zero': runTodayTest(state,'zero',render); return true;
     case 'dev-today-one': runTodayTest(state,'one',render); return true;
@@ -199,7 +229,7 @@ function handleAction({action,target,state,render}) {
 function handleChange({input,state,render}) {
   if(input.dataset.action!=='dev-today-date') return false;
   const parsed=parseApiDate(input.value);
-  if(parsed) {state.devTodayFlowerDate=getDatePresentation(parsed).day;state.devTodayFlowerReport='';render();}
+  if(parsed) {state.devTodayFlowerDate=getDatePresentation(parsed).day;state.devTodayFlowerDateMode='manual';state.devTodayFlowerReport='';render();}
   return true;
 }
 
@@ -227,6 +257,8 @@ installRuntimeHooks({
   beforeObservationSave: state => { if(state.devObservationSaveFailure) throw new Error('DEV 테스트: 관찰 기록 저장 실패'); },
   handleAction,
   handleChange,
+  syncDateState: ({state,now}) => syncDevTodayFlowerDate(state,now),
+  startDateTracking: startDevTodayFlowerDateTracking,
   todayFlowerContext: ({state,date,storage}) => ({date:parseApiDate(state.devTodayFlowerDate) || date,storage:getDevTodayFlowerStorage() || storage}),
   relaySnapshot,
   resolveSyntheticAction: (snapshot,action) => snapshot.synthetic ? 'dev-noop' : action,
@@ -234,5 +266,5 @@ installRuntimeHooks({
   renderSettingsExtra: state => __mods['js/ui/screens/devTools.js']?.renderDevTools?.(state) || null
 });
 
-return { setForceNetworkFailure, shouldForceNetworkFailure, getDevPayload, getDevTodayFlowerStorage, runDuplicateCheck, runDevAudit };
+return { setForceNetworkFailure, shouldForceNetworkFailure, getDevPayload, getDevTodayFlowerStorage, runDuplicateCheck, runDevAudit, createState, syncDevTodayFlowerDate, millisecondsUntilNextSeoulDay, startDevTodayFlowerDateTracking, handleAction, handleChange };
 })();

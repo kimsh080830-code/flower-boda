@@ -3,6 +3,7 @@ const { APP_CONFIG } = __mods["js/config.js"];
 const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { FLOWERS, getFlowerById } = __mods["js/data.js"];
 const { getSeason, getDatePresentation, parseApiDate } = __mods["js/dateUtils.js"];
+const { loadCurrentWeather } = __mods["js/weatherService.js"];
 const { getFlowerRelaySnapshot, startFlowerRelay } = __mods["js/flowerRelay.js"];
 const { analyzeFlower, preprocessImage, validateImageFile, FlowerServiceError } = __mods["js/flowerService.js"];
 const { getEvents, getEventDetail } = __mods["js/eventService.js"];
@@ -24,6 +25,7 @@ const state = {
   currentTab: 'home',
   currentDate: new Date(),
   currentSeason: getSeason(new Date()),
+  currentWeather: null,
   selectedFlower: null,
   selectedCandidateId: null,
   analysisResult: null,
@@ -79,6 +81,7 @@ let eventDetailController = null;
 let photoPrepareToken = 0;
 let referenceImageController = null;
 let toastTimer = null;
+let stopDateTracking = null;
 
 function render() {
   const panels={'encyclopedia-filter-panel':'filtersOpen','recent-flower-panel':'recentDetailsOpen'};
@@ -1155,8 +1158,10 @@ function initHistory() {
 
 function refreshCurrentDate() {
   const now=new Date(),getDate=__mods['js/dateUtils.js'].getDatePresentation;
-  if(getDate(now).day===getDate(state.currentDate).day)return;
-  state.currentDate=now;state.currentSeason=getSeason(now);render();
+  const currentDateChanged=getDate(now).day!==getDate(state.currentDate).day;
+  if(currentDateChanged) {state.currentDate=now;state.currentSeason=getSeason(now);}
+  const runtimeDateChanged=runtimeHooks.syncDateState({state,now});
+  if(currentDateChanged || runtimeDateChanged) render();
 }
 function init() {
   initHistory();
@@ -1209,6 +1214,7 @@ function init() {
     }
   });
   window.addEventListener('beforeunload', () => {
+    stopDateTracking?.();
     if (state.photo?.objectUrl) URL.revokeObjectURL(state.photo.objectUrl);
     analysisController?.abort();
     eventController?.abort();
@@ -1216,7 +1222,9 @@ function init() {
     referenceImageController?.abort();
   });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>applyTheme(state.settings.theme));
+  stopDateTracking=runtimeHooks.startDateTracking({state,refreshCurrentDate});
   render();
+  void loadCurrentWeather().then(weather=>{if(weather){state.currentWeather=weather;render();}});
   if(state.detail?.type==='flower') state.recentFlowerIds=rememberFlower(state.detail.id,state.settings.recentEnabled);
   loadEventData();
   if (!new URLSearchParams(location.search).has('noRemoteImages')) loadReferenceImages();

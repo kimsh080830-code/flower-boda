@@ -5,6 +5,7 @@
     "js/flowerDataPolicy.js",
     "js/runtimeHooks.js",
     "js/dateUtils.js",
+    "js/weatherService.js",
     "js/flowerService.js",
     "js/observations.js",
     "js/storage.js",
