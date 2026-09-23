@@ -15,6 +15,7 @@
     "js/searchUtils.js",
     "js/eventSnapshot.js",
     "js/eventService.js",
+    "js/eventNotificationService.js",
     "js/imageService.js",
     "js/flowerViewData.js",
     "js/ui/dom.js",
@@ -32,6 +33,7 @@
     "js/calendarWeekendPatch.js",
     "js/ui/screens/details.js",
     "js/ui/screens/shell.js",
+    "js/ui/notifications.js",
     "js/ui/screens.js",
     "js/ui/screens/settings.js",
     "js/ui.js",
@@ -39,7 +41,13 @@
     "js/main.js"
   ],
   "dev": [
-    { "path": "js/devTools.js", "before": "js/ui/screens/settings.js" },
-    { "path": "js/ui/screens/devTools.js", "before": "js/ui/screens/settings.js" }
+    {
+      "path": "js/devTools.js",
+      "before": "js/ui/screens/settings.js"
+    },
+    {
+      "path": "js/ui/screens/devTools.js",
+      "before": "js/ui/screens/settings.js"
+    }
   ]
 }
