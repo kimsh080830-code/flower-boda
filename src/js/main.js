@@ -7,6 +7,7 @@ const { loadCurrentWeather } = __mods["js/weatherService.js"];
 const { getFlowerRelaySnapshot, startFlowerRelay } = __mods["js/flowerRelay.js"];
 const { analyzeFlower, preprocessImage, validateImageFile, FlowerServiceError } = __mods["js/flowerService.js"];
 const { getEvents, getEventDetail } = __mods["js/eventService.js"];
+const { getEventNotifications, loadEventNotificationReads, saveEventNotificationReads } = __mods['js/eventNotificationService.js'];
 const { hydrateReferenceImages } = __mods["js/imageService.js"];
 const { loadDiscoveries, loadFavorites, saveFavorites } = __mods["js/storage.js"];
 const { loadCollection,addObservation,updateObservation,deleteObservation,exportBackup,parseBackup,previewImport,importBackup,createThumbnail } = __mods["js/observations.js"];
@@ -22,6 +23,10 @@ const state = {
   recentFlowerIds: loadRecent(),
   calendarMonths: {},
   savedVisitDates: loadVisits(),
+  eventNotificationReads: loadEventNotificationReads(),
+  eventNotifications: [],
+  eventNotificationsError: '',
+  notificationOpen: false,
   currentTab: 'home',
   currentDate: new Date(),
   currentSeason: getSeason(new Date()),
@@ -89,6 +94,18 @@ function render() {
   for(const [id,key] of Object.entries(panels)) {const node=document.getElementById(id);if(node)state[key]=node.open;}
   applyTheme(state.settings.theme);
   applyTextSize(runtimeHooks.resolveTextSize(state,state.settings.bodyTextSize));
+  try {
+    state.eventNotificationsError = state.eventsError || '';
+    state.eventNotifications = state.eventNotificationsError ? [] : getEventNotifications({
+      events: state.events,
+      savedEventIds: state.savedVisitDates,
+      readNotificationIds: state.eventNotificationReads,
+      now: state.currentDate
+    });
+  } catch {
+    state.eventNotifications = [];
+    state.eventNotificationsError = '행사 알림을 만들지 못했어요. 다시 시도해 주세요.';
+  }
   renderApp(state);
 }
 
@@ -591,7 +608,7 @@ let mainTabSwipe = null;
 let suppressMainTabClickUntil = 0;
 
 function canStartMainTabSwipe(target, clientX) {
-  if (!MAIN_NAV_TABS.includes(state.currentTab) || state.detail || state.photoPickerOpen || state.bloomCalendarOpen) return false;
+  if (!MAIN_NAV_TABS.includes(state.currentTab) || state.detail || state.photoPickerOpen || state.bloomCalendarOpen || state.notificationOpen) return false;
   const screen = target.closest?.('#main-content');
   if (!screen || hasHorizontalGestureOwner(target)) return false;
   const edgeGuard = 28;
@@ -898,6 +915,31 @@ function handleClick(event) {
       state.photoPickerOpen = false;
       render();
       break;
+    case 'open-notifications':
+      state.notificationOpen = true;
+      render();
+      break;
+    case 'notification-panel':
+      break;
+    case 'close-notifications':
+      state.notificationOpen = false;
+      render();
+      break;
+    case 'open-notification-event': {
+      const notification = state.eventNotifications.find((item) => item.id === target.dataset.notificationId && item.eventId === target.dataset.eventId);
+      if (!notification || !state.events.some((item) => item.id === notification.eventId)) break;
+      if (!notification.isRead) {
+        const next = { ...state.eventNotificationReads, [notification.readKey]: true };
+        if (!saveEventNotificationReads(next)) {
+          showToast('읽음 상태를 저장하지 못했어요. 다시 시도해 주세요.');
+          break;
+        }
+        state.eventNotificationReads = next;
+      }
+      state.notificationOpen = false;
+      openEventDetail(notification.eventId);
+      break;
+    }
     case 'go-events': switchTab('events'); break;
     case 'go-all-events':
       state.eventFilter = { date: '' };
@@ -1069,7 +1111,7 @@ function handleInput(event) {
 
 function trapModalFocus(event) {
   if (event.key !== 'Tab') return false;
-  const modal = document.querySelector('.bloom-calendar-layer') || document.querySelector('.photo-picker-layer') || document.querySelector('.detail-layer');
+  const modal = document.querySelector('.notification-layer') || document.querySelector('.bloom-calendar-layer') || document.querySelector('.photo-picker-layer') || document.querySelector('.detail-layer');
   if (!modal) return false;
   const focusable = [...modal.querySelectorAll('button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, [tabindex]')]
     .filter((node) => node.tabIndex >= 0 && !node.hidden && !node.closest('[inert]') && node.getClientRects().length > 0);
@@ -1108,6 +1150,11 @@ function handleKeydown(event) {
       openSelect.querySelector('summary')?.focus();
       return;
     }
+  }
+  if (event.key === 'Escape' && state.notificationOpen) {
+    state.notificationOpen = false;
+    render();
+    return;
   }
   if (event.key === 'Escape' && state.bloomCalendarOpen) {
     state.bloomCalendarOpen = false;
@@ -1150,6 +1197,7 @@ function initHistory() {
   state.detail = initial.detail;
   state.photoPickerOpen = false;
   state.bloomCalendarOpen = false;
+  state.notificationOpen = false;
   if (state.detail?.type === 'flower') state.selectedFlower = getFlowerById(state.detail.id);
   const canonicalHash = state.detail
     ? `#${state.detail.type}/${encodeURIComponent(state.detail.id)}`
@@ -1178,7 +1226,10 @@ function init() {
     if(event.target.id==='observation-panel') state.observationsOpen=event.target.open;
     if(event.target.id==='recent-flower-panel') state.recentDetailsOpen=event.target.open;
   },true);
-  window.addEventListener('storage',event=> { if(event.key==='flower-info.collection.v1') { syncCollection(); render(); } });
+  window.addEventListener('storage',event=> {
+    if(event.key==='flower-info.collection.v1') { syncCollection(); render(); }
+    if(event.key==='flower-info.event-notification-reads.v1') { state.eventNotificationReads=loadEventNotificationReads(); render(); }
+  });
   document.addEventListener('change', handleChange);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshCurrentDate();});
   window.addEventListener('focus',refreshCurrentDate);
@@ -1208,6 +1259,7 @@ function init() {
     state.detail = detail;
     state.photoPickerOpen = false;
     state.bloomCalendarOpen = false;
+    state.notificationOpen = false;
     if (state.detail?.type === 'flower') state.selectedFlower = getFlowerById(state.detail.id);
     render();
     if (state.detail?.type === 'event' && state.events.some((item) => item.id === state.detail.id)) {
