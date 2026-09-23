@@ -2,11 +2,13 @@ __mods["js/ui/screens/shell.js"] = (() => {
 const { el } = __mods["js/ui/dom.js"];
 function renderAppHeader(state) {
   const {getDatePresentation,getSeason}=__mods['js/dateUtils.js'];
+  const {getUnreadNotificationCount,formatNotificationBadgeCount}=__mods['js/eventNotificationService.js'];
   const date=getDatePresentation(state.currentDate);
   const season=getSeason(state.currentDate);
   const weather=state.currentWeather;
   const weatherStatus=state.currentWeatherStatus || (weather ? 'ready' : 'loading');
   const weatherText=weather?.condition && Number.isFinite(weather.temperature) ? `${weather.condition} · ${weather.temperature}°` : '';
+  const unreadNotificationCount=getUnreadNotificationCount(state.eventNotifications);
   const contextText=weatherStatus==='ready' && weatherText
     ? `${season} · ${weatherText}`
     : weatherStatus==='error'
@@ -20,6 +22,10 @@ function renderAppHeader(state) {
       ]),
       el('div',{className:'header-actions'},[
         el('button',{type:'button',className:'bloom-calendar-button',dataset:{action:'open-bloom-calendar'},ariaLabel:'만개달력'},[el('span',{className:'bloom-calendar-icon','aria-hidden':'true'})]),
+        el('button',{type:'button',className:'notification-button',dataset:{action:'open-notifications'},ariaLabel:'알림'},[
+          el('span',{className:'notification-bell-icon','aria-hidden':'true'}),
+          el('span',{className:'notification-badge',hidden:unreadNotificationCount===0,ariaLabel:`읽지 않은 알림 ${unreadNotificationCount}개`,text:formatNotificationBadgeCount(unreadNotificationCount)})
+        ]),
         el('button',{type:'button',className:'settings-button',dataset:{action:'go-settings'},ariaLabel:'설정'},[el('span',{className:'settings-slider-icon','aria-hidden':'true'})])
       ])
     ])
