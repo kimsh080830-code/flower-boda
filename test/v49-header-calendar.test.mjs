@@ -62,7 +62,7 @@ test('header/date and calendar CSS remain unboxed and have narrow-screen coverag
  assert.match(styles,/\.app-date-context\s*\{[^}]*grid-column:\s*1[^}]*min-width:\s*0[^}]*width:\s*fit-content[^}]*max-width:\s*100%[^}]*justify-items:\s*center[^}]*justify-self:\s*start[^}]*overflow:\s*hidden[^}]*text-align:\s*center/s);
  assert.match(styles,/\.header-actions\s*\{[^}]*grid-column:\s*2[^}]*gap:\s*0/s);
  assert.match(styles,/\.bloom-calendar-button,\.notification-button,\.settings-button\{[^}]*width:44px[^}]*height:44px/s);
- assert.match(styles,/\.bloom-calendar-icon\{--bloom-calendar-icon:url\("data:image\/png;base64,/);
+ assert.match(styles,/\.bloom-calendar-icon\{[^}]*--bloom-calendar-icon:url\("data:image\/png;base64,/s);
  assert.match(styles,/\.app-date-context time\{[^}]*max-width:100%[^}]*text-overflow:ellipsis[^}]*color:var\(--ink\)/s);
  assert.match(styles,/\.app-season-context\{[^}]*color:var\(--muted\)/s);
  assert.match(styles,/\.app-date-context time\{[^}]*font-size:\.9rem/s);
