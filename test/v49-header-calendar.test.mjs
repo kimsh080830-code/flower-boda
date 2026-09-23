@@ -12,7 +12,7 @@ function modules() {
  vm.runInContext(script,context);
  return vm.runInContext('__mods',context);
 }
-test('global header keeps date informational and provides separate bloom calendar and settings buttons',()=>{
+test('global header keeps date informational and provides separate bloom calendar, notification, and settings buttons',()=>{
  assert.doesNotMatch(shell,/className: 'app-brand'|className: 'brand-block'|text: '꽃을 보다'/);
  const dateLine=shell.split('\n').find(line=>line.includes("className:'app-date-context'")) || '';
  assert.match(dateLine,/el\('div'/);
@@ -27,6 +27,8 @@ test('global header keeps date informational and provides separate bloom calenda
  assert.doesNotMatch(shell,/date\.solarTerm/);
  assert.match(shell,/className:'bloom-calendar-button'.*action:'open-bloom-calendar'.*ariaLabel:'만개달력'/);
  assert.equal((shell.match(/action:'open-bloom-calendar'/g)||[]).length,1);
+ assert.match(shell,/className:'notification-button'.*action:'open-notifications'.*ariaLabel:'알림'/);
+ assert.match(shell,/className:'notification-badge'.*hidden:unreadNotificationCount===0/);
  assert.match(shell,/action:'go-settings'/);
  assert.doesNotMatch(shell,/app-subtitle|BOTANICAL GUIDE|nav-camera|검색|지역|필터/);
 });
@@ -59,12 +61,14 @@ test('header/date and calendar CSS remain unboxed and have narrow-screen coverag
  assert.match(styles,/\.app-header-inner\s*\{[^}]*min-height:\s*58px/s);
  assert.match(styles,/\.app-date-context\s*\{[^}]*grid-column:\s*1[^}]*min-width:\s*0[^}]*width:\s*fit-content[^}]*max-width:\s*100%[^}]*justify-items:\s*center[^}]*justify-self:\s*start[^}]*overflow:\s*hidden[^}]*text-align:\s*center/s);
  assert.match(styles,/\.header-actions\s*\{[^}]*grid-column:\s*2[^}]*gap:\s*0/s);
- assert.match(styles,/\.bloom-calendar-button,\.settings-button\{[^}]*width:44px[^}]*height:44px/s);
+ assert.match(styles,/\.bloom-calendar-button,\.notification-button,\.settings-button\{[^}]*width:44px[^}]*height:44px/s);
  assert.match(styles,/\.bloom-calendar-icon\{--bloom-calendar-icon:url\("data:image\/png;base64,/);
  assert.match(styles,/\.app-date-context time\{[^}]*max-width:100%[^}]*text-overflow:ellipsis[^}]*color:var\(--ink\)/s);
  assert.match(styles,/\.app-season-context\{[^}]*color:var\(--muted\)/s);
  assert.match(styles,/\.app-date-context time\{[^}]*font-size:\.9rem/s);
  assert.match(styles,/@media\(max-width:359px\)\{[^}]*\.app-date-context time\{font-size:\.82rem\}/s);
+ assert.match(styles,/\.notification-bell-icon\{[^}]*width:28px[^}]*height:28px[^}]*background:currentColor/s);
+ assert.match(styles,/\.notification-badge\{[^}]*position:absolute[^}]*border-radius:999px/s);
  assert.match(styles,/\.bloom-calendar-icon,\.settings-slider-icon\{[^}]*width:28px[^}]*height:28px[^}]*background:currentColor/s);
  assert.match(styles,/\.bloom-calendar-icon\{width:32px;height:32px;--bloom-calendar-icon:url\("data:image\/png;base64,/);
  assert.doesNotMatch(styles,/\.app-date-context\s*\{[^}]*width:\s*\d+px/s);
