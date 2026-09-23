@@ -20,7 +20,7 @@ function findAll(node, predicate, rows = []) {
 }
 function renderNotifications(state) {
   const context = vm.createContext({});
-  vm.runInContext(`const __mods=Object.create(null);\n__mods['js/ui/dom.js']={el:${makeElement.toString()},button:(text,action,options={})=>({tag:'button',props:{text,dataset:{action,...(options.data||{})},className:options.extraClass||''},children:[]})};\n__mods['js/ui/components.js']={formatEventRange:event=>event.startDate===event.endDate?event.startDate:\`${event.startDate} ~ ${event.endDate}\`,emptyState:message=>({tag:'empty',props:{message},children:[]}),eventErrorState:()=>({tag:'error',props:{},children:[{tag:'button',props:{dataset:{action:'retry-events'}},children:[]}]})};\n${source}`, context);
+  vm.runInContext(`const __mods=Object.create(null);\n__mods['js/ui/dom.js']={el:${makeElement.toString()},button:(text,action,options={})=>({tag:'button',props:{text,dataset:{action,...(options.data||{})},className:options.extraClass||''},children:[]})};\n__mods['js/ui/components.js']={formatEventRange:function(item){return item.startDate===item.endDate?item.startDate:item.startDate+' ~ '+item.endDate;},emptyState:message=>({tag:'empty',props:{message},children:[]}),eventErrorState:()=>({tag:'error',props:{},children:[{tag:'button',props:{dataset:{action:'retry-events'}},children:[]}]})};\n${source}`, context);
   return vm.runInContext('__mods["js/ui/notifications.js"].renderNotifications', context)(state);
 }
 
