@@ -79,9 +79,11 @@ test('header shows date first and compact weather on the second line',()=>{
   const date=dateContext(header);
   assert.equal(date.children[0].props.text,'2026.09.21');
   assert.equal(date.children[1].props.text,'가을 · 맑음 · 24°');
-  const [calendarButton,settingsButton]=header.children[0].children[1].children;
+  const [calendarButton,notificationButton,settingsButton]=header.children[0].children[1].children;
   assert.equal(calendarButton.props.ariaLabel,'만개달력');
   assert.equal(calendarButton.props.dataset.action,'open-bloom-calendar');
+  assert.equal(notificationButton.props.ariaLabel,'알림');
+  assert.equal(notificationButton.props.dataset.action,'open-notifications');
   assert.equal(settingsButton.props.ariaLabel,'설정');
   assert.equal(settingsButton.props.dataset.action,'go-settings');
 });
