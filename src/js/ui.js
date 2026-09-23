@@ -1,6 +1,7 @@
 __mods["js/ui.js"] = (() => {
 const { getFlowerById } = __mods["js/data.js"];
 const { el } = __mods["js/ui/dom.js"];
+const { renderNotifications } = __mods["js/ui/notifications.js"];
 const { renderHome, updateHomeSearchResults, renderCapture, renderEvents, renderEncyclopedia, updateEncyclopediaResults, updateEventResults, renderFlowerDetail, renderEventDetail, renderAppHeader, renderBottomNav } = __mods["js/ui/screens.js"];
 
 
@@ -101,14 +102,14 @@ function syncModalState(modal) {
   document.querySelectorAll('.skip-link, .app-header, #main-content, .bottom-nav').forEach((node) => {
     node.inert = modalOpen;
   });
-  document.querySelectorAll('.detail-layer, .photo-picker-layer, .bloom-calendar-layer').forEach(node => { node.inert = node !== modal; });
+  document.querySelectorAll('.detail-layer, .photo-picker-layer, .bloom-calendar-layer, .notification-layer').forEach(node => { node.inert = node !== modal; });
 }
 
 function renderApp(state) {
   const root = document.getElementById('app');
   if (!root) return;
   const previousControl = captureControl(root);
-  const previousModal = root.querySelector('.bloom-calendar-layer') || root.querySelector('.photo-picker-layer') || root.querySelector('.detail-layer');
+  const previousModal = root.querySelector('.notification-layer') || root.querySelector('.bloom-calendar-layer') || root.querySelector('.photo-picker-layer') || root.querySelector('.detail-layer');
   const previousScroll = { left: window.scrollX, top: window.scrollY, modalLeft: previousModal?.scrollLeft || 0, modalTop: previousModal?.scrollTop || 0 };
   const disclosures = [...(previousModal?.querySelectorAll('details') || [])].map(node => node.open);
   const sameTab = renderedTab === state.currentTab;
@@ -139,9 +140,10 @@ function renderApp(state) {
   }
   if (state.photoPickerOpen) fragment.append(renderPhotoPicker());
   if (state.bloomCalendarOpen) fragment.append(__mods['js/calendar.js'].renderBloomCalendar(state));
+  if (state.notificationOpen) fragment.append(renderNotifications(state));
   root.replaceChildren(fragment);
-  const modal = root.querySelector('.bloom-calendar-layer') || root.querySelector('.photo-picker-layer') || root.querySelector('.detail-layer');
-  const modalKey = modal ? (modal.classList.contains('bloom-calendar-layer') ? 'bloom-calendar' : modal.classList.contains('photo-picker-layer') ? 'photo-picker' : `${state.detail.type}/${state.detail.id}`) : '';
+  const modal = root.querySelector('.notification-layer') || root.querySelector('.bloom-calendar-layer') || root.querySelector('.photo-picker-layer') || root.querySelector('.detail-layer');
+  const modalKey = modal ? (modal.classList.contains('notification-layer') ? 'notifications' : modal.classList.contains('bloom-calendar-layer') ? 'bloom-calendar' : modal.classList.contains('photo-picker-layer') ? 'photo-picker' : `${state.detail.type}/${state.detail.id}`) : '';
   // Missing or still-loading event IDs must never make the page inert without a dialog.
   syncModalState(modal);
   if (modalKey === renderedModalKey && sameTab) {
