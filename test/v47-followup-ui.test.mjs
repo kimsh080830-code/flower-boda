@@ -42,9 +42,13 @@ test('flower detail uses the requested all-events label and preserves its action
   assert.match(main, /case 'flower-events-all'/);
 });
 
-test('compact cards hide verification while event details keep verification disclosure', () => {
+test('compact cards hide verification while the home event row keeps only its requested fields', () => {
   assert.match(components, /showVerification = !compact/);
-  for (const source of [home, details, observations]) assert.match(source, /compact:\s*true[\s\S]{0,35}showVerification:\s*false/);
+  for (const source of [details, observations]) assert.match(source, /compact:\s*true[\s\S]{0,35}showVerification:\s*false/);
+  assert.match(home, /function homeEventListRow\(event\)/);
+  assert.match(home, /formatEventRange\(event\)/);
+  assert.match(home, /statusBadge\(event\.status\)/);
+  assert.doesNotMatch(home, /showVerification/);
   assert.match(details, /detailLine\('확인 수준',eventVerificationText\(event\)\)/);
   assert.match(details, /infoDisclosure\('정보 확인'/);
 });
