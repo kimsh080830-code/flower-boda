@@ -17,7 +17,7 @@ function weatherModule() {
 
 function renderHeader(currentWeather,currentWeatherStatus=currentWeather?'ready':'loading') {
   const context=vm.createContext({Date,Intl,Number});
-  vm.runInContext(`const __mods=Object.create(null);\n${dateSource}\n__mods["js/ui/dom.js"]={el:(tag,props={},children=[])=>({tag,props,children})};\n${shellSource}`,context);
+  vm.runInContext(`const __mods=Object.create(null);\n${dateSource}\n__mods["js/eventNotificationService.js"]={getUnreadNotificationCount:(items)=>Array.isArray(items)?items.filter(item=>item&&!item.isRead).length:0,formatNotificationBadgeCount:(count)=>String(count||0)};\n__mods["js/ui/dom.js"]={el:(tag,props={},children=[])=>({tag,props,children})};\n${shellSource}`,context);
   const shell=vm.runInContext('__mods["js/ui/screens/shell.js"]',context);
   return shell.renderAppHeader({currentDate:new Date('2026-09-21T12:00:00+09:00'),currentWeather,currentWeatherStatus});
 }
