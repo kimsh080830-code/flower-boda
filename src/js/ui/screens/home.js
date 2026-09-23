@@ -1,21 +1,16 @@
 __mods["js/ui/screens/home.js"] = (() => {
 const { FLOWERS } = __mods["js/data.js"];
-const { getBloomStatus } = __mods["js/dateUtils.js"];
+const { getBloomStatus, parseApiDate } = __mods["js/dateUtils.js"];
 const { selectTodayFlower } = __mods["js/todayFlower.js"];
 const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { getFlowerRelaySnapshot } = __mods["js/flowerRelay.js"];
-const { getOngoingEvents } = __mods["js/eventService.js"];
+const { getRecommendedEvents } = __mods["js/eventService.js"];
 const { el, button, image, imageCreditBadge } = __mods["js/ui/dom.js"];
-const { bloomFlow, sectionHeader, emptyState, eventErrorState, primaryFlowerName, flowerPoster, eventListRow, renderSkeletonRows } = __mods["js/ui/components.js"];
-const { topSeasonFlowers, selectControl } = __mods["js/ui/screens/shared.js"];
+const { bloomFlow, sectionHeader, emptyState, eventErrorState, formatEventRange, primaryFlowerName, flowerPoster, renderSkeletonRows, statusBadge } = __mods["js/ui/components.js"];
+const { topSeasonFlowers } = __mods["js/ui/screens/shared.js"];
 const { matchesFlowerSearch, normalizeSearch } = __mods["js/searchUtils.js"];
 
 const {shortSentence,habitatSummary,identificationSummary}=__mods['js/flowerViewData.js'];
-
-function getHomeRegions(events) {
-  return [...new Set(events.map((event) => event.region).filter(Boolean))]
-    .sort((a, b) => a.localeCompare(b, 'ko'));
-}
 
 function homeFeature(flower, state, featureDate=state.currentDate) {
  const bloom=getBloomStatus(flower.bloom,featureDate), saved=state.favoriteFlowerIds.includes(flower.id);
@@ -37,15 +32,35 @@ function homeFeature(flower, state, featureDate=state.currentDate) {
  ]);
 }
 
-function renderRegionPicker(state, regions) {
-  const options = [['', '전체']];
-  if (state.userRegion && !regions.includes(state.userRegion)) {
-    options.push([state.userRegion, state.userRegion]);
-  }
-  regions.forEach((region) => options.push([region, region]));
-  const control = selectControl('탐색 지역', 'home-region-select', options, state.userRegion, 'set-home-region');
-  control.classList.add('home-region-picker');
-  return control;
+function selectHomeEvents(events) {
+  if (!Array.isArray(events)) return [];
+  return getRecommendedEvents(events).filter((event) => {
+    const start = parseApiDate(event.startDate);
+    const end = parseApiDate(event.endDate);
+    return Boolean(start && end && start <= end);
+  }).slice(0, 3);
+}
+
+function homeEventListRow(event) {
+  const place = event.place || event.address || [event.region, event.subRegion].filter(Boolean).join(' ') || '장소 확인';
+  return el('button', {
+    type: 'button',
+    className: 'home-event-row',
+    dataset: { action: 'open-event', eventId: event.id },
+    ariaLabel: `${event.title} 행사 상세 보기`
+  }, [
+    el('span', { className: 'home-event-main' }, [
+      el('span', { className: 'home-event-title-line' }, [
+        el('strong', { className: 'home-event-title', text: event.title }),
+        statusBadge(event.status)
+      ]),
+      el('span', { className: 'home-event-meta' }, [
+        el('span', { className: 'home-event-period', text: formatEventRange(event) || '일정 확인' }),
+        el('span', { className: 'home-event-place', text: place })
+      ])
+    ]),
+    el('span', { className: 'row-chevron', text: '›', 'aria-hidden': 'true' })
+  ]);
 }
 
 function renderFlowerWalk(state) {
@@ -192,8 +207,7 @@ function renderHome(state) {
     storage: todayContext.storage
   });
   const representative = todaySelection.flower;
-  const regions = getHomeRegions(state.events);
-  const recommendedEvents = getOngoingEvents(state.events, { region: state.userRegion || '' });
+  const recommendedEvents = selectHomeEvents(state.events);
 
   main.append(el('section', { className: 'home-find-panel', 'aria-label': '꽃 찾기' }, [
     el('div', {
@@ -237,26 +251,23 @@ function renderHome(state) {
   }
   main.append(bloomSection);
 
-  const eventSection = el('section', { className: 'content-section' }, [
-    el('div', { className: 'home-place-heading' }, [
-      (() => {
-        const heading = sectionHeader('꽃 보러 가기', '전체보기', 'go-all-events');
-        heading.querySelector('[data-action="go-all-events"]')?.classList.add('event-view-all-link');
-        return heading;
-      })(),
-      regions.length ? renderRegionPicker(state, regions) : null
-    ])
+  const eventSection = el('section', { className: 'content-section home-event-section' }, [
+    (() => {
+      const heading = sectionHeader('꽃 보러 가기', '전체보기 ›', 'go-all-events');
+      heading.querySelector('[data-action="go-all-events"]')?.classList.add('event-view-all-link');
+      return heading;
+    })()
   ]);
   if (state.eventsLoading && state.eventsLoadingVisible) eventSection.append(renderSkeletonRows(2));
   else if (state.eventsError) {
     eventSection.append(eventErrorState(state.eventsError));
   } else if (recommendedEvents.length) {
-    const eventList = el('div', { className: 'event-list' });
-    recommendedEvents.slice(0, 3).forEach((event) => eventList.append(eventListRow(event, { compact: true, showVerification: false })));
+    const eventList = el('div', { className: 'home-event-list' });
+    recommendedEvents.forEach((event) => eventList.append(homeEventListRow(event)));
     eventSection.append(eventList);
   } else {
     eventSection.append(emptyState(
-      state.userRegion ? `${state.userRegion}에서 확인된 행사가 아직 없어요.` : '지금 확인된 꽃 행사가 아직 없어요.',
+      '지금 확인된 꽃 행사가 아직 없어요.',
       '행사 전체 보기',
       'go-events'
     ));
@@ -266,5 +277,5 @@ function renderHome(state) {
   main.append(el('p', { className: 'weather-note', text: '개화 상태는 도감 시기 기준 예상이에요. 지역과 날씨에 따라 달라져요.' }));
   return main;
 }
-return { "renderHome": renderHome, "updateHomeSearchResults": updateHomeSearchResults };
+return { "renderHome": renderHome, "updateHomeSearchResults": updateHomeSearchResults, "selectHomeEvents": selectHomeEvents, "homeEventListRow": homeEventListRow };
 })();
