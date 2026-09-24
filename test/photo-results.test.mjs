@@ -66,7 +66,7 @@ test('rendered results include equal comparison fields, atlas evidence actions a
   assert.match(text, /여러 장의 소엽으로 이루어진 겹잎/);
   assert.match(text, /실처럼 잘게 갈라진 잎/);
   assert.match(text, /외부 출처 링크가 없어 추가 확인/);
-  assert.equal(nodesOf(result).filter((node) => node.props.text === '도감 근거 보기').length, 2);
+  assert.equal(nodesOf(result).filter((node) => node.props.text === '도감 보기').length, 2);
   const selection = nodesOf(result).filter((node) => node.props.dataset?.action === 'select-candidate');
   assert.equal(selection[0].props['aria-pressed'], 'true');
   assert.equal(selection[1].props['aria-pressed'], 'false');
