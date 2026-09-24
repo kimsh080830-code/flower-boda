@@ -2,6 +2,8 @@
   "common": [
     "js/config.js",
     "js/data.js",
+    "js/mapPlaces.js",
+    "js/mapService.js",
     "js/flowerDataPolicy.js",
     "js/runtimeHooks.js",
     "js/dateUtils.js",

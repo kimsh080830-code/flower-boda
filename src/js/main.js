@@ -3,7 +3,9 @@ const { APP_CONFIG } = __mods["js/config.js"];
 const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { FLOWERS, getFlowerById } = __mods["js/data.js"];
 const { getSeason, getDatePresentation, parseApiDate } = __mods["js/dateUtils.js"];
-const { loadCurrentWeather } = __mods["js/weatherService.js"];
+const { requestCurrentPosition, fetchCurrentWeather, loadCurrentWeatherWithoutPrompt } = __mods["js/weatherService.js"];
+const { resolveMapLocation } = __mods["js/mapService.js"];
+const { getFlowerPlaceById } = __mods["js/mapPlaces.js"];
 const { getFlowerRelaySnapshot, startFlowerRelay } = __mods["js/flowerRelay.js"];
 const { analyzeFlower, preprocessImage, validateImageFile, FlowerServiceError } = __mods["js/flowerService.js"];
 const { getEvents, getEventDetail } = __mods["js/eventService.js"];
@@ -29,6 +31,10 @@ const state = {
   notificationOpen: false,
   currentTab: 'home',
   mapViewMode: 'nearby',
+  mapUserLocation: null,
+  mapLocationStatus: 'idle',
+  mapLocationError: '',
+  mapSelectedPlaceId: '',
   currentDate: new Date(),
   currentSeason: getSeason(new Date()),
   currentWeather: null,
@@ -198,7 +204,7 @@ function setHistory({ replace = false } = {}) {
 
 const VALID_TABS = ['home', 'capture', 'events', 'map', 'encyclopedia', 'settings'];
 const MAIN_NAV_TABS = ['events', 'home', 'map', 'encyclopedia'];
-const MAIN_TAB_SWIPE_EXCLUDE = '[data-bloom-calendar-swipe="true"], [data-event-calendar-swipe="true"], .bloom-flower-rail, .flower-rail, .image-gallery, .image-gallery-track, .slider, [role="slider"], [data-horizontal-scroll], input[type="range"], input, textarea, select';
+const MAIN_TAB_SWIPE_EXCLUDE = '[data-bloom-calendar-swipe="true"], [data-event-calendar-swipe="true"], .map-canvas, .bloom-flower-rail, .flower-rail, .image-gallery, .image-gallery-track, .slider, [role="slider"], [data-horizontal-scroll], input[type="range"], input, textarea, select';
 
 function hasHorizontalGestureOwner(target) {
   if (target.closest?.(MAIN_TAB_SWIPE_EXCLUDE)) return true;
@@ -224,6 +230,33 @@ function switchTab(tab, { fromHistory = false } = {}) {
   if (!fromHistory && shouldPushHistory) setHistory();
   render();
   window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+async function requestMapUserLocation({geolocation=globalThis.navigator?.geolocation}={}) {
+  if(state.mapLocationStatus==='checking') return;
+  state.mapLocationStatus='checking';
+  state.mapLocationError='';
+  render();
+  const result=await resolveMapLocation({geolocation,requestPosition:requestCurrentPosition});
+  state.mapUserLocation=result.location;
+  state.mapLocationStatus=result.status;
+  state.mapLocationError=result.error;
+  if(result.location) {
+    render();
+    void fetchCurrentWeather(result.location).then(weather=>{
+      state.currentWeather=weather;
+      state.currentWeatherStatus='ready';
+      render();
+    }).catch(()=>{});
+  }
+  else render();
+}
+
+function selectMapPlace(placeId) {
+  if(!getFlowerPlaceById(placeId)) return false;
+  state.mapSelectedPlaceId=placeId;
+  render();
+  return true;
 }
 
 function openFlowerDetail(flowerId, { fromHistory = false } = {}) {
@@ -833,6 +866,9 @@ function handleClick(event) {
       state.mapViewMode = target.dataset.mode === 'course' ? 'course' : 'nearby';
       render();
       break;
+    case 'request-map-location': void requestMapUserLocation(); break;
+    case 'select-map-place': selectMapPlace(target.dataset.placeId); break;
+    case 'retry-map': render(); break;
     case 'open-bloom-calendar':
       state.bloomCalendarOpen=true;
       setBloomCalendarMonth(__mods['js/dateUtils.js'].getDatePresentation(state.currentDate).day.slice(0,7));
@@ -1239,6 +1275,7 @@ function init() {
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshCurrentDate();});
   window.addEventListener('focus',refreshCurrentDate);
   document.addEventListener('keydown', handleKeydown);
+  document.addEventListener('flower-map-select',event=>selectMapPlace(event.detail?.placeId));
   document.addEventListener('pointerdown', handlePhotoPickerPointerDown);
   document.addEventListener('pointerdown', handleMainTabPointerDown);
   document.addEventListener('touchstart', handleMainTabTouchStart, { passive: true });
@@ -1282,7 +1319,7 @@ function init() {
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>applyTheme(state.settings.theme));
   stopDateTracking=runtimeHooks.startDateTracking({state,refreshCurrentDate});
   render();
-  void loadCurrentWeather().then(weather=>{
+  void loadCurrentWeatherWithoutPrompt().then(weather=>{
     state.currentWeather=weather;
     state.currentWeatherStatus=weather?'ready':'error';
     render();

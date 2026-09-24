@@ -2,6 +2,7 @@ __mods["js/ui.js"] = (() => {
 const { getFlowerById } = __mods["js/data.js"];
 const { el } = __mods["js/ui/dom.js"];
 const { renderNotifications } = __mods["js/ui/notifications.js"];
+const { mountFlowerMap, disposeFlowerMap } = __mods["js/mapService.js"];
 const { renderHome, updateHomeSearchResults, renderCapture, renderEvents, renderEncyclopedia, updateEncyclopediaResults, updateEventResults, renderMap, renderFlowerDetail, renderEventDetail, renderAppHeader, renderBottomNav } = __mods["js/ui/screens.js"];
 
 
@@ -142,7 +143,15 @@ function renderApp(state) {
   if (state.photoPickerOpen) fragment.append(renderPhotoPicker());
   if (state.bloomCalendarOpen) fragment.append(__mods['js/calendar.js'].renderBloomCalendar(state));
   if (state.notificationOpen) fragment.append(renderNotifications(state));
+  disposeFlowerMap();
   root.replaceChildren(fragment);
+  if (state.currentTab === 'map') {
+    void mountFlowerMap({
+      userLocation: state.mapUserLocation,
+      selectedPlaceId: state.mapSelectedPlaceId,
+      onSelectPlace: (placeId) => document.dispatchEvent(new CustomEvent('flower-map-select', { detail: { placeId } }))
+    });
+  }
   const modal = root.querySelector('.notification-layer') || root.querySelector('.bloom-calendar-layer') || root.querySelector('.photo-picker-layer') || root.querySelector('.detail-layer');
   const modalKey = modal ? (modal.classList.contains('notification-layer') ? 'notifications' : modal.classList.contains('bloom-calendar-layer') ? 'bloom-calendar' : modal.classList.contains('photo-picker-layer') ? 'photo-picker' : `${state.detail.type}/${state.detail.id}`) : '';
   // Missing or still-loading event IDs must never make the page inert without a dialog.

@@ -51,5 +51,15 @@ function loadCurrentWeather({geolocation=globalThis.navigator?.geolocation,fetch
   return currentWeatherPromise;
 }
 
-return { weatherCondition, requestCurrentPosition, fetchCurrentWeather, loadCurrentWeather };
+async function loadCurrentWeatherWithoutPrompt({permissions=globalThis.navigator?.permissions,...options}={}) {
+  if(!permissions?.query) return null;
+  try {
+    const permission=await permissions.query({name:'geolocation'});
+    return permission?.state==='granted' ? loadCurrentWeather(options) : null;
+  } catch {
+    return null;
+  }
+}
+
+return { weatherCondition, requestCurrentPosition, fetchCurrentWeather, loadCurrentWeather, loadCurrentWeatherWithoutPrompt };
 })();
