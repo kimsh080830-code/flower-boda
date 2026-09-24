@@ -26,6 +26,7 @@
     "js/ui/screens/capture.js",
     "js/ui/screens/encyclopedia.js",
     "js/ui/screens/events.js",
+    "js/ui/screens/map.js",
     "js/calendar.js",
     "js/calendarPatch.js",
     "js/calendarColorPatch.js",

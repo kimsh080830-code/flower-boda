@@ -36,6 +36,7 @@ function renderBottomNav(state) {
   const navItems = [
     ['events', 'nav-calendar', '행사'],
     ['home', 'nav-home', '홈'],
+    ['map', 'nav-map', '지도'],
     ['encyclopedia', 'nav-book', '도감']
   ];
   const nav = el('nav', { className: 'bottom-nav', 'aria-label': '주요 메뉴' });

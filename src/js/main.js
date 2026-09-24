@@ -28,6 +28,7 @@ const state = {
   eventNotificationsError: '',
   notificationOpen: false,
   currentTab: 'home',
+  mapViewMode: 'nearby',
   currentDate: new Date(),
   currentSeason: getSeason(new Date()),
   currentWeather: null,
@@ -195,8 +196,8 @@ function setHistory({ replace = false } = {}) {
   history[replace ? 'replaceState' : 'pushState'](payload, '', hash);
 }
 
-const VALID_TABS = ['home', 'capture', 'events', 'encyclopedia', 'settings'];
-const MAIN_NAV_TABS = ['events', 'home', 'encyclopedia'];
+const VALID_TABS = ['home', 'capture', 'events', 'map', 'encyclopedia', 'settings'];
+const MAIN_NAV_TABS = ['events', 'home', 'map', 'encyclopedia'];
 const MAIN_TAB_SWIPE_EXCLUDE = '[data-bloom-calendar-swipe="true"], [data-event-calendar-swipe="true"], .bloom-flower-rail, .flower-rail, .image-gallery, .image-gallery-track, .slider, [role="slider"], [data-horizontal-scroll], input[type="range"], input, textarea, select';
 
 function hasHorizontalGestureOwner(target) {
@@ -828,6 +829,10 @@ function handleClick(event) {
       break;
     }
     case 'go-settings': switchTab('settings'); break;
+    case 'select-map-view':
+      state.mapViewMode = target.dataset.mode === 'course' ? 'course' : 'nearby';
+      render();
+      break;
     case 'open-bloom-calendar':
       state.bloomCalendarOpen=true;
       setBloomCalendarMonth(__mods['js/dateUtils.js'].getDatePresentation(state.currentDate).day.slice(0,7));
