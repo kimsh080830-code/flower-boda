@@ -101,7 +101,7 @@ function renderFlowerWalk(state) {
   section.append(el('div',{className:'flower-walk-footer'},[
     el('p',{text:walk.status==='complete'
       ? '오늘의 꽃길을 모두 걸었어요.'
-      : '사진으로 꽃을 확인하면 꽃 릴레이 진행도에도 함께 반영돼요.'}),
+      : '찾은 꽃은 자동으로 기록돼요.'}),
     action ? button(actionText,action,{kind:'primary',extraClass:'flower-walk-start'}) : null
   ]));
   return section;
@@ -119,22 +119,22 @@ function renderFlowerRelay(state) {
   const section = el('section',{className:'content-section flower-relay','aria-labelledby':'flower-relay-title'},[
     el('div',{className:'section-head'},[
       el('div',{className:'section-title-group'},[
-        el('h2',{id:'flower-relay-title',text:'오늘의 꽃 릴레이'}),
+        el('h2',{id:'flower-relay-title',text:'꽃길'}),
         relay.total ? el('span',{className:'section-meta',text:`${relay.completedCount} / ${relay.total}`}) : null
       ]),
-      relayViewAction ? button('릴레이 보기 ›',relayViewAction,{kind:'tertiary',extraClass:'btn-small section-action flower-relay-view'}) : null
+      relayViewAction ? button('꽃길 보기 ›',relayViewAction,{kind:'tertiary',extraClass:'btn-small section-action flower-relay-view'}) : null
     ]),
     el('p',{className:'flower-relay-description',text:relay.total
-      ? `오늘 주변에서 만날 수 있는 꽃 ${relay.total}종을 이어서 만나보세요.`
-      : '지금 볼 수 있는 꽃을 이어서 만나보세요.'})
+      ? `오늘 만날 수 있는 꽃 ${relay.total}종을 하나씩 찾아보세요.`
+      : '지금 볼 수 있는 꽃을 찾아보세요.'})
   ]);
   if (!relay.total) {
-    section.append(emptyState('지금 개화 중인 릴레이 후보가 없어요.','도감에서 보기','go-current-season'));
+    section.append(emptyState('오늘 볼 수 있는 꽃이 없어요.','도감에서 보기','go-current-season'));
     if(state.relayError) section.append(el('p',{className:'form-error',role:'alert',text:state.relayError}));
     return section;
   }
   const completed = new Set(relay.completedFlowerIds);
-  section.append(el('div',{className:'flower-relay-targets','aria-label':'릴레이 대상 꽃'},relay.targets.map((flower) => {
+  section.append(el('div',{className:'flower-relay-targets','aria-label':'꽃길에 있는 꽃'},relay.targets.map((flower) => {
     const isComplete=completed.has(flower.id), isNext=relay.started && flower.id===relay.nextFlowerId;
     return el('article',{className:`flower-relay-target ${isComplete?'is-complete':''} ${isNext?'is-next':''}`.trim()},[
       el('span',{className:'flower-relay-placeholder','aria-hidden':'true'}),
@@ -143,7 +143,7 @@ function renderFlowerRelay(state) {
     ]);
   })));
   const statusText = relay.status==='complete'
-    ? '오늘의 꽃 릴레이 완료'
+    ? '꽃길 완료'
     : relay.status==='active'
       ? `${relay.completedCount} / ${relay.total} 완료`
       : `0 / ${relay.total}`;
@@ -153,13 +153,13 @@ function renderFlowerRelay(state) {
       el('strong',{text:statusText}),
       relay.status==='active' && nextFlower ? el('span',{text:`다음 꽃 · ${primaryFlowerName(nextFlower)}`}) : null
     ]),
-    relay.status==='before' ? button('릴레이 시작',runtimeHooks.resolveSyntheticAction(relay,'relay-start'),{kind:'primary'}) : null,
+    relay.status==='before' ? button('꽃길 시작',runtimeHooks.resolveSyntheticAction(relay,'relay-start'),{kind:'primary'}) : null,
     relay.status==='active' ? button('이어보기',runtimeHooks.resolveSyntheticAction(relay,'relay-continue'),{kind:'primary'}) : null
   ]));
   section.append(el('div',{className:'flower-relay-progress','aria-hidden':'true'},[
     el('span',{style:`width:${relay.total ? Math.round(relay.completedCount/relay.total*100) : 0}%`})
   ]));
-  if(relay.total<3) section.append(el('p',{className:'weather-note',text:`지금 개화 후보가 ${relay.total}종이라 가능한 꽃만 이어요.`}));
+  if(relay.total<3) section.append(el('p',{className:'weather-note',text:`오늘 볼 수 있는 꽃만 보여드려요.`}));
   if(state.relayError) section.append(el('p',{className:'form-error',role:'alert',text:state.relayError}));
   return section;
 }
