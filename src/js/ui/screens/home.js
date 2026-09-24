@@ -20,14 +20,14 @@ function homeFeature(flower, state, featureDate=state.currentDate) {
  return el('section',{className:'editorial-feature','aria-labelledby':'home-feature-title'},[
   el('button',{type:'button',className:'editorial-feature-media',dataset:{action:'open-flower',flowerId:flower.id},ariaLabel:`${primaryFlowerName(flower)} 꽃 정보 보기`},[heroImage,imageCreditBadge(flower.imageCredit,heroImage,flower.localImage)]),
   el('div',{className:'editorial-feature-copy'},[
-   el('div',{className:'editorial-feature-meta'},[el('span',{className:'section-label',text:'오늘 눈여겨볼 꽃'}),save]),
+   el('div',{className:'editorial-feature-meta'},[el('span',{className:'section-label',text:'오늘의 꽃'}),save]),
    el('h1',{id:'home-feature-title',text:primaryFlowerName(flower)}),
    el('p',{className:'feature-description',text:shortSentence(flower.description,52)}),
    el('dl',{className:'feature-context'},[
     el('div',{},[el('dt',{text:'꽃말'}),el('dd',{text:flower.flowerLanguage?.meaning || '정보 없음'})]),
     el('div',{},[el('dt',{text:'볼 수 있는 곳'}),el('dd',{text:habitatSummary(flower)})])
    ]),
-   el('div',{className:'feature-actions'},[button('꽃 정보 보기','open-flower',{kind:'primary',data:{flowerId:flower.id}}),button('보러 갈 곳','candidate-events',{data:{flowerId:flower.id}})])
+   el('div',{className:'feature-actions'},[button('꽃 정보 보기','open-flower',{kind:'primary',data:{flowerId:flower.id}}),button('꽃 행사','candidate-events',{data:{flowerId:flower.id}})])
   ])
  ]);
 }
@@ -184,7 +184,7 @@ function updateHomeSearchResults(state, root = document) {
   if (!query) return;
 
   const matches = FLOWERS.filter(flower => matchesFlowerSearch(flower, state.searchQuery));
-  results.append(sectionHeader('빠른 검색 결과', '도감에서 보기', 'go-encyclopedia', `${matches.length}종`));
+  results.append(sectionHeader('검색 결과', '도감에서 보기', 'go-encyclopedia', `${matches.length}종`));
   if (matches.length) {
     const grid = el('div', { className: 'flower-grid' });
     matches.forEach(flower => grid.append(flowerPoster(flower, state, { showBloomFlow: false })));
@@ -214,7 +214,7 @@ function renderHome(state) {
       className: `home-find-search ${state.searchQuery ? 'has-clear' : ''}`
     }, [
       el('span', { className: 'search-glyph', 'aria-hidden': 'true' }),
-      el('label', { className: 'visually-hidden', for: 'home-flower-search', text: '꽃 빠른 검색' }),
+      el('label', { className: 'visually-hidden', for: 'home-flower-search', text: '꽃 검색' }),
       el('input', { id:'home-flower-search',type:'search',value:state.searchQuery,placeholder:'꽃 이름·초성·학명 검색',autocomplete:'off' }),
       state.searchQuery ? el('button',{type:'button',className:'search-clear',text:'×',dataset:{action:'clear-flower-search'},ariaLabel:'검색어 지우기'}) : null
     ]),
@@ -232,7 +232,7 @@ function renderHome(state) {
 
   if (representative) main.append(homeFeature(representative, state, featureDate));
   else main.append(el('section',{className:'content-section today-flower-empty'},[
-    el('div',{className:'section-label',text:'오늘 눈여겨볼 꽃'}),
+    el('div',{className:'section-label',text:'오늘의 꽃'}),
     emptyState('오늘 개화 중인 꽃 후보가 없어요.','도감에서 보기','go-current-season')
   ]));
 
@@ -240,7 +240,7 @@ function renderHome(state) {
   main.append(renderFlowerRelay(state));
 
   const bloomSection = el('section', { className: 'content-section' }, [
-    sectionHeader('이번 주 볼 꽃', '전체 보기', 'go-current-season', blooming.length ? `${blooming.length}종` : '')
+    sectionHeader('이번 주 꽃', '전체 보기', 'go-current-season', blooming.length ? `${blooming.length}종` : '')
   ]);
   if (blooming.length) {
     const rail = el('div', { className: 'flower-rail' });
@@ -253,7 +253,7 @@ function renderHome(state) {
 
   const eventSection = el('section', { className: 'content-section home-event-section' }, [
     (() => {
-      const heading = sectionHeader('꽃 보러 가기', '전체보기 ›', 'go-all-events');
+      const heading = sectionHeader('꽃 행사', '전체보기 ›', 'go-all-events');
       heading.querySelector('[data-action="go-all-events"]')?.classList.add('event-view-all-link');
       return heading;
     })()
