@@ -25,8 +25,8 @@ test('event list heading is rendered before loading/error branches and has no im
 });
 
 test('event date note is exact and described-by is connected to the monthly calendar group', () => {
-  assert.match(events, /text: '찾아볼 날짜 \(선택 사항\)'/);
-  assert.match(events, /text: '날짜를 선택하면 해당 날짜에 열리는 행사만 보여줘요\. 날짜를 비우면 기간 제한을 해제해요\.'/);
+  assert.match(events, /text: '날짜 선택'/);
+  assert.match(events, /text: '날짜를 선택하면 해당 날짜에 열리는 행사만 보여줘요\. 선택을 해제하면 모든 날짜의 행사를 볼 수 있어요\.'/);
   assert.match(calendar, /'aria-describedby':'event-date-filter-note'/);
   assert.match(calendar, /'aria-labelledby':'event-date-filter-label'/);
 });
@@ -48,7 +48,7 @@ test('event filter calendar supports month buttons, swipe, today and selected st
 test('date selection and clearing keep the existing eventFilter.date contract', () => {
   assert.match(main, /case 'event-filter-date':[\s\S]*?state\.eventFilter = \{ \.\.\.state\.eventFilter, date: target\.dataset\.date \}/);
   assert.match(main, /case 'clear-event-date':[\s\S]*?state\.eventFilter = \{ \.\.\.state\.eventFilter, date: '' \}/);
-  assert.match(events, /button\('날짜 비우기', 'clear-event-date'/);
+  assert.match(events, /button\('선택 해제', 'clear-event-date'/);
   assert.match(events, /matchesEventDateFilter\(event, state\.eventFilter/);
 });
 

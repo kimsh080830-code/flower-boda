@@ -18,7 +18,7 @@ const [home, components, encyclopedia, styles, preferences, relay, build, templa
 ]);
 
 test('home keeps the V61 feature and requested information order while reusing relay actions', () => {
-  assert.match(home, /main\.append\(homeFeature[\s\S]*main\.append\(renderFlowerRelay\(state\)\)[\s\S]*sectionHeader\('이번 주 볼 꽃'[\s\S]*sectionHeader\('꽃 보러 가기'/);
+  assert.match(home, /main\.append\(homeFeature[\s\S]*main\.append\(renderFlowerRelay\(state\)\)[\s\S]*sectionHeader\('이번 주 꽃'[\s\S]*sectionHeader\('꽃 행사'/);
   assert.match(home, /className: 'weather-note'/);
   assert.match(home, /button\('릴레이 보기 ›',relayViewAction/);
   assert.match(home, /relay\.status==='before'[\s\S]*'relay-start'[\s\S]*relay\.status==='active'[\s\S]*'relay-continue'/);

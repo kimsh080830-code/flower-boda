@@ -96,7 +96,7 @@ test('home event row shows only title, period, place, and status and opens by ev
 });
 
 test('home full view and item actions reuse the existing events tab and event detail handlers', () => {
-  assert.match(homeSource, /sectionHeader\('꽃 보러 가기', '전체보기 ›', 'go-all-events'\)/);
+  assert.match(homeSource, /sectionHeader\('꽃 행사', '전체보기 ›', 'go-all-events'\)/);
   assert.match(mainSource, /case 'go-all-events':[\s\S]*?switchTab\('events'\)/);
   assert.match(mainSource, /case 'open-event': openEventDetail\(target\.dataset\.eventId\)/);
 });
