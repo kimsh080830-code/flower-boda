@@ -149,6 +149,9 @@ function renderApp(state) {
     void mountFlowerMap({
       userLocation: state.mapUserLocation,
       selectedPlaceId: state.mapSelectedPlaceId,
+      viewMode: state.mapViewMode,
+      selectedCourseId: state.mapSelectedCourseId,
+      flowerFilterId: state.mapFlowerFilterId,
       onSelectPlace: (placeId) => document.dispatchEvent(new CustomEvent('flower-map-select', { detail: { placeId } }))
     });
   }

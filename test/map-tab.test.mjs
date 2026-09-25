@@ -20,8 +20,8 @@ function makeElement(tag, props = {}, children = []) {
 
 function renderMap(mapViewMode) {
   const context = vm.createContext({});
-  vm.runInContext(`const __mods=Object.create(null);\n__mods['js/ui/dom.js']={el:${makeElement.toString()}};\n__mods['js/mapService.js']={getFlowerPlaceItems:()=>[{id:'place-one',name:'꽃 장소',address:'주소',relatedFlowerNames:['수국'],bloomLabel:'6~7월',distanceLabel:''}]};\n${mapSource}`, context);
-  return vm.runInContext('__mods["js/ui/screens/map.js"].renderMap', context)({ mapViewMode, mapLocationStatus:'idle', mapSelectedPlaceId:'', mapUserLocation:null });
+  vm.runInContext(`const __mods=Object.create(null);\n__mods['js/ui/dom.js']={el:${makeElement.toString()}};\n__mods['js/data.js']={getFlowerById:()=>({nameKo:'수국'})};\n__mods['js/mapCourses.js']={FLOWER_COURSES:[{id:'course-one',name:'꽃 코스',region:'서울',placeIds:['place-one'],estimatedDuration:'약 1시간',recommendedMonths:[6],relatedFlowerIds:['hydrangea'],description:'설명'}],getFlowerCourseById:()=>null};\n__mods['js/mapService.js']={getFlowerPlaceItems:()=>[{id:'place-one',name:'꽃 장소',address:'주소',relatedFlowerNames:['수국'],bloomLabel:'6~7월',distanceLabel:''}],formatBloomMonths:()=> '6월'};\n${mapSource}`, context);
+  return vm.runInContext('__mods["js/ui/screens/map.js"].renderMap', context)({ mapViewMode, mapLocationStatus:'idle', mapSelectedPlaceId:'', mapSelectedCourseId:'', mapFlowerFilterId:'', mapUserLocation:null });
 }
 
 function findAll(node, predicate, rows = []) {
@@ -67,12 +67,12 @@ test('map starts in nearby mode and exposes only the two view actions', () => {
   assert.equal(findAll(screen, (node) => node.props?.dataset?.action === 'select-map-place').length, 1);
 });
 
-test('nearby and course modes render their matching selected and empty states', () => {
+test('nearby and course modes render their matching content', () => {
   const nearby = renderMap('nearby');
   const course = renderMap('course');
   assert.equal(findAll(nearby, (node) => node.props?.id === 'flower-map').length, 1);
   assert.equal(findAll(nearby, (node) => node.props?.text === '꽃 장소').length, 1);
-  assert.equal(findAll(course, (node) => node.props?.text === '꽃 코스를 준비하고 있어요.').length, 1);
+  assert.equal(findAll(course, (node) => node.props?.dataset?.action === 'select-map-course').length, 1);
   const courseTabs = findAll(course, (node) => node.props?.role === 'tab');
   assert.equal(courseTabs[0].props['aria-selected'], 'false');
   assert.equal(courseTabs[1].props['aria-selected'], 'true');

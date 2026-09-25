@@ -5,7 +5,8 @@ const { FLOWERS, getFlowerById } = __mods["js/data.js"];
 const { getSeason, getDatePresentation, parseApiDate } = __mods["js/dateUtils.js"];
 const { requestCurrentPosition, fetchCurrentWeather, loadCurrentWeatherWithoutPrompt } = __mods["js/weatherService.js"];
 const { resolveMapLocation } = __mods["js/mapService.js"];
-const { getFlowerPlaceById } = __mods["js/mapPlaces.js"];
+const { getFlowerPlaceById, getFlowerPlacesByFlowerId } = __mods["js/mapPlaces.js"];
+const { getFlowerCourseById } = __mods["js/mapCourses.js"];
 const { getFlowerRelaySnapshot, startFlowerRelay } = __mods["js/flowerRelay.js"];
 const { analyzeFlower, preprocessImage, validateImageFile, FlowerServiceError } = __mods["js/flowerService.js"];
 const { getEvents, getEventDetail } = __mods["js/eventService.js"];
@@ -35,6 +36,8 @@ const state = {
   mapLocationStatus: 'idle',
   mapLocationError: '',
   mapSelectedPlaceId: '',
+  mapSelectedCourseId: '',
+  mapFlowerFilterId: '',
   currentDate: new Date(),
   currentSeason: getSeason(new Date()),
   currentWeather: null,
@@ -256,6 +259,34 @@ function selectMapPlace(placeId) {
   if(!getFlowerPlaceById(placeId)) return false;
   state.mapSelectedPlaceId=placeId;
   render();
+  return true;
+}
+
+function selectMapCourse(courseId) {
+  const course=getFlowerCourseById(courseId);
+  if(!course) return false;
+  state.mapSelectedCourseId=course.id;
+  state.mapSelectedPlaceId='';
+  render();
+  return true;
+}
+
+function showEventOnMap(placeId) {
+  if(!getFlowerPlaceById(placeId)) return false;
+  state.mapViewMode='nearby';
+  state.mapFlowerFilterId='';
+  state.mapSelectedPlaceId=placeId;
+  switchTab('map');
+  return true;
+}
+
+function showFlowerOnMap(flowerId) {
+  const places=getFlowerPlacesByFlowerId(flowerId);
+  if(!places.length) return false;
+  state.mapViewMode='nearby';
+  state.mapFlowerFilterId=flowerId;
+  state.mapSelectedPlaceId=places[0].id;
+  switchTab('map');
   return true;
 }
 
@@ -864,10 +895,19 @@ function handleClick(event) {
     case 'go-settings': switchTab('settings'); break;
     case 'select-map-view':
       state.mapViewMode = target.dataset.mode === 'course' ? 'course' : 'nearby';
+      state.mapSelectedPlaceId = '';
       render();
       break;
     case 'request-map-location': void requestMapUserLocation(); break;
     case 'select-map-place': selectMapPlace(target.dataset.placeId); break;
+    case 'select-map-course': selectMapCourse(target.dataset.courseId); break;
+    case 'show-event-on-map': showEventOnMap(target.dataset.placeId); break;
+    case 'show-flower-on-map': showFlowerOnMap(target.dataset.flowerId); break;
+    case 'clear-map-flower-filter':
+      state.mapFlowerFilterId='';
+      state.mapSelectedPlaceId='';
+      render();
+      break;
     case 'retry-map': render(); break;
     case 'open-bloom-calendar':
       state.bloomCalendarOpen=true;

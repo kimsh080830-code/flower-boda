@@ -1,6 +1,8 @@
 __mods["js/ui/screens/map.js"] = (() => {
 const { el } = __mods["js/ui/dom.js"];
-const { getFlowerPlaceItems } = __mods["js/mapService.js"];
+const { getFlowerById } = __mods["js/data.js"];
+const { FLOWER_COURSES, getFlowerCourseById } = __mods["js/mapCourses.js"];
+const { getFlowerPlaceItems, formatBloomMonths } = __mods["js/mapService.js"];
 
 function renderMapViewTabs(mode) {
   const menu = el('div', { className: 'map-view-tabs', role: 'tablist', ariaLabel: '지도 메뉴' });
@@ -29,7 +31,7 @@ function renderLocationStatus(state) {
   return message ? el('p', { className: `map-location-status is-${state.mapLocationStatus}`, role: 'status', text: message }) : null;
 }
 
-function renderPlaceCard(place, state) {
+function renderPlaceCard(place, state, order = 0) {
   const selected = state.mapSelectedPlaceId === place.id;
   const details = [place.distanceLabel, place.relatedFlowerNames.join(' · '), place.bloomLabel].filter(Boolean).join(' · ');
   return el('button', {
@@ -38,16 +40,61 @@ function renderPlaceCard(place, state) {
     dataset: { action: 'select-map-place', placeId: place.id },
     'aria-pressed': selected ? 'true' : 'false'
   }, [
-    el('strong', { text: place.name }),
+    el('strong', { text: order ? `${order}. ${place.name}` : place.name }),
     el('span', { text: details }),
     el('small', { text: place.address })
   ]);
 }
 
 function renderNearbyPlaces(state) {
-  const places = getFlowerPlaceItems(state.mapUserLocation);
+  const places = getFlowerPlaceItems(state.mapUserLocation, { flowerId: state.mapFlowerFilterId });
   if (!places.length) return el('p', { className: 'map-empty-state', text: '등록된 꽃 장소가 없어요.' });
-  return el('div', { className: 'map-place-list', ariaLabel: '꽃 장소 목록' }, places.map((place) => renderPlaceCard(place, state)));
+  const flower = state.mapFlowerFilterId ? getFlowerById(state.mapFlowerFilterId) : null;
+  return el('div', {}, [
+    flower ? el('div', { className: 'map-filter-context' }, [
+      el('span', { text: `${flower.nameKo} 관련 장소` }),
+      el('button', { type: 'button', dataset: { action: 'clear-map-flower-filter' }, text: '전체 장소 보기' })
+    ]) : null,
+    el('div', { className: 'map-place-list', ariaLabel: '꽃 장소 목록' }, places.map((place) => renderPlaceCard(place, state)))
+  ]);
+}
+
+function courseFlowerNames(course) {
+  return course.relatedFlowerIds.map((id) => getFlowerById(id)?.nameKo).filter(Boolean);
+}
+
+function renderCourseCard(course, state) {
+  const selected = state.mapSelectedCourseId === course.id;
+  return el('button', {
+    type: 'button',
+    className: `map-course-card ${selected ? 'is-selected' : ''}`,
+    dataset: { action: 'select-map-course', courseId: course.id },
+    'aria-pressed': selected ? 'true' : 'false'
+  }, [
+    el('strong', { text: course.name }),
+    el('span', { text: `${course.region} · 장소 ${course.placeIds.length}곳 · ${course.estimatedDuration}` }),
+    el('span', { text: courseFlowerNames(course).join(' · ') || '관련 꽃 정보 없음' }),
+    el('small', { text: formatBloomMonths(course.recommendedMonths) })
+  ]);
+}
+
+function renderCoursePlaces(course, state) {
+  const places = getFlowerPlaceItems(null, { placeIds: course.placeIds });
+  return el('section', { className: 'map-course-detail', ariaLabel: '선택한 꽃 코스' }, [
+    el('h2', { text: course.name }),
+    el('p', { className: 'map-course-summary', text: `${course.estimatedDuration} · ${formatBloomMonths(course.recommendedMonths)}` }),
+    el('p', { className: 'map-course-description', text: course.description }),
+    el('p', { className: 'map-course-guide-note', text: '지도 선은 장소 순서를 보여주는 안내선이에요.' }),
+    el('div', { className: 'map-course-place-list' }, places.map((place, index) => renderPlaceCard(place, state, index + 1)))
+  ]);
+}
+
+function renderCourses(state) {
+  const selected = getFlowerCourseById(state.mapSelectedCourseId);
+  return el('div', { className: 'map-course-content' }, [
+    el('div', { className: 'map-course-list', ariaLabel: '꽃 코스 목록' }, FLOWER_COURSES.map((course) => renderCourseCard(course, state))),
+    selected ? renderCoursePlaces(selected, state) : null
+  ]);
 }
 
 function renderMap(state) {
@@ -74,7 +121,7 @@ function renderMap(state) {
       renderMapViewTabs(mode),
       el('div', { className: 'map-view-content', id: 'map-view-panel', role: 'tabpanel' }, [
         mode === 'course'
-          ? el('p', { className: 'map-course-message', text: '꽃 코스를 준비하고 있어요.' })
+          ? renderCourses(state)
           : renderNearbyPlaces(state)
       ])
     ])

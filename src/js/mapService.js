@@ -1,5 +1,6 @@
 __mods["js/mapService.js"] = (() => {
-const { FLOWER_PLACES } = __mods["js/mapPlaces.js"];
+const { FLOWER_PLACES, getFlowerPlaceById } = __mods["js/mapPlaces.js"];
+const { getFlowerCourseById } = __mods["js/mapCourses.js"];
 const { getFlowerById } = __mods["js/data.js"];
 
 const EARTH_RADIUS_METERS = 6371000;
@@ -72,8 +73,14 @@ function flowerNames(place) {
   return names.length ? names : ['관련 꽃 정보 없음'];
 }
 
-function getFlowerPlaceItems(userLocation) {
-  return sortPlacesByDistance(FLOWER_PLACES, userLocation).map((place) => ({
+function getFlowerPlaceItems(userLocation, { flowerId = '', placeIds = null } = {}) {
+  const orderedIds = Array.isArray(placeIds) ? placeIds : null;
+  const source = orderedIds ? orderedIds.map(getFlowerPlaceById).filter(Boolean) : FLOWER_PLACES;
+  const filtered = source.filter((place) => !flowerId || place.relatedFlowerIds.includes(flowerId));
+  const prepared = orderedIds
+    ? filtered.map((place) => ({ ...place, distanceMeters: userLocation ? haversineDistanceMeters(userLocation, place) : null }))
+    : sortPlacesByDistance(filtered, userLocation);
+  return prepared.map((place) => ({
     ...place,
     relatedFlowerNames: flowerNames(place),
     bloomLabel: formatBloomMonths(place.bloomMonths),
@@ -138,11 +145,22 @@ function disposeFlowerMap() {
   }
 }
 
-async function mountFlowerMap({ userLocation = null, selectedPlaceId = '', onSelectPlace = () => {} } = {}) {
+async function mountFlowerMap({
+  userLocation = null,
+  selectedPlaceId = '',
+  viewMode = 'nearby',
+  selectedCourseId = '',
+  flowerFilterId = '',
+  onSelectPlace = () => {}
+} = {}) {
   const container = document.getElementById('flower-map');
   if (!container) return null;
   disposeFlowerMap();
-  const places = getFlowerPlaceItems(userLocation);
+  const course = viewMode === 'course' ? getFlowerCourseById(selectedCourseId) : null;
+  const places = getFlowerPlaceItems(userLocation, {
+    flowerId: viewMode === 'nearby' ? flowerFilterId : '',
+    placeIds: course?.placeIds || null
+  });
   if (!places.length) {
     container.replaceChildren(Object.assign(document.createElement('p'), { textContent: '등록된 꽃 장소가 없어요.' }));
     return null;
@@ -162,18 +180,35 @@ async function mountFlowerMap({ userLocation = null, selectedPlaceId = '', onSel
     const ink = cssColor('--ink', '#30342a');
     const bounds = [];
     let selectedMarker = null;
-    for (const place of places) {
+    for (const [index, place] of places.entries()) {
       const selected = place.id === selectedPlaceId;
-      const marker = L.circleMarker([place.latitude, place.longitude], {
-        radius: selected ? 9 : 7,
-        color: surface,
-        weight: 2,
-        fillColor: accent,
-        fillOpacity: selected ? 1 : .82
-      }).addTo(map).bindPopup(popupContent(place));
+      const marker = course
+        ? L.marker([place.latitude, place.longitude], {
+            icon: L.divIcon({
+              className: `map-course-number-marker ${selected ? 'is-selected' : ''}`,
+              html: `<span>${index + 1}</span>`,
+              iconSize: [30, 30],
+              iconAnchor: [15, 15]
+            })
+          }).addTo(map).bindPopup(popupContent(place))
+        : L.circleMarker([place.latitude, place.longitude], {
+            radius: selected ? 9 : 7,
+            color: surface,
+            weight: 2,
+            fillColor: accent,
+            fillOpacity: selected ? 1 : .82
+          }).addTo(map).bindPopup(popupContent(place));
       marker.on('click', () => onSelectPlace(place.id));
       if (selected) selectedMarker = marker;
       bounds.push([place.latitude, place.longitude]);
+    }
+    if (course && bounds.length > 1) {
+      L.polyline(bounds, {
+        color: accent,
+        weight: 3,
+        opacity: .72,
+        dashArray: '6 7'
+      }).addTo(map);
     }
     const location = normalizeLocation(userLocation);
     if (location) {
@@ -184,6 +219,13 @@ async function mountFlowerMap({ userLocation = null, selectedPlaceId = '', onSel
         fillColor: ink,
         fillOpacity: .92
       }).addTo(map).bindPopup('현재 위치');
+    }
+    const selectedPlace = getFlowerPlaceById(selectedPlaceId);
+    if (selectedPlace && places.some((place) => place.id === selectedPlace.id)) {
+      map.setView([selectedPlace.latitude, selectedPlace.longitude], course ? 12 : 11);
+    } else if (course) {
+      map.fitBounds(bounds, { padding: [34, 34], maxZoom: 12 });
+    } else if (location) {
       map.setView([location.latitude, location.longitude], 11);
     } else {
       map.fitBounds(bounds, { padding: [22, 22], maxZoom: 8 });

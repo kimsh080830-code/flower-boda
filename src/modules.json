@@ -3,6 +3,7 @@
     "js/config.js",
     "js/data.js",
     "js/mapPlaces.js",
+    "js/mapCourses.js",
     "js/mapService.js",
     "js/flowerDataPolicy.js",
     "js/runtimeHooks.js",

@@ -1006,6 +1006,9 @@ img { display: block; max-width: 100%; }
 .map-view-tab.is-active { border-bottom-color: var(--accent); color: var(--accent-strong); }
 .map-view-content { min-height: 92px; color: var(--muted); font-size: calc(.76rem * var(--body-text-scale)); }
 .map-course-message,.map-empty-state { margin: 0; padding: 28px 16px; text-align: center; }
+.map-filter-context { min-height: 48px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); background: var(--surface-soft); color: var(--text); }
+.map-filter-context span { min-width: 0; font-weight: 700; }
+.map-filter-context button { flex: 0 0 auto; min-height: 36px; padding: 6px 9px; border: 1px solid var(--line); border-radius: var(--radius-small); background: var(--surface); color: var(--accent-strong); font: inherit; font-weight: 700; cursor: pointer; }
 .map-place-list { display: grid; }
 .map-place-card { min-width: 0; min-height: 68px; padding: 12px 14px; display: grid; gap: 4px; border: 0; border-bottom: 1px solid var(--line-soft); background: transparent; color: var(--text); font: inherit; text-align: left; cursor: pointer; }
 .map-place-card:last-child { border-bottom: 0; }
@@ -1016,6 +1019,22 @@ img { display: block; max-width: 100%; }
 .map-popup { display: grid; gap: 3px; color: var(--text); }
 .map-popup strong { color: var(--ink); font-size: .78rem; }
 .map-popup span { font-size: .68rem; }
+.map-course-content { display: grid; }
+.map-course-list { display: grid; }
+.map-course-card { min-width: 0; padding: 14px; display: grid; gap: 4px; border: 0; border-bottom: 1px solid var(--line-soft); background: transparent; color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+.map-course-card.is-selected { background: var(--accent-soft); }
+.map-course-card strong { color: var(--ink); font-size: calc(.84rem * var(--body-text-scale)); }
+.map-course-card span,.map-course-card small { color: var(--muted); font-size: calc(.68rem * var(--body-text-scale)); line-height: 1.45; }
+.map-course-detail { padding-top: 16px; border-top: 1px solid var(--line); }
+.map-course-detail h2,.map-course-detail p { margin: 0; padding-inline: 14px; }
+.map-course-detail h2 { color: var(--ink); font-size: calc(.92rem * var(--body-text-scale)); }
+.map-course-summary { margin-top: 5px !important; color: var(--text); font-weight: 700; }
+.map-course-description,.map-course-guide-note { margin-top: 6px !important; color: var(--muted); line-height: 1.5; }
+.map-course-guide-note { margin-bottom: 12px !important; }
+.map-course-place-list { border-top: 1px solid var(--line-soft); }
+.map-course-number-marker { display: grid; place-items: center; border: 2px solid var(--surface); border-radius: 50%; background: var(--accent-strong); color: var(--surface); box-shadow: 0 2px 8px rgba(48,52,42,.22); font-size: 13px; font-weight: 800; }
+.map-course-number-marker.is-selected { background: var(--ink); transform: scale(1.12); }
+.detail-map-link { margin-inline: 18px; }
 .map-canvas .leaflet-control-attribution { color: var(--muted); font-size: 9px; }
 .map-canvas .leaflet-control-attribution a { color: var(--accent-strong); }
 

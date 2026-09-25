@@ -4,8 +4,9 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const read = (relative) => readFile(new URL(`../${relative}`, import.meta.url), 'utf8');
-const [placesSource, serviceSource, mapSource, mainSource, uiSource, weatherSource, modulesText, eventsText] = await Promise.all([
+const [placesSource, coursesSource, serviceSource, mapSource, mainSource, uiSource, weatherSource, modulesText, eventsText] = await Promise.all([
   read('src/js/mapPlaces.js'),
+  read('src/js/mapCourses.js'),
   read('src/js/mapService.js'),
   read('src/js/ui/screens/map.js'),
   read('src/js/main.js'),
@@ -17,12 +18,12 @@ const [placesSource, serviceSource, mapSource, mainSource, uiSource, weatherSour
 
 const flowerNames = {
   hydrangea: '수국', lotus: '연꽃', poppy: '개양귀비', lavender: '라벤더',
-  sunflower: '해바라기', 'red-spider-lily': '꽃무릇'
+  sunflower: '해바라기', 'red-spider-lily': '꽃무릇', 'cherry-blossom': '벚꽃'
 };
 
 function mapModules() {
   const context = vm.createContext({ Math, Number, Set, Promise });
-  vm.runInContext(`const __mods=Object.create(null);\n__mods['js/data.js']={getFlowerById:(id)=>(${JSON.stringify(flowerNames)})[id]?{nameKo:(${JSON.stringify(flowerNames)})[id]}:null};\n${placesSource}\n${serviceSource}`, context);
+  vm.runInContext(`const __mods=Object.create(null);\n__mods['js/data.js']={getFlowerById:(id)=>(${JSON.stringify(flowerNames)})[id]?{nameKo:(${JSON.stringify(flowerNames)})[id]}:null};\n${placesSource}\n${coursesSource}\n${serviceSource}`, context);
   return {
     places: vm.runInContext('__mods["js/mapPlaces.js"]', context),
     service: vm.runInContext('__mods["js/mapService.js"]', context)
@@ -36,9 +37,9 @@ function makeElement(tag, props = {}, children = []) {
 function renderMap(state = {}) {
   const { service } = mapModules();
   const context = vm.createContext({ service });
-  vm.runInContext(`const __mods=Object.create(null);\n__mods['js/ui/dom.js']={el:${makeElement.toString()}};\n__mods['js/mapService.js']=service;\n${mapSource}`, context);
+  vm.runInContext(`const __mods=Object.create(null);\n__mods['js/ui/dom.js']={el:${makeElement.toString()}};\n__mods['js/data.js']={getFlowerById:(id)=>(${JSON.stringify(flowerNames)})[id]?{nameKo:(${JSON.stringify(flowerNames)})[id]}:null};\n${coursesSource}\n__mods['js/mapService.js']=service;\n${mapSource}`, context);
   return vm.runInContext('__mods["js/ui/screens/map.js"].renderMap', context)({
-    mapViewMode: 'nearby', mapLocationStatus: 'idle', mapSelectedPlaceId: '', mapUserLocation: null, ...state
+    mapViewMode: 'nearby', mapLocationStatus: 'idle', mapSelectedPlaceId: '', mapSelectedCourseId: '', mapFlowerFilterId: '', mapUserLocation: null, ...state
   });
 }
 
@@ -52,7 +53,7 @@ function findAll(node, predicate, rows = []) {
 test('static flower places reuse exact verified flower-event coordinates and required fields', () => {
   const { places } = mapModules();
   const events = JSON.parse(eventsText).events;
-  assert.equal(places.FLOWER_PLACES.length, 6);
+  assert.equal(places.FLOWER_PLACES.length, 11);
   for (const place of places.FLOWER_PLACES) {
     for (const key of ['id','name','latitude','longitude','address','region','relatedFlowerIds','bloomMonths','description']) assert.ok(place[key] !== undefined, `${place.id}:${key}`);
     const source = events.find((event) => event.contentid === place.sourceEventId);
@@ -96,7 +97,7 @@ test('mocked geolocation returns ready, denied, and retryable error results', as
 test('map renders without location, keeps all places, and shows explicit location states', () => {
   const screen = renderMap();
   assert.equal(findAll(screen, (node) => node.props?.id === 'flower-map').length, 1);
-  assert.equal(findAll(screen, (node) => node.props?.dataset?.action === 'select-map-place').length, 6);
+  assert.equal(findAll(screen, (node) => node.props?.dataset?.action === 'select-map-place').length, 11);
   assert.equal(findAll(screen, (node) => node.props?.text === '내 위치').length, 1);
   for (const [status, message] of [
     ['checking','현재 위치를 확인하고 있어요.'],
@@ -105,14 +106,14 @@ test('map renders without location, keeps all places, and shows explicit locatio
   ]) assert.equal(findAll(renderMap({mapLocationStatus:status}), (node) => node.props?.text === message).length, 1);
 });
 
-test('distance appears only with location, place selection is reflected, and course stays pending', () => {
+test('distance appears only with location, place selection is reflected, and courses are available', () => {
   const nearby = renderMap({mapUserLocation:{latitude:37.63,longitude:127.05},mapSelectedPlaceId:'choansan-hydrangea-garden'});
   const cards = findAll(nearby, (node) => node.props?.dataset?.action === 'select-map-place');
   assert.equal(cards[0].props.dataset.placeId, 'choansan-hydrangea-garden');
   assert.equal(cards[0].props['aria-pressed'], 'true');
   assert.match(cards[0].children[1].props.text, /m|km/);
   const course = renderMap({mapViewMode:'course'});
-  assert.equal(findAll(course, (node) => node.props?.text === '꽃 코스를 준비하고 있어요.').length, 1);
+  assert.equal(findAll(course, (node) => node.props?.dataset?.action === 'select-map-course').length, 2);
   assert.equal(findAll(course, (node) => node.props?.dataset?.action === 'select-map-place').length, 0);
 });
 
@@ -138,6 +139,8 @@ test('map state and actions stay in memory and never add storage keys', () => {
   ]) assert.match(mainSource, entry);
   assert.doesNotMatch(mainSource, /localStorage[^\n]*map|map[^\n]*localStorage/i);
   const common = JSON.parse(modulesText).common;
+  assert.ok(common.indexOf('js/mapPlaces.js') < common.indexOf('js/mapCourses.js'));
+  assert.ok(common.indexOf('js/mapCourses.js') < common.indexOf('js/mapService.js'));
   assert.ok(common.indexOf('js/mapPlaces.js') < common.indexOf('js/mapService.js'));
   assert.ok(common.indexOf('js/mapService.js') < common.indexOf('js/ui/screens/map.js'));
 });
