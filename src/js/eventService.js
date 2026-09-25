@@ -165,7 +165,9 @@ async function fetchEventsFromBackend({ signal } = {}) {
   } catch (error) {
     if (error?.name === 'AbortError') throw error;
     const networkError = new Error('NETWORK');
-    networkError.userMessage = '행사 서버에 연결하지 못했어요. 네트워크 상태를 확인한 뒤 다시 시도해 주세요.';
+    networkError.userMessage = APP_CONFIG.IS_RENDER_API
+      ? 'Render 행사 서버가 준비 중이거나 연결이 지연되고 있어요. 잠시 후 다시 시도해 주세요.'
+      : '행사 서버에 연결하지 못했어요. 네트워크 상태를 확인한 뒤 다시 시도해 주세요.';
     throw networkError;
   }
   const payload = await response.json().catch(() => null);
@@ -173,7 +175,9 @@ async function fetchEventsFromBackend({ signal } = {}) {
     const apiError = new Error(payload?.error || 'API_ERROR');
     apiError.userMessage = typeof payload?.message === 'string' && payload.message.trim()
       ? payload.message.trim().slice(0, 160)
-      : '행사 정보를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.';
+      : APP_CONFIG.IS_RENDER_API && !payload && [502, 503, 504].includes(response.status)
+        ? 'Render 행사 서버가 준비 중이에요. 잠시 기다린 뒤 다시 시도해 주세요.'
+        : '행사 정보를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.';
     throw apiError;
   }
   if (!payload || !Array.isArray(payload.events)) {
@@ -187,16 +191,26 @@ async function fetchEventsFromBackend({ signal } = {}) {
 
 async function getEventDetail(event, { signal } = {}) {
   if (!event?.id || APP_CONFIG.STANDALONE || (typeof navigator !== 'undefined' && navigator.onLine === false)) return event;
-  const failedDetail = () => ({ ...event, detailError:'최신 상세 정보를 확인하지 못했어요. 목록에서 받은 정보는 유지했어요. 다시 시도하거나 출처의 안내를 확인해 주세요.' });
+  const failedDetail = (message='최신 상세 정보를 확인하지 못했어요. 목록에서 받은 정보는 유지했어요. 다시 시도하거나 출처의 안내를 확인해 주세요.') => ({ ...event, detailError:message });
   const params = new URLSearchParams({ contentId: event.id, contentTypeId: '15' });
   let response;
   try {
     response = await fetch(`${APP_CONFIG.API.eventDetail}?${params}`, { signal, headers: { 'Accept': 'application/json' } });
   } catch (error) {
     if (error?.name === 'AbortError') throw error;
-    return failedDetail();
+    return failedDetail(APP_CONFIG.IS_RENDER_API
+      ? 'Render 행사 서버가 준비 중이거나 연결이 지연되고 있어요. 잠시 후 다시 상세를 확인해 주세요.'
+      : undefined);
   }
-  if (!response.ok) return failedDetail();
+  if (!response.ok) {
+    const errorPayload = typeof response.json === 'function' ? await response.json().catch(() => null) : null;
+    if (APP_CONFIG.IS_RENDER_API && !errorPayload && [502, 503, 504].includes(response.status)) {
+      return failedDetail('Render 행사 서버가 준비 중이에요. 잠시 후 다시 상세를 확인해 주세요.');
+    }
+    return failedDetail(typeof errorPayload?.message === 'string' && errorPayload.message.trim()
+      ? errorPayload.message.trim().slice(0, 160)
+      : undefined);
+  }
   const payload = await response.json().catch(() => null);
   if (!payload || typeof payload !== 'object' ||
     !['source-checked', 'detail-checked', 'stale'].includes(payload.verification?.status) ||

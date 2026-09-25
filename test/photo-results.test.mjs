@@ -9,6 +9,7 @@ function ui() {
   const button = (text, action, options = {}) => el('button', { text, disabled: options.disabled, dataset: { action, ...options.data } });
   const context = vm.createContext({ __mods: {
     'js/config.js': { APP_CONFIG: { LOW_CONFIDENCE_THRESHOLD: 0.6 } },
+    'js/mapPlaces.js': { getFlowerPlacesByFlowerId: () => [] },
     'js/ui/dom.js': { el, button, image: (src, alt) => el('img', { src, alt }) },
     'js/ui/components.js': { emptyState: (text, label, action) => el('div', { text }, [button(label, action)]), primaryFlowerName: (flower) => flower.nameKo, otherNameLine: () => null },
     'js/ui/screens/shared.js': { pageHeader: () => el('header') }
@@ -66,7 +67,7 @@ test('rendered results include equal comparison fields, atlas evidence actions a
   assert.match(text, /여러 장의 소엽으로 이루어진 겹잎/);
   assert.match(text, /실처럼 잘게 갈라진 잎/);
   assert.match(text, /외부 출처 링크가 없어 추가 확인/);
-  assert.equal(nodesOf(result).filter((node) => node.props.text === '도감 근거 보기').length, 2);
+  assert.equal(nodesOf(result).filter((node) => node.props.text === '도감 보기').length, 2);
   const selection = nodesOf(result).filter((node) => node.props.dataset?.action === 'select-candidate');
   assert.equal(selection[0].props['aria-pressed'], 'true');
   assert.equal(selection[1].props['aria-pressed'], 'false');

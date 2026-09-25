@@ -1,6 +1,7 @@
 __mods["js/ui/screens/capture.js"] = (() => {
 const { APP_CONFIG } = __mods["js/config.js"];
 const { getFlowerById } = __mods["js/data.js"];
+const { getFlowerPlacesByFlowerId } = __mods["js/mapPlaces.js"];
 const { el, button, image } = __mods["js/ui/dom.js"];
 const { emptyState, primaryFlowerName, otherNameLine } = __mods["js/ui/components.js"];
 const { pageHeader } = __mods["js/ui/screens/shared.js"];
@@ -57,7 +58,7 @@ function renderCandidateComparison(candidates) {
         el('dl', { className: 'candidate-comparison-facts' }, facts.flatMap(([label, value]) => [
           el('dt', { text: label }), el('dd', { text: value })
         ])),
-        flower ? button('도감 근거 보기', 'open-flower', { kind: 'secondary', data: { flowerId: flower.id } }) : null
+        flower ? button('도감 보기', 'open-flower', { kind: 'secondary', data: { flowerId: flower.id } }) : null
       ]);
     })),
     el('p', { className: 'candidate-comparison-note', text: '근거: 앱 도감의 꽃·잎·구별 특징. 현재 형태 설명에는 종별 외부 출처 링크가 없어 추가 확인이 필요해요. 도감 학명과 식별 학명이 다르면 같은 종으로 확정하지 마세요.' })
@@ -109,7 +110,7 @@ function renderAnalysisResult(state) {
   }
 
   section.append(el('p', { className: 'candidate-comparison-note', text: '식별 점수는 정답률을 보장하지 않아요. 도감과 실제 식물의 특징을 함께 확인해 주세요.' }));
-  section.append(renderCandidateCard(candidates[0], state, { primary: true, rankLabel: '가장 유력한 후보' }));
+  section.append(renderCandidateCard(candidates[0], state, { primary: true, rankLabel: '가장 비슷한 꽃' }));
 
   if (candidates.length > 1) {
     const alternatives = el('div', { className: 'candidate-alternatives' }, [
@@ -126,19 +127,21 @@ function renderAnalysisResult(state) {
   section.append(renderCandidateComparison(candidates));
 
   const matched = Boolean(selected?.flowerId && getFlowerById(selected.flowerId));
+  const placeCount = matched ? getFlowerPlacesByFlowerId(selected.flowerId).length : 0;
   section.append(el('div', { className: 'result-selection-summary' }, [
     el('span', { text: '선택한 꽃' }),
     el('strong', { text: selected?.nameKo || '꽃 하나를 골라주세요' })
   ]));
   section.append(el('div', { className: 'result-actions' }, [
-    button('이 꽃으로 찾기', 'confirm-candidate', {
+    button('이 꽃 선택하기', 'confirm-candidate', {
       kind: 'primary', disabled: !matched, data: { flowerId: selected?.flowerId || '' }
     }),
-    button('상세정보 보기', 'open-flower', {
+    button(placeCount ? `꽃 상세 · 볼 수 있는 곳 ${placeCount}곳` : '꽃 상세 보기', 'open-flower', {
       kind: 'secondary', disabled: !matched, data: { flowerId: selected?.flowerId || '' }
     }),
     button('다른 사진으로 다시 찾기', 'restart-photo', { kind: 'tertiary' })
   ]));
+  if (placeCount) section.append(el('p', { className: 'capture-place-note', text: '꽃 상세에서 실제 볼 수 있는 장소로 이어갈 수 있어요.' }));
   if (!matched) {
     section.append(el('p', {
       className: 'weather-note',
@@ -150,7 +153,7 @@ function renderAnalysisResult(state) {
 
 function renderCapture(state) {
   const main = el('main', { className: 'screen capture-screen', id: 'main-content' }, [
-    pageHeader('Photo search', '사진으로 찾기')
+    pageHeader('', '사진 찾기')
   ]);
 
   if (!state.photo?.file) {

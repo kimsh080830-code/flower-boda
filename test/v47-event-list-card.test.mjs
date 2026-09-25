@@ -27,11 +27,14 @@ const [components, events, details, home, observations, styles, data, snapshot] 
   read('../src/js/eventSnapshot.js')
 ]);
 
-test('event-list and compact event cards opt out of verification metadata without deleting its formatter', () => {
+test('event-list cards opt out of verification metadata while home uses its compact four-field row', () => {
   assert.match(components, /function eventListRow\(event, \{ compact = false, showVerification = !compact \} = \{\}\)/);
   assert.match(components, /showVerification \? el\('span', \{ className: 'event-meta', text: eventVerificationText\(event\) \}\) : null/);
   assert.match(events, /eventListRow\(event, \{ showVerification: false \}\)/);
-  assert.match(home, /eventListRow\(event, \{ compact: true, showVerification: false \}\)/);
+  assert.match(home, /recommendedEvents\.forEach\(\(event\) => eventList\.append\(homeEventListRow\(event\)\)\)/);
+  assert.match(home, /className: 'home-event-title'.*text: event\.title/s);
+  assert.match(home, /formatEventRange\(event\)/);
+  assert.match(home, /statusBadge\(event\.status\)/);
   assert.match(observations, /eventListRow\(event,\{compact:true,showVerification:false\}\)/);
   assert.match(details, /eventListRow\(event, \{ compact: true, showVerification: false \}\)/);
   assert.match(components, /function eventVerificationText\(event\)/);

@@ -35,9 +35,9 @@ const MAX_BODY = 13 * 1024 * 1024;
 // Only explicitly published files may be served; new files stay private by default.
 // Resolve filenames from this map, never directly from a request path.
 const PUBLIC_FILES = new Map([
-  ['/', '꽃을보다_V61_dev.html'],
-  ['/index.html', '꽃을보다_V61_dev.html'],
-  ['/꽃을보다_V61_dev.html', '꽃을보다_V61_dev.html'],
+  ['/', 'index.html'],
+  ['/index.html', 'index.html'],
+  ['/꽃을보다_V61_dev.html', 'index.html'],
 
 ]);
 
@@ -124,7 +124,27 @@ function sameOriginRequest(req) {
   if (!origin) return true;
   const host = typeof req.headers.host === 'string' ? req.headers.host : '';
   if (!host) return false;
-  try { return new URL(origin).host === host; } catch { return false; }
+  try {
+    const parsedOrigin = new URL(origin);
+    const forwardedProtocol = String(req.headers['x-forwarded-proto'] || (req.socket.encrypted ? 'https' : 'http')).split(',')[0].trim();
+    const requestOrigin = `${forwardedProtocol}://${host}`;
+    return parsedOrigin.origin === requestOrigin || parsedOrigin.origin === 'https://kimsh080830-code.github.io';
+  } catch { return false; }
+}
+
+function setApiCors(req, res) {
+  const origin = typeof req.headers.origin === 'string' ? req.headers.origin : '';
+  if (!origin) return;
+  res.setHeader('Vary', 'Origin');
+  try {
+    const parsedOrigin = new URL(origin);
+    const host = String(req.headers.host || '');
+    const forwardedProtocol = String(req.headers['x-forwarded-proto'] || (req.socket.encrypted ? 'https' : 'http')).split(',')[0].trim();
+    if (parsedOrigin.origin === `${forwardedProtocol}://${host}`) return;
+    if (parsedOrigin.origin === 'https://kimsh080830-code.github.io') {
+      res.setHeader('Access-Control-Allow-Origin', parsedOrigin.origin);
+    }
+  } catch {}
 }
 
 async function handleIdentify(req, res) {
@@ -236,7 +256,7 @@ const server=http.createServer(async (req,res)=>{
   res.setHeader('X-Content-Type-Options','nosniff');
   res.setHeader('Referrer-Policy','strict-origin-when-cross-origin');
   res.setHeader('X-Frame-Options','SAMEORIGIN');
-  res.setHeader('Permissions-Policy','geolocation=(), microphone=()');
+  res.setHeader('Permissions-Policy','geolocation=(self), microphone=()');
 
   let url;
   try { url=new URL(req.url||'/','http://localhost'); }
@@ -244,6 +264,14 @@ const server=http.createServer(async (req,res)=>{
 
   const isApi = url.pathname.startsWith('/api/');
   if (isApi && !sameOriginRequest(req)) return jsonError(res,403,'ORIGIN_FORBIDDEN','허용되지 않은 요청이에요.');
+  if (isApi) setApiCors(req,res);
+  if (isApi && req.method==='OPTIONS') {
+    res.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers','Accept, Content-Type');
+    res.setHeader('Access-Control-Max-Age','600');
+    res.writeHead(204);
+    return res.end();
+  }
 
   if (req.method==='POST' && url.pathname==='/api/identify-flower') return handleIdentify(req,res);
   if (req.method==='GET' && url.pathname==='/api/events') return handleEvents(req,res);
@@ -256,4 +284,4 @@ const server=http.createServer(async (req,res)=>{
 server.requestTimeout = 60000;
 server.headersTimeout = 10000;
 server.keepAliveTimeout = 5000;
-server.listen(PORT,()=>console.log(`Flower Guide server: http://localhost:${server.address().port}`));
+server.listen(PORT,'0.0.0.0',()=>console.log(`Flower Guide server: http://localhost:${server.address().port}`));

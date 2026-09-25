@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: flower-boda-api-dev
+    runtime: node
+    plan: free
+    branch: dev
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: EVENTS_SOURCE
+        value: tour-api
+      - key: TOUR_API_KEY
+        sync: false
+      - key: PLANTNET_API_KEY
+        sync: false
+      - key: PLANTNET_PROJECT
+        value: all

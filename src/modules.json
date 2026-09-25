@@ -2,9 +2,13 @@
   "common": [
     "js/config.js",
     "js/data.js",
+    "js/mapPlaces.js",
+    "js/mapCourses.js",
+    "js/mapService.js",
     "js/flowerDataPolicy.js",
     "js/runtimeHooks.js",
     "js/dateUtils.js",
+    "js/weatherService.js",
     "js/flowerService.js",
     "js/observations.js",
     "js/storage.js",
@@ -14,6 +18,7 @@
     "js/searchUtils.js",
     "js/eventSnapshot.js",
     "js/eventService.js",
+    "js/eventNotificationService.js",
     "js/imageService.js",
     "js/flowerViewData.js",
     "js/ui/dom.js",
@@ -24,6 +29,8 @@
     "js/ui/screens/capture.js",
     "js/ui/screens/encyclopedia.js",
     "js/ui/screens/events.js",
+    "js/ui/screens/map.js",
+    "js/ui/screens/my.js",
     "js/calendar.js",
     "js/calendarPatch.js",
     "js/calendarColorPatch.js",
@@ -31,6 +38,7 @@
     "js/calendarWeekendPatch.js",
     "js/ui/screens/details.js",
     "js/ui/screens/shell.js",
+    "js/ui/notifications.js",
     "js/ui/screens.js",
     "js/ui/screens/settings.js",
     "js/ui.js",
@@ -38,7 +46,13 @@
     "js/main.js"
   ],
   "dev": [
-    { "path": "js/devTools.js", "before": "js/ui/screens/settings.js" },
-    { "path": "js/ui/screens/devTools.js", "before": "js/ui/screens/settings.js" }
+    {
+      "path": "js/devTools.js",
+      "before": "js/ui/screens/settings.js"
+    },
+    {
+      "path": "js/ui/screens/devTools.js",
+      "before": "js/ui/screens/settings.js"
+    }
   ]
 }

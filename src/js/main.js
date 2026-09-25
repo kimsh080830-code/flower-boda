@@ -3,9 +3,14 @@ const { APP_CONFIG } = __mods["js/config.js"];
 const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { FLOWERS, getFlowerById } = __mods["js/data.js"];
 const { getSeason, getDatePresentation, parseApiDate } = __mods["js/dateUtils.js"];
+const { requestCurrentPosition, fetchCurrentWeather, loadCurrentWeatherWithoutPrompt } = __mods["js/weatherService.js"];
+const { resolveMapLocation } = __mods["js/mapService.js"];
+const { getFlowerPlaceById, getFlowerPlacesByFlowerId } = __mods["js/mapPlaces.js"];
+const { getFlowerCourseById } = __mods["js/mapCourses.js"];
 const { getFlowerRelaySnapshot, startFlowerRelay } = __mods["js/flowerRelay.js"];
 const { analyzeFlower, preprocessImage, validateImageFile, FlowerServiceError } = __mods["js/flowerService.js"];
 const { getEvents, getEventDetail } = __mods["js/eventService.js"];
+const { getEventNotifications, loadEventNotificationReads, saveEventNotificationReads } = __mods['js/eventNotificationService.js'];
 const { hydrateReferenceImages } = __mods["js/imageService.js"];
 const { loadDiscoveries, loadFavorites, saveFavorites } = __mods["js/storage.js"];
 const { loadCollection,addObservation,updateObservation,deleteObservation,exportBackup,parseBackup,previewImport,importBackup,createThumbnail } = __mods["js/observations.js"];
@@ -21,9 +26,22 @@ const state = {
   recentFlowerIds: loadRecent(),
   calendarMonths: {},
   savedVisitDates: loadVisits(),
+  eventNotificationReads: loadEventNotificationReads(),
+  eventNotifications: [],
+  eventNotificationsError: '',
+  notificationOpen: false,
   currentTab: 'home',
+  mapViewMode: 'nearby',
+  mapUserLocation: null,
+  mapLocationStatus: 'idle',
+  mapLocationError: '',
+  mapSelectedPlaceId: '',
+  mapSelectedCourseId: '',
+  mapFlowerFilterId: '',
   currentDate: new Date(),
   currentSeason: getSeason(new Date()),
+  currentWeather: null,
+  currentWeatherStatus: 'loading',
   selectedFlower: null,
   selectedCandidateId: null,
   analysisResult: null,
@@ -79,12 +97,25 @@ let eventDetailController = null;
 let photoPrepareToken = 0;
 let referenceImageController = null;
 let toastTimer = null;
+let stopDateTracking = null;
 
 function render() {
   const panels={'encyclopedia-filter-panel':'filtersOpen','recent-flower-panel':'recentDetailsOpen'};
   for(const [id,key] of Object.entries(panels)) {const node=document.getElementById(id);if(node)state[key]=node.open;}
   applyTheme(state.settings.theme);
   applyTextSize(runtimeHooks.resolveTextSize(state,state.settings.bodyTextSize));
+  try {
+    state.eventNotificationsError = state.eventsError || '';
+    state.eventNotifications = state.eventNotificationsError || !state.settings.eventNotificationsEnabled ? [] : getEventNotifications({
+      events: state.events,
+      savedEventIds: state.savedVisitDates,
+      readNotificationIds: state.eventNotificationReads,
+      now: state.currentDate
+    });
+  } catch {
+    state.eventNotifications = [];
+    state.eventNotificationsError = '행사 알림을 만들지 못했어요. 다시 시도해 주세요.';
+  }
   renderApp(state);
 }
 
@@ -174,9 +205,9 @@ function setHistory({ replace = false } = {}) {
   history[replace ? 'replaceState' : 'pushState'](payload, '', hash);
 }
 
-const VALID_TABS = ['home', 'capture', 'events', 'encyclopedia', 'settings'];
-const MAIN_NAV_TABS = ['events', 'home', 'encyclopedia'];
-const MAIN_TAB_SWIPE_EXCLUDE = '[data-bloom-calendar-swipe="true"], [data-event-calendar-swipe="true"], .bloom-flower-rail, .flower-rail, .image-gallery, .image-gallery-track, .slider, [role="slider"], [data-horizontal-scroll], input[type="range"], input, textarea, select';
+const VALID_TABS = ['home', 'capture', 'events', 'map', 'encyclopedia', 'my', 'settings'];
+const MAIN_NAV_TABS = ['events', 'map', 'home', 'encyclopedia', 'my'];
+const MAIN_TAB_SWIPE_EXCLUDE = '[data-bloom-calendar-swipe="true"], [data-event-calendar-swipe="true"], .map-canvas, .bloom-flower-rail, .flower-rail, .image-gallery, .image-gallery-track, .slider, [role="slider"], [data-horizontal-scroll], input[type="range"], input, textarea, select';
 
 function hasHorizontalGestureOwner(target) {
   if (target.closest?.(MAIN_TAB_SWIPE_EXCLUDE)) return true;
@@ -202,6 +233,68 @@ function switchTab(tab, { fromHistory = false } = {}) {
   if (!fromHistory && shouldPushHistory) setHistory();
   render();
   window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+async function requestMapUserLocation({geolocation=globalThis.navigator?.geolocation}={}) {
+  if(!state.settings.locationEnabled) {
+    state.mapUserLocation=null;
+    state.mapLocationStatus='disabled';
+    state.mapLocationError='';
+    render();
+    return;
+  }
+  if(state.mapLocationStatus==='checking') return;
+  state.mapLocationStatus='checking';
+  state.mapLocationError='';
+  render();
+  const result=await resolveMapLocation({geolocation,requestPosition:requestCurrentPosition});
+  state.mapUserLocation=result.location;
+  state.mapLocationStatus=result.status;
+  state.mapLocationError=result.error;
+  if(result.location) {
+    render();
+    void fetchCurrentWeather(result.location).then(weather=>{
+      state.currentWeather=weather;
+      state.currentWeatherStatus='ready';
+      render();
+    }).catch(()=>{});
+  }
+  else render();
+}
+
+function selectMapPlace(placeId) {
+  if(!getFlowerPlaceById(placeId)) return false;
+  state.mapSelectedPlaceId=placeId;
+  render();
+  return true;
+}
+
+function selectMapCourse(courseId) {
+  const course=getFlowerCourseById(courseId);
+  if(!course) return false;
+  state.mapSelectedCourseId=course.id;
+  state.mapSelectedPlaceId='';
+  render();
+  return true;
+}
+
+function showEventOnMap(placeId) {
+  if(!getFlowerPlaceById(placeId)) return false;
+  state.mapViewMode='nearby';
+  state.mapFlowerFilterId='';
+  state.mapSelectedPlaceId=placeId;
+  switchTab('map');
+  return true;
+}
+
+function showFlowerOnMap(flowerId) {
+  const places=getFlowerPlacesByFlowerId(flowerId);
+  if(!places.length) return false;
+  state.mapViewMode='nearby';
+  state.mapFlowerFilterId=flowerId;
+  state.mapSelectedPlaceId=places[0].id;
+  switchTab('map');
+  return true;
 }
 
 function openFlowerDetail(flowerId, { fromHistory = false } = {}) {
@@ -587,7 +680,7 @@ let mainTabSwipe = null;
 let suppressMainTabClickUntil = 0;
 
 function canStartMainTabSwipe(target, clientX) {
-  if (!MAIN_NAV_TABS.includes(state.currentTab) || state.detail || state.photoPickerOpen || state.bloomCalendarOpen) return false;
+  if (!MAIN_NAV_TABS.includes(state.currentTab) || state.detail || state.photoPickerOpen || state.bloomCalendarOpen || state.notificationOpen) return false;
   const screen = target.closest?.('#main-content');
   if (!screen || hasHorizontalGestureOwner(target)) return false;
   const edgeGuard = 28;
@@ -807,6 +900,22 @@ function handleClick(event) {
       break;
     }
     case 'go-settings': switchTab('settings'); break;
+    case 'select-map-view':
+      state.mapViewMode = target.dataset.mode === 'course' ? 'course' : 'nearby';
+      state.mapSelectedPlaceId = '';
+      render();
+      break;
+    case 'request-map-location': void requestMapUserLocation(); break;
+    case 'select-map-place': selectMapPlace(target.dataset.placeId); break;
+    case 'select-map-course': selectMapCourse(target.dataset.courseId); break;
+    case 'show-event-on-map': showEventOnMap(target.dataset.placeId); break;
+    case 'show-flower-on-map': showFlowerOnMap(target.dataset.flowerId); break;
+    case 'clear-map-flower-filter':
+      state.mapFlowerFilterId='';
+      state.mapSelectedPlaceId='';
+      render();
+      break;
+    case 'retry-map': render(); break;
     case 'open-bloom-calendar':
       state.bloomCalendarOpen=true;
       setBloomCalendarMonth(__mods['js/dateUtils.js'].getDatePresentation(state.currentDate).day.slice(0,7));
@@ -894,6 +1003,31 @@ function handleClick(event) {
       state.photoPickerOpen = false;
       render();
       break;
+    case 'open-notifications':
+      state.notificationOpen = true;
+      render();
+      break;
+    case 'notification-panel':
+      break;
+    case 'close-notifications':
+      state.notificationOpen = false;
+      render();
+      break;
+    case 'open-notification-event': {
+      const notification = state.eventNotifications.find((item) => item.id === target.dataset.notificationId && item.eventId === target.dataset.eventId);
+      if (!notification || !state.events.some((item) => item.id === notification.eventId)) break;
+      if (!notification.isRead) {
+        const next = { ...state.eventNotificationReads, [notification.readKey]: true };
+        if (!saveEventNotificationReads(next)) {
+          showToast('읽음 상태를 저장하지 못했어요. 다시 시도해 주세요.');
+          break;
+        }
+        state.eventNotificationReads = next;
+      }
+      state.notificationOpen = false;
+      openEventDetail(notification.eventId);
+      break;
+    }
     case 'go-events': switchTab('events'); break;
     case 'go-all-events':
       state.eventFilter = { date: '' };
@@ -1015,10 +1149,19 @@ function handleChange(event) {
   if(runtimeHooks.handleChange({input,state,render})) return;
   if(['setting-select','setting-toggle'].includes(input.dataset.action)) {
     const key=input.dataset.key;
-    if(!['region','theme','recentEnabled','bodyTextSize'].includes(key)) return;
+    if(!['region','theme','recentEnabled','bodyTextSize','eventNotificationsEnabled','locationEnabled'].includes(key)) return;
     const value=input.dataset.action==='setting-toggle'?input.checked:input.value;
     const next={...state.settings,[key]:value};
-    if(saveSettings(next)) {state.settings=next;if(key==='region')state.userRegion=value; render();}
+    if(saveSettings(next)) {
+      state.settings=next;
+      if(key==='region') state.userRegion=value;
+      if(key==='locationEnabled' && !value) {
+        state.mapUserLocation=null;
+        state.mapLocationStatus='disabled';
+        state.mapLocationError='';
+      }
+      render();
+    }
     else {render();showToast('설정을 저장하지 못했어요.');}
     return;
   }
@@ -1065,7 +1208,7 @@ function handleInput(event) {
 
 function trapModalFocus(event) {
   if (event.key !== 'Tab') return false;
-  const modal = document.querySelector('.bloom-calendar-layer') || document.querySelector('.photo-picker-layer') || document.querySelector('.detail-layer');
+  const modal = document.querySelector('.notification-layer') || document.querySelector('.bloom-calendar-layer') || document.querySelector('.photo-picker-layer') || document.querySelector('.detail-layer');
   if (!modal) return false;
   const focusable = [...modal.querySelectorAll('button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), summary, [tabindex]')]
     .filter((node) => node.tabIndex >= 0 && !node.hidden && !node.closest('[inert]') && node.getClientRects().length > 0);
@@ -1104,6 +1247,11 @@ function handleKeydown(event) {
       openSelect.querySelector('summary')?.focus();
       return;
     }
+  }
+  if (event.key === 'Escape' && state.notificationOpen) {
+    state.notificationOpen = false;
+    render();
+    return;
   }
   if (event.key === 'Escape' && state.bloomCalendarOpen) {
     state.bloomCalendarOpen = false;
@@ -1146,6 +1294,7 @@ function initHistory() {
   state.detail = initial.detail;
   state.photoPickerOpen = false;
   state.bloomCalendarOpen = false;
+  state.notificationOpen = false;
   if (state.detail?.type === 'flower') state.selectedFlower = getFlowerById(state.detail.id);
   const canonicalHash = state.detail
     ? `#${state.detail.type}/${encodeURIComponent(state.detail.id)}`
@@ -1155,8 +1304,10 @@ function initHistory() {
 
 function refreshCurrentDate() {
   const now=new Date(),getDate=__mods['js/dateUtils.js'].getDatePresentation;
-  if(getDate(now).day===getDate(state.currentDate).day)return;
-  state.currentDate=now;state.currentSeason=getSeason(now);render();
+  const currentDateChanged=getDate(now).day!==getDate(state.currentDate).day;
+  if(currentDateChanged) {state.currentDate=now;state.currentSeason=getSeason(now);}
+  const runtimeDateChanged=runtimeHooks.syncDateState({state,now});
+  if(currentDateChanged || runtimeDateChanged) render();
 }
 function init() {
   initHistory();
@@ -1172,11 +1323,15 @@ function init() {
     if(event.target.id==='observation-panel') state.observationsOpen=event.target.open;
     if(event.target.id==='recent-flower-panel') state.recentDetailsOpen=event.target.open;
   },true);
-  window.addEventListener('storage',event=> { if(event.key==='flower-info.collection.v1') { syncCollection(); render(); } });
+  window.addEventListener('storage',event=> {
+    if(event.key==='flower-info.collection.v1') { syncCollection(); render(); }
+    if(event.key==='flower-info.event-notification-reads.v1') { state.eventNotificationReads=loadEventNotificationReads(); render(); }
+  });
   document.addEventListener('change', handleChange);
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshCurrentDate();});
   window.addEventListener('focus',refreshCurrentDate);
   document.addEventListener('keydown', handleKeydown);
+  document.addEventListener('flower-map-select',event=>selectMapPlace(event.detail?.placeId));
   document.addEventListener('pointerdown', handlePhotoPickerPointerDown);
   document.addEventListener('pointerdown', handleMainTabPointerDown);
   document.addEventListener('touchstart', handleMainTabTouchStart, { passive: true });
@@ -1202,6 +1357,7 @@ function init() {
     state.detail = detail;
     state.photoPickerOpen = false;
     state.bloomCalendarOpen = false;
+    state.notificationOpen = false;
     if (state.detail?.type === 'flower') state.selectedFlower = getFlowerById(state.detail.id);
     render();
     if (state.detail?.type === 'event' && state.events.some((item) => item.id === state.detail.id)) {
@@ -1209,6 +1365,7 @@ function init() {
     }
   });
   window.addEventListener('beforeunload', () => {
+    stopDateTracking?.();
     if (state.photo?.objectUrl) URL.revokeObjectURL(state.photo.objectUrl);
     analysisController?.abort();
     eventController?.abort();
@@ -1216,7 +1373,13 @@ function init() {
     referenceImageController?.abort();
   });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>applyTheme(state.settings.theme));
+  stopDateTracking=runtimeHooks.startDateTracking({state,refreshCurrentDate});
   render();
+  void loadCurrentWeatherWithoutPrompt().then(weather=>{
+    state.currentWeather=weather;
+    state.currentWeatherStatus=weather?'ready':'error';
+    render();
+  });
   if(state.detail?.type==='flower') state.recentFlowerIds=rememberFlower(state.detail.id,state.settings.recentEnabled);
   loadEventData();
   if (!new URLSearchParams(location.search).has('noRemoteImages')) loadReferenceImages();

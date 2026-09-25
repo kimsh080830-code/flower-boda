@@ -5,10 +5,11 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const read = (relative) => readFile(new URL(relative, import.meta.url), 'utf8');
-const [details, events, settings, components, main, styles, template, v47Data, v47Snapshot, dom] = await Promise.all([
+const [details, events, settings, my, components, main, styles, template, v47Data, v47Snapshot, dom] = await Promise.all([
   read('../src/js/ui/screens/details.js'),
   read('../src/js/ui/screens/events.js'),
   read('../src/js/ui/screens/settings.js'),
+  read('../src/js/ui/screens/my.js'),
   read('../src/js/ui/components.js'),
   read('../src/js/main.js'),
   read('../src/styles.css'),
@@ -65,12 +66,12 @@ test('event detailed filters are removed while the date filter remains unchanged
   assert.match(main, /if \(input\.dataset\.action === 'filter-events-date'\)[\s\S]*?date: input\.value \|\| ''/);
 });
 
-test('settings hide only the visible region row and keep recent clearing inside its disclosure with confirmation', () => {
+test('settings keep app controls while MY owns recent clearing with confirmation', () => {
   assert.doesNotMatch(settings, /selectRow\('지역'/);
-  assert.match(settings, /id:'recent-flower-panel'/);
-  assert.ok(settings.indexOf("button('최근 기록 지우기'") < settings.indexOf('main.append(recent)'));
-  assert.match(settings, /cancel-clear-recent/);
-  assert.match(settings, /confirm-clear-recent/);
+  assert.doesNotMatch(settings, /recent-flower-panel|최근 본 꽃 보기|renderFavoriteGarden/);
+  assert.match(my, /button\('최근 기록 지우기'/);
+  assert.match(my, /cancel-clear-recent/);
+  assert.match(my, /confirm-clear-recent/);
   assert.match(main, /recentDetailsOpen: false/);
   assert.match(main, /recentClearPending: false/);
   assert.match(main, /case 'confirm-clear-recent'/);
