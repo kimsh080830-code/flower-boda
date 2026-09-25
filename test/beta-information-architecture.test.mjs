@@ -32,10 +32,11 @@ ${mySource}`, context);
   return vm.runInContext('__mods["js/ui/screens/my.js"].renderMy', context)({ recentFlowerIds:['rose','cosmos'], recentClearPending:false, settings:{recentEnabled:true}, ...state });
 }
 
-test('five main tabs and swipe order are home, events, map, encyclopedia, my', () => {
-  assert.match(shellSource, /\['home', 'nav-home', '홈'\][\s\S]*\['events', 'nav-calendar', '행사'\][\s\S]*\['map', 'nav-map', '지도'\][\s\S]*\['encyclopedia', 'nav-book', '도감'\][\s\S]*\['my', 'nav-my', 'MY'\]/);
-  assert.match(mainSource, /const MAIN_NAV_TABS = \['home', 'events', 'map', 'encyclopedia', 'my'\]/);
+test('five main tabs and swipe order are events, map, home, encyclopedia, my with home in the center', () => {
+  assert.match(shellSource, /\['events', 'nav-calendar', '행사'\][\s\S]*\['map', 'nav-map', '지도'\][\s\S]*\['home', 'nav-home', '홈'\][\s\S]*\['encyclopedia', 'nav-book', '도감'\][\s\S]*\['my', 'nav-my', 'MY'\]/);
+  assert.match(mainSource, /const MAIN_NAV_TABS = \['events', 'map', 'home', 'encyclopedia', 'my'\]/);
   assert.match(mainSource, /const VALID_TABS = \[[^\]]*'my'/);
+  assert.match(mainSource, /currentTab:\s*'home'/);
   assert.match(uiSource, /case 'my': screen = renderMy\(state\); break;/);
 });
 

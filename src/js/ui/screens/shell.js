@@ -34,9 +34,9 @@ function renderAppHeader(state) {
 
 function renderBottomNav(state) {
   const navItems = [
-    ['home', 'nav-home', '홈'],
     ['events', 'nav-calendar', '행사'],
     ['map', 'nav-map', '지도'],
+    ['home', 'nav-home', '홈'],
     ['encyclopedia', 'nav-book', '도감'],
     ['my', 'nav-my', 'MY']
   ];

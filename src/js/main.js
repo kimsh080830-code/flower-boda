@@ -206,7 +206,7 @@ function setHistory({ replace = false } = {}) {
 }
 
 const VALID_TABS = ['home', 'capture', 'events', 'map', 'encyclopedia', 'my', 'settings'];
-const MAIN_NAV_TABS = ['home', 'events', 'map', 'encyclopedia', 'my'];
+const MAIN_NAV_TABS = ['events', 'map', 'home', 'encyclopedia', 'my'];
 const MAIN_TAB_SWIPE_EXCLUDE = '[data-bloom-calendar-swipe="true"], [data-event-calendar-swipe="true"], .map-canvas, .bloom-flower-rail, .flower-rail, .image-gallery, .image-gallery-track, .slider, [role="slider"], [data-horizontal-scroll], input[type="range"], input, textarea, select';
 
 function hasHorizontalGestureOwner(target) {

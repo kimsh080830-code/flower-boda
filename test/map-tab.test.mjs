@@ -31,18 +31,20 @@ function findAll(node, predicate, rows = []) {
   return rows;
 }
 
-test('bottom navigation uses the requested home, events, map, encyclopedia, my order', () => {
+test('bottom navigation uses the requested events, map, home, encyclopedia, my order', () => {
   const order = [...shellSource.matchAll(/\['(home|events|map|encyclopedia|my)',\s*'[^']+',\s*'([^']+)'\]/g)]
     .map(([, tab, label]) => [tab, label]);
-  assert.deepEqual(order, [['home','홈'],['events','행사'],['map','지도'],['encyclopedia','도감'],['my','MY']]);
+  assert.deepEqual(order, [['events','행사'],['map','지도'],['home','홈'],['encyclopedia','도감'],['my','MY']]);
+  assert.equal(order[2][0], 'home');
+  assert.match(mainSource, /currentTab:\s*'home'/);
   assert.match(styles, /\.bottom-nav\s*\{[^}]*grid-template-columns:\s*repeat\(5,1fr\)/s);
   assert.match(styles, /\.nav-map\s*\{\s*--icon:\s*url\("data:image\/svg\+xml/);
 });
 
 test('map is registered as a valid main swipe tab in the requested order', () => {
   assert.match(mainSource, /const VALID_TABS = \[[^\]]*'map'/);
-  assert.match(mainSource, /const MAIN_NAV_TABS = \['home', 'events', 'map', 'encyclopedia', 'my'\]/);
-  assert.match(uiSource, /\['home','events','map','encyclopedia','my'\]\.includes\(state\.currentTab\)/);
+  assert.match(mainSource, /const MAIN_NAV_TABS = \['events', 'map', 'home', 'encyclopedia', 'my'\]/);
+  assert.match(uiSource, /\['events','map','home','encyclopedia','my'\]\.includes\(state\.currentTab\)/);
 });
 
 test('map screen is registered and rendered without changing header actions', () => {

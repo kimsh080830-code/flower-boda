@@ -1,5 +1,14 @@
 # 프로젝트 상태
 
+## 2026-09-25 · 하단 탭 순서 조정
+
+- 작업 브랜치: `dev` (`main` 미수정, 원격 push 없음)
+- 완료: 하단 탭과 스와이프 순서를 `행사 → 지도 → 홈 → 도감 → MY`로 변경. 기본 진입 화면은 홈 유지.
+- 수정 파일: `src/js/main.js`, `src/js/ui.js`, `src/js/ui/screens/shell.js`, 관련 테스트
+- 복구 체크포인트: `checkpoints/꽃을보다_backup/checkpoints/20260925-203355-519/dev-before-tab-order-20260925-203355-519.bundle`
+- 검증: `npm test` 265개 통과, `npm run build` 성공. 390px에서 홈이 정확히 중앙에 배치되고 다섯 탭 이동·가로 넘침·페이지 오류 확인 완료.
+- 남은 작업: 없음.
+
 ## 2026-09-25 · 베타 정보 구조 정리
 
 - 작업 브랜치: `dev` (`main` 미수정, 원격 push 없음)

@@ -125,7 +125,7 @@ function renderApp(state) {
     default: screen = renderHome(state);
   }
   screen.setAttribute('tabindex', '-1');
-  if (['home','events','map','encyclopedia','my'].includes(state.currentTab)) screen.dataset.mainTabSwipe = 'true';
+  if (['events','map','home','encyclopedia','my'].includes(state.currentTab)) screen.dataset.mainTabSwipe = 'true';
   const fragment = document.createDocumentFragment();
   fragment.append(
     el('a', { className: 'skip-link', href: '#main-content', text: '본문으로 건너뛰기' }),
