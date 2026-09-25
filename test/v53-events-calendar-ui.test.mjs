@@ -61,7 +61,7 @@ test('event calendar excludes bloom-calendar flower features', () => {
 
 test('event error state uses exact copy and retry action while normal filtered empty copy is exact', () => {
   assert.match(components, /text: '행사를 불러오지 못했어요\.'/);
-  assert.match(components, /text: '네트워크 상태를 확인한 뒤 다시 시도해주세요\.'/);
+  assert.match(components, /typeof message === 'string' && message\.trim\(\) \? message\.trim\(\) : '네트워크 상태를 확인한 뒤 다시 시도해주세요\.'/);
   assert.match(components, /button\('다시 불러오기', 'retry-events'/);
   assert.match(events, /'조건에 맞는 행사가 없어요\.'/);
   assert.match(main, /case 'retry-events':[\s\S]*?loadEventData\(\{ force: true \}\)/);

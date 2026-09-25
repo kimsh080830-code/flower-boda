@@ -38,11 +38,11 @@ function emptyState(message, actionText, action) {
   ]);
 }
 
-function eventErrorState() {
+function eventErrorState(message) {
   return el('div', { className: 'state-panel state-error event-error-state', role: 'alert' }, [
     el('div', { className: 'event-error-copy' }, [
       el('strong', { text: '행사를 불러오지 못했어요.' }),
-      el('p', { text: '네트워크 상태를 확인한 뒤 다시 시도해주세요.' })
+      el('p', { text: typeof message === 'string' && message.trim() ? message.trim() : '네트워크 상태를 확인한 뒤 다시 시도해주세요.' })
     ]),
     button('다시 불러오기', 'retry-events', { kind: 'secondary' })
   ]);

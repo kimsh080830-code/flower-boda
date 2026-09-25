@@ -101,5 +101,6 @@ test('event failure keeps its alert and retry action without the removed exclama
  assert.equal(result.children.length,2);
  assert.equal(result.children[0].className,'event-error-copy');
  assert.equal(result.children[0].children[0].text,'행사를 불러오지 못했어요.');
+ assert.equal(result.children[0].children[1].text,'연결 오류');
  assert.equal(result.children[1].action,'retry-events');
 });
