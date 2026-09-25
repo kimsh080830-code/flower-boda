@@ -24,6 +24,7 @@ function renderMapViewTabs(mode) {
 function renderLocationStatus(state) {
   const messages = {
     checking: '현재 위치를 확인하고 있어요.',
+    disabled: '설정에서 위치 사용을 켜면 가까운 순서로 볼 수 있어요.',
     denied: '위치 권한이 필요해요.',
     error: '현재 위치를 확인하지 못했어요.'
   };
@@ -107,7 +108,7 @@ function renderMap(state) {
         type: 'button',
         className: 'btn btn-secondary map-location-button',
         dataset: { action: 'request-map-location' },
-        disabled: locationBusy,
+        disabled: locationBusy || state.settings?.locationEnabled === false,
         text: '내 위치'
       })
     ]),

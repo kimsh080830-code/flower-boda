@@ -35,11 +35,16 @@ function renderNotifications(state) {
   const panel = el('section', { className: 'notification-panel', dataset: { action: 'notification-panel' } }, [
     el('div', { className: 'notification-handle', 'aria-hidden': 'true' }),
     el('div', { className: 'notification-heading' }, [
-      el('h2', { id: 'notification-title', text: '알림' }),
+      el('div', {}, [
+        el('h2', { id: 'notification-title', text: '행사 알림' }),
+        el('p', { className: 'notification-subtitle', text: '시작 예정인 꽃 행사 소식이에요.' })
+      ]),
       button('닫기', 'close-notifications', { kind: 'tertiary', extraClass: 'notification-close' })
     ])
   ]);
-  if (state.eventsLoading) {
+  if (state.settings?.eventNotificationsEnabled === false) {
+    panel.append(emptyState('설정에서 행사 알림이 꺼져 있어요.'));
+  } else if (state.eventsLoading) {
     panel.append(el('p', { className: 'weather-note notification-loading', role: 'status', text: '행사 알림을 불러오는 중이에요.' }));
   } else if (state.eventNotificationsError) {
     panel.append(eventErrorState(state.eventNotificationsError));

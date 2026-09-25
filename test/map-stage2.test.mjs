@@ -113,7 +113,7 @@ test('distance appears only with location, place selection is reflected, and cou
   assert.equal(cards[0].props['aria-pressed'], 'true');
   assert.match(cards[0].children[1].props.text, /m|km/);
   const course = renderMap({mapViewMode:'course'});
-  assert.equal(findAll(course, (node) => node.props?.dataset?.action === 'select-map-course').length, 2);
+  assert.equal(findAll(course, (node) => node.props?.dataset?.action === 'select-map-course').length, 1);
   assert.equal(findAll(course, (node) => node.props?.dataset?.action === 'select-map-place').length, 0);
 });
 

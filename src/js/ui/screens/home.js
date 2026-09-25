@@ -1,6 +1,7 @@
 __mods["js/ui/screens/home.js"] = (() => {
 const { FLOWERS } = __mods["js/data.js"];
-const { getBloomStatus, parseApiDate } = __mods["js/dateUtils.js"];
+const { getBloomStatus, formatBloomPeriod, parseApiDate } = __mods["js/dateUtils.js"];
+const { getFlowerPlacesByFlowerId } = __mods["js/mapPlaces.js"];
 const { selectTodayFlower } = __mods["js/todayFlower.js"];
 const { hooks:runtimeHooks } = __mods["js/runtimeHooks.js"];
 const { getFlowerRelaySnapshot } = __mods["js/flowerRelay.js"];
@@ -14,6 +15,7 @@ const {shortSentence,habitatSummary,identificationSummary}=__mods['js/flowerView
 
 function homeFeature(flower, state, featureDate=state.currentDate) {
  const bloom=getBloomStatus(flower.bloom,featureDate), saved=state.favoriteFlowerIds.includes(flower.id);
+ const places=getFlowerPlacesByFlowerId(flower.id);
  const save=button(saved?'저장됨':'저장','toggle-favorite',{kind:'tertiary',data:{flowerId:flower.id},extraClass:'save-button'});
  const heroImage=image(flower.image,`${primaryFlowerName(flower)} 참고 이미지`,'editorial-feature-image',flower.localImage);
  save.setAttribute('aria-pressed',String(saved)); save.setAttribute('aria-label',`${primaryFlowerName(flower)} ${saved?'저장 해제':'저장'}`);
@@ -24,10 +26,14 @@ function homeFeature(flower, state, featureDate=state.currentDate) {
    el('h1',{id:'home-feature-title',text:primaryFlowerName(flower)}),
    el('p',{className:'feature-description',text:shortSentence(flower.description,52)}),
    el('dl',{className:'feature-context'},[
+    el('div',{},[el('dt',{text:'개화 정보'}),el('dd',{text:`${bloom.label} · ${formatBloomPeriod(flower.bloom)}`})]),
     el('div',{},[el('dt',{text:'꽃말'}),el('dd',{text:flower.flowerLanguage?.meaning || '정보 없음'})]),
-    el('div',{},[el('dt',{text:'볼 수 있는 곳'}),el('dd',{text:habitatSummary(flower)})])
+    el('div',{},[el('dt',{text:'볼 수 있는 곳'}),el('dd',{text:places.length ? `지도 장소 ${places.length}곳` : habitatSummary(flower)})])
    ]),
-   el('div',{className:'feature-actions'},[button('꽃 정보 보기','open-flower',{kind:'primary',data:{flowerId:flower.id}}),button('꽃 행사','candidate-events',{data:{flowerId:flower.id}})])
+   el('div',{className:'feature-actions'},[
+    button('꽃 정보 보기','open-flower',{kind:'primary',data:{flowerId:flower.id}}),
+    places.length ? button(`볼 수 있는 곳 ${places.length}곳`,'show-flower-on-map',{kind:'secondary',data:{flowerId:flower.id}}) : button('꽃 행사','candidate-events',{data:{flowerId:flower.id}})
+   ])
   ])
  ]);
 }

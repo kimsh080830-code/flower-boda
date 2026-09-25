@@ -3,7 +3,7 @@ const { getFlowerById } = __mods["js/data.js"];
 const { el } = __mods["js/ui/dom.js"];
 const { renderNotifications } = __mods["js/ui/notifications.js"];
 const { mountFlowerMap, disposeFlowerMap } = __mods["js/mapService.js"];
-const { renderHome, updateHomeSearchResults, renderCapture, renderEvents, renderEncyclopedia, updateEncyclopediaResults, updateEventResults, renderMap, renderFlowerDetail, renderEventDetail, renderAppHeader, renderBottomNav } = __mods["js/ui/screens.js"];
+const { renderHome, updateHomeSearchResults, renderCapture, renderEvents, renderEncyclopedia, updateEncyclopediaResults, updateEventResults, renderMap, renderMy, renderFlowerDetail, renderEventDetail, renderAppHeader, renderBottomNav } = __mods["js/ui/screens.js"];
 
 
 
@@ -121,10 +121,11 @@ function renderApp(state) {
     case 'events': screen = renderEvents(state); break;
     case 'map': screen = renderMap(state); break;
     case 'encyclopedia': screen = renderEncyclopedia(state); break;
+    case 'my': screen = renderMy(state); break;
     default: screen = renderHome(state);
   }
   screen.setAttribute('tabindex', '-1');
-  if (['events','home','map','encyclopedia'].includes(state.currentTab)) screen.dataset.mainTabSwipe = 'true';
+  if (['home','events','map','encyclopedia','my'].includes(state.currentTab)) screen.dataset.mainTabSwipe = 'true';
   const fragment = document.createDocumentFragment();
   fragment.append(
     el('a', { className: 'skip-link', href: '#main-content', text: '본문으로 건너뛰기' }),

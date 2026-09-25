@@ -23,6 +23,7 @@ ${searchSource}
 __mods['js/config.js']={APP_CONFIG:{STANDALONE:true,API:{events:'/api/events',eventDetail:'/api/event-detail'},EVENT_CACHE_TTL_MS:1000}};
 __mods['js/runtimeHooks.js']={hooks:{shouldForceNetworkFailure:()=>false}};
 __mods['js/data.js']={FLOWERS:[]};
+__mods['js/mapPlaces.js']={getFlowerPlacesByFlowerId:()=>[]};
 __mods['js/storage.js']={getCache:()=>null,setCache:()=>false};
 ${eventSource}
 __mods['js/todayFlower.js']={selectTodayFlower:()=>({flower:null})};

@@ -1,6 +1,7 @@
 __mods["js/ui/screens/capture.js"] = (() => {
 const { APP_CONFIG } = __mods["js/config.js"];
 const { getFlowerById } = __mods["js/data.js"];
+const { getFlowerPlacesByFlowerId } = __mods["js/mapPlaces.js"];
 const { el, button, image } = __mods["js/ui/dom.js"];
 const { emptyState, primaryFlowerName, otherNameLine } = __mods["js/ui/components.js"];
 const { pageHeader } = __mods["js/ui/screens/shared.js"];
@@ -126,6 +127,7 @@ function renderAnalysisResult(state) {
   section.append(renderCandidateComparison(candidates));
 
   const matched = Boolean(selected?.flowerId && getFlowerById(selected.flowerId));
+  const placeCount = matched ? getFlowerPlacesByFlowerId(selected.flowerId).length : 0;
   section.append(el('div', { className: 'result-selection-summary' }, [
     el('span', { text: '선택한 꽃' }),
     el('strong', { text: selected?.nameKo || '꽃 하나를 골라주세요' })
@@ -134,11 +136,12 @@ function renderAnalysisResult(state) {
     button('이 꽃 선택하기', 'confirm-candidate', {
       kind: 'primary', disabled: !matched, data: { flowerId: selected?.flowerId || '' }
     }),
-    button('상세정보 보기', 'open-flower', {
+    button(placeCount ? `꽃 상세 · 볼 수 있는 곳 ${placeCount}곳` : '꽃 상세 보기', 'open-flower', {
       kind: 'secondary', disabled: !matched, data: { flowerId: selected?.flowerId || '' }
     }),
     button('다른 사진으로 다시 찾기', 'restart-photo', { kind: 'tertiary' })
   ]));
+  if (placeCount) section.append(el('p', { className: 'capture-place-note', text: '꽃 상세에서 실제 볼 수 있는 장소로 이어갈 수 있어요.' }));
   if (!matched) {
     section.append(el('p', {
       className: 'weather-note',

@@ -82,7 +82,7 @@ test('header shows date first and compact weather on the second line',()=>{
   const [calendarButton,notificationButton,settingsButton]=header.children[0].children[1].children;
   assert.equal(calendarButton.props.ariaLabel,'만개달력');
   assert.equal(calendarButton.props.dataset.action,'open-bloom-calendar');
-  assert.equal(notificationButton.props.ariaLabel,'알림');
+  assert.equal(notificationButton.props.ariaLabel,'행사 알림');
   assert.equal(notificationButton.props.dataset.action,'open-notifications');
   assert.equal(settingsButton.props.ariaLabel,'설정');
   assert.equal(settingsButton.props.dataset.action,'go-settings');

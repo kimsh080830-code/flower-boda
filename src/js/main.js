@@ -106,7 +106,7 @@ function render() {
   applyTextSize(runtimeHooks.resolveTextSize(state,state.settings.bodyTextSize));
   try {
     state.eventNotificationsError = state.eventsError || '';
-    state.eventNotifications = state.eventNotificationsError ? [] : getEventNotifications({
+    state.eventNotifications = state.eventNotificationsError || !state.settings.eventNotificationsEnabled ? [] : getEventNotifications({
       events: state.events,
       savedEventIds: state.savedVisitDates,
       readNotificationIds: state.eventNotificationReads,
@@ -205,8 +205,8 @@ function setHistory({ replace = false } = {}) {
   history[replace ? 'replaceState' : 'pushState'](payload, '', hash);
 }
 
-const VALID_TABS = ['home', 'capture', 'events', 'map', 'encyclopedia', 'settings'];
-const MAIN_NAV_TABS = ['events', 'home', 'map', 'encyclopedia'];
+const VALID_TABS = ['home', 'capture', 'events', 'map', 'encyclopedia', 'my', 'settings'];
+const MAIN_NAV_TABS = ['home', 'events', 'map', 'encyclopedia', 'my'];
 const MAIN_TAB_SWIPE_EXCLUDE = '[data-bloom-calendar-swipe="true"], [data-event-calendar-swipe="true"], .map-canvas, .bloom-flower-rail, .flower-rail, .image-gallery, .image-gallery-track, .slider, [role="slider"], [data-horizontal-scroll], input[type="range"], input, textarea, select';
 
 function hasHorizontalGestureOwner(target) {
@@ -236,6 +236,13 @@ function switchTab(tab, { fromHistory = false } = {}) {
 }
 
 async function requestMapUserLocation({geolocation=globalThis.navigator?.geolocation}={}) {
+  if(!state.settings.locationEnabled) {
+    state.mapUserLocation=null;
+    state.mapLocationStatus='disabled';
+    state.mapLocationError='';
+    render();
+    return;
+  }
   if(state.mapLocationStatus==='checking') return;
   state.mapLocationStatus='checking';
   state.mapLocationError='';
@@ -1142,10 +1149,19 @@ function handleChange(event) {
   if(runtimeHooks.handleChange({input,state,render})) return;
   if(['setting-select','setting-toggle'].includes(input.dataset.action)) {
     const key=input.dataset.key;
-    if(!['region','theme','recentEnabled','bodyTextSize'].includes(key)) return;
+    if(!['region','theme','recentEnabled','bodyTextSize','eventNotificationsEnabled','locationEnabled'].includes(key)) return;
     const value=input.dataset.action==='setting-toggle'?input.checked:input.value;
     const next={...state.settings,[key]:value};
-    if(saveSettings(next)) {state.settings=next;if(key==='region')state.userRegion=value; render();}
+    if(saveSettings(next)) {
+      state.settings=next;
+      if(key==='region') state.userRegion=value;
+      if(key==='locationEnabled' && !value) {
+        state.mapUserLocation=null;
+        state.mapLocationStatus='disabled';
+        state.mapLocationError='';
+      }
+      render();
+    }
     else {render();showToast('설정을 저장하지 못했어요.');}
     return;
   }

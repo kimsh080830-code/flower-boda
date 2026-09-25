@@ -9,6 +9,7 @@ function ui() {
   const button = (text, action, options = {}) => el('button', { text, disabled: options.disabled, dataset: { action, ...options.data } });
   const context = vm.createContext({ __mods: {
     'js/config.js': { APP_CONFIG: { LOW_CONFIDENCE_THRESHOLD: 0.6 } },
+    'js/mapPlaces.js': { getFlowerPlacesByFlowerId: () => [] },
     'js/ui/dom.js': { el, button, image: (src, alt) => el('img', { src, alt }) },
     'js/ui/components.js': { emptyState: (text, label, action) => el('div', { text }, [button(label, action)]), primaryFlowerName: (flower) => flower.nameKo, otherNameLine: () => null },
     'js/ui/screens/shared.js': { pageHeader: () => el('header') }

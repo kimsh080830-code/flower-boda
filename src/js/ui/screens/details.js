@@ -2,6 +2,7 @@ __mods["js/ui/screens/details.js"] = (() => {
 const { formatBloomPeriod, getBloomStatus, parseApiDate } = __mods["js/dateUtils.js"];
 const { getRelatedEvents, canUseEventSchedule } = __mods["js/eventService.js"];
 const { getFlowerPlacesByFlowerId, getFlowerPlaceForEvent } = __mods["js/mapPlaces.js"];
+const { getFlowerPlaceItems } = __mods["js/mapService.js"];
 const { el, button, image, imageCreditBadge } = __mods["js/ui/dom.js"];
 const { statusBadge, sectionHeader, emptyState, primaryFlowerName, otherNameLine, eventListRow, renderSkeletonRows, detailLine, infoDisclosure, formatEventRange, eventVerificationText } = __mods["js/ui/components.js"];
 const { petalShapeValues } = __mods["js/flowerViewData.js"];
@@ -120,14 +121,20 @@ function renderFlowerDetail(state, flower) {
     layer.append(infoDisclosure('사진 출처', creditChildren));
   }
 
+  const related = getRelatedEvents(state.events, flower).slice(0, 3);
+  const places = getFlowerPlaceItems(state.mapUserLocation, { flowerId: flower.id });
   layer.append(el('p', { className: 'weather-note detail-weather-note', text: '개화 상태는 도감 시기 기준 예상이에요. 지역과 날씨에 따라 달라져요.' }));
-  if (getFlowerPlacesByFlowerId(flower.id).length) {
-    layer.append(button('볼 수 있는 곳', 'show-flower-on-map', {
-      kind: 'secondary', extraClass: 'detail-map-link', data: { flowerId: flower.id }
-    }));
+  if (places.length) {
+    const nearestDistance = places.find((place) => place.distanceLabel)?.distanceLabel || '';
+    const placeMeta = [`장소 ${places.length}곳`, nearestDistance ? `가까운 곳 ${nearestDistance}` : '', related.length ? `관련 행사 ${related.length}개` : ''].filter(Boolean).join(' · ');
+    layer.append(el('section', { className: 'detail-place-link', ariaLabel: '이 꽃을 볼 수 있는 곳' }, [
+      el('p', { text: placeMeta }),
+      button(`볼 수 있는 곳 ${places.length}곳`, 'show-flower-on-map', {
+        kind: 'secondary', extraClass: 'detail-map-link', data: { flowerId: flower.id }
+      })
+    ]));
   }
 
-  const related = getRelatedEvents(state.events, flower).slice(0, 3);
   const relatedHeader = sectionHeader('이 꽃 보러 가기', '행사 전체보기', 'flower-events-all');
   const relatedAction = relatedHeader.querySelector('[data-action="flower-events-all"]');
   if (relatedAction) relatedAction.dataset.flowerId = flower.id;

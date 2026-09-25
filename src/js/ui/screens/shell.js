@@ -22,7 +22,7 @@ function renderAppHeader(state) {
       ]),
       el('div',{className:'header-actions'},[
         el('button',{type:'button',className:'bloom-calendar-button',dataset:{action:'open-bloom-calendar'},ariaLabel:'만개달력'},[el('span',{className:'bloom-calendar-icon','aria-hidden':'true'})]),
-        el('button',{type:'button',className:'notification-button',dataset:{action:'open-notifications'},ariaLabel:'알림'},[
+        el('button',{type:'button',className:'notification-button',dataset:{action:'open-notifications'},ariaLabel:'행사 알림'},[
           el('span',{className:'notification-bell-icon','aria-hidden':'true'}),
           el('span',{className:'notification-badge',hidden:unreadNotificationCount===0,ariaLabel:`읽지 않은 알림 ${unreadNotificationCount}개`,text:formatNotificationBadgeCount(unreadNotificationCount)})
         ]),
@@ -34,10 +34,11 @@ function renderAppHeader(state) {
 
 function renderBottomNav(state) {
   const navItems = [
-    ['events', 'nav-calendar', '행사'],
     ['home', 'nav-home', '홈'],
+    ['events', 'nav-calendar', '행사'],
     ['map', 'nav-map', '지도'],
-    ['encyclopedia', 'nav-book', '도감']
+    ['encyclopedia', 'nav-book', '도감'],
+    ['my', 'nav-my', 'MY']
   ];
   const nav = el('nav', { className: 'bottom-nav', 'aria-label': '주요 메뉴' });
   navItems.forEach(([tab, iconClass, label]) => {

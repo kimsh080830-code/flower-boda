@@ -27,7 +27,7 @@ test('global header keeps date informational and provides separate bloom calenda
  assert.doesNotMatch(shell,/date\.solarTerm/);
  assert.match(shell,/className:'bloom-calendar-button'.*action:'open-bloom-calendar'.*ariaLabel:'만개달력'/);
  assert.equal((shell.match(/action:'open-bloom-calendar'/g)||[]).length,1);
- assert.match(shell,/className:'notification-button'.*action:'open-notifications'.*ariaLabel:'알림'/);
+ assert.match(shell,/className:'notification-button'.*action:'open-notifications'.*ariaLabel:'행사 알림'/);
  assert.match(shell,/className:'notification-badge'.*hidden:unreadNotificationCount===0/);
  assert.match(shell,/action:'go-settings'/);
  assert.doesNotMatch(shell,/app-subtitle|BOTANICAL GUIDE|nav-camera|검색|지역|필터/);

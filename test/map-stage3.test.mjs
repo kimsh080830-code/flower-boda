@@ -51,12 +51,23 @@ function findAll(node, predicate, rows = []) {
 test('flower courses load with valid two-to-four place references and stable order', () => {
   const { places, courses, service } = loadMapModules();
   const placeIds = new Set(places.FLOWER_PLACES.map((place) => place.id));
-  assert.equal(courses.FLOWER_COURSES.length, 2);
+  assert.equal(courses.FLOWER_COURSES.length, 1);
   for (const course of courses.FLOWER_COURSES) {
     for (const key of ['id','name','placeIds','estimatedDuration','description','recommendedMonths','region','relatedFlowerIds']) assert.ok(course[key] !== undefined, `${course.id}:${key}`);
     assert.ok(course.placeIds.length >= 2 && course.placeIds.length <= 4);
     assert.ok(course.placeIds.every((id) => placeIds.has(id)));
     assert.equal(service.getFlowerPlaceItems(null, { placeIds: course.placeIds }).map((place) => place.id).join(','), [...course.placeIds].join(','));
+  }
+});
+
+test('flower courses stay within a short half-day area and remove the 40km Gangwon route', () => {
+  const { places, courses, service } = loadMapModules();
+  assert.equal(courses.FLOWER_COURSES.some((course) => course.id === 'gangwon-east-coast-cherry-course'), false);
+  for (const course of courses.FLOWER_COURSES) {
+    const rows = course.placeIds.map((id) => places.getFlowerPlaceById(id));
+    for (let index = 1; index < rows.length; index += 1) {
+      assert.ok(service.haversineDistanceMeters(rows[index - 1], rows[index]) < 10000, `${course.id}:${index}`);
+    }
   }
 });
 
@@ -76,9 +87,9 @@ test('five added course places keep exact coordinates from verified flower event
 });
 
 test('selected course renders ordered place actions and retains course selection state', () => {
-  const screen = renderMap({ mapViewMode:'course', mapSelectedCourseId:'seoul-southeast-cherry-course' });
+  const screen = renderMap({ mapViewMode:'course', mapSelectedCourseId:'seoul-east-cherry-course' });
   const courseCards = findAll(screen, (node) => node.props?.dataset?.action === 'select-map-course');
-  assert.equal(courseCards.length, 2);
+  assert.equal(courseCards.length, 1);
   assert.equal(courseCards[0].props['aria-pressed'], 'true');
   const placeCards = findAll(screen, (node) => node.props?.dataset?.action === 'select-map-place');
   assert.deepEqual(placeCards.map((node) => node.props.dataset.placeId), [
@@ -114,7 +125,7 @@ test('flower detail linking filters related places and can return to all places'
   const screen = renderMap({ mapFlowerFilterId:'cherry-blossom' });
   assert.equal(findAll(screen, (node) => node.props?.dataset?.action === 'select-map-place').length, 5);
   assert.equal(findAll(screen, (node) => node.props?.dataset?.action === 'clear-map-flower-filter').length, 1);
-  assert.match(detailsSource, /if \(getFlowerPlacesByFlowerId\(flower\.id\)\.length\)[\s\S]*button\('볼 수 있는 곳', 'show-flower-on-map'/);
+  assert.match(detailsSource, /getFlowerPlaceItems\(state\.mapUserLocation, \{ flowerId: flower\.id \}\)[\s\S]*button\(`볼 수 있는 곳 \$\{places\.length\}곳`, 'show-flower-on-map'/);
   assert.match(mainSource, /case 'clear-map-flower-filter':[\s\S]*state\.mapFlowerFilterId=''[\s\S]*render\(\)/);
 });
 
