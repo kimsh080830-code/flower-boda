@@ -4,9 +4,9 @@ const { getBloomStatus,formatBloomPeriod } = __mods["js/dateUtils.js"];
 const { getDirectFlowerEvents } = __mods["js/eventService.js"];
 const { el,button } = __mods["js/ui/dom.js"];
 const { sectionHeader,statusBadge,eventListRow } = __mods["js/ui/components.js"];
-function renderFavoriteGarden(state) {
+function renderFavoriteGarden(state, { title = '즐겨찾기한 꽃' } = {}) {
   const flowers=state.favoriteFlowerIds.map(getFlowerById).filter(Boolean);
-  const section=el('section',{className:'content-section favorite-garden'},[sectionHeader('저장한 꽃 소식')]);
+  const section=el('section',{className:'content-section favorite-garden'},[sectionHeader(title, '', '', `${flowers.length}종`)]);
   if (!flowers.length) {
     section.append(el('p',{className:'weather-note',text:'도감에서 꽃을 저장하면 개화 시기와 관련 행사를 여기서 볼 수 있어요.'}),button('도감에서 꽃 찾기','go-encyclopedia',{kind:'tertiary'}));
     return section;

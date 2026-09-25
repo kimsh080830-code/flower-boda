@@ -53,6 +53,7 @@ test('DEV includes tools and PROD physically excludes their modules, UI text, pa
   assert.doesNotMatch(prod,/__mods\["js\/devTools\.js"\]/);
   assert.doesNotMatch(prod,/__mods\["js\/ui\/screens\/devTools\.js"\]/);
   assert.doesNotMatch(prod,/DEV · 통합 테스트 도구|가상 날짜|30일 시뮬레이션|\.dev-tools-panel/);
+  assert.doesNotMatch(prod,/devTodayFlowerDateMode|syncDevTodayFlowerDate|startDevTodayFlowerDateTracking/);
   assert.equal(configFrom(prod).DEV_MODE,false);
 });
 
@@ -61,6 +62,10 @@ test('common runtime uses inert hooks while DEV installs all test behavior',()=>
   assert.match(main,/runtimeHooks\.createState/);
   assert.match(main,/runtimeHooks\.handleAction/);
   assert.match(main,/runtimeHooks\.handleChange/);
+  assert.match(main,/runtimeHooks\.syncDateState/);
+  assert.match(main,/runtimeHooks\.startDateTracking/);
+  assert.match(devRuntime,/syncDateState: \(\{state,now\}\) => syncDevTodayFlowerDate\(state,now\)/);
+  assert.match(devRuntime,/startDateTracking: startDevTodayFlowerDateTracking/);
   assert.doesNotMatch(main,/dev-today-|dev-audit-|dev-network-|dev-font-|dev-relay-/);
   for(const action of ['dev-network-failure','dev-long-text','dev-font-min','dev-font-max','dev-font-reset']) assert.match(devRuntime,new RegExp(action));
   for(const label of ['가상 날짜','30일 시뮬레이션','데이터 중복 검사','이미지 누락 검사','라이선스 누락 검사','강제 네트워크 실패']) assert.match(devPanel,new RegExp(label));

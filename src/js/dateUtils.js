@@ -5,6 +5,9 @@ function getSeoulDateParts(date = new Date()) {
   const [year,month,dayOfMonth]=day.split('-').map(Number);
   return {year,month,day:dayOfMonth,key:day};
 }
+function getSeoulDay(date = new Date()) {
+  return getSeoulDateParts(date).key;
+}
 
 function parseMonthDay(value, year) {
   if (!/^\d{2}-\d{2}$/.test(value || '')) return null;
@@ -134,5 +137,5 @@ function formatApiDate(value) {
   if (!date) return '';
   return new Intl.DateTimeFormat('ko-KR', { month: 'short', day: 'numeric' }).format(date);
 }
-return { "parseMonthDay": parseMonthDay, "getSeason": getSeason, "getDatePresentation": getDatePresentation, "getSolarTerm": getSolarTerm, "BLOOM_STAGES": BLOOM_STAGES, "formatBloomPeriod": formatBloomPeriod, "getBloomWindow": getBloomWindow, "getBloomStatus": getBloomStatus, "parseApiDate": parseApiDate, "getEventStatus": getEventStatus, "formatApiDate": formatApiDate };
+return { "parseMonthDay": parseMonthDay, "getSeoulDay": getSeoulDay, "getSeason": getSeason, "getDatePresentation": getDatePresentation, "getSolarTerm": getSolarTerm, "BLOOM_STAGES": BLOOM_STAGES, "formatBloomPeriod": formatBloomPeriod, "getBloomWindow": getBloomWindow, "getBloomStatus": getBloomStatus, "parseApiDate": parseApiDate, "getEventStatus": getEventStatus, "formatApiDate": formatApiDate };
 })();

@@ -1,7 +1,7 @@
 __mods["js/preferences.js"] = (() => {
 const { getFlowerById } = __mods["js/data.js"];
 const KEY='flower-info.settings.v1', RECENT='flower-info.recent.v1', VISITS='flower-info.visits.v1';
-const defaults={region:'',theme:'system',recentEnabled:true,bodyTextSize:'medium'};
+const defaults={region:'',theme:'system',recentEnabled:true,bodyTextSize:'medium',eventNotificationsEnabled:true,locationEnabled:true};
 function read(key,fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } }
 function write(key,value) { try { localStorage.setItem(key,JSON.stringify(value)); return true; } catch { return false; } }
 function loadSettings() {
@@ -10,6 +10,8 @@ function loadSettings() {
  if(raw && typeof raw==='object') {
   if(typeof raw.region==='string') value.region=raw.region.slice(0,60);
   if(typeof raw.recentEnabled==='boolean') value.recentEnabled=raw.recentEnabled;
+  if(typeof raw.eventNotificationsEnabled==='boolean') value.eventNotificationsEnabled=raw.eventNotificationsEnabled;
+  if(typeof raw.locationEnabled==='boolean') value.locationEnabled=raw.locationEnabled;
   if(['system','light','dark'].includes(raw.theme)) value.theme=raw.theme;
   if(['small','medium','large'].includes(raw.bodyTextSize)) value.bodyTextSize=raw.bodyTextSize;
  }

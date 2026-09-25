@@ -4,11 +4,18 @@ import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
 const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
+const preferencesSource=await readFile(new URL('../src/js/preferences.js',import.meta.url),'utf8');
 function runtime(source=html,protocol='https:') {
  const values=new Map();
  const context=vm.createContext({Date,Intl,URL,URLSearchParams,DOMException,setTimeout,clearTimeout,location:{protocol,search:''},localStorage:{getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)}});
  vm.runInContext(source.match(/<script>([\s\S]*?)<\/script>/)[1].split('__mods["js/main.js"]')[0],context);
  return {mods:vm.runInContext('__mods',context),values};
+}
+function preferencesRuntime() {
+ const values=new Map();
+ const context=vm.createContext({__mods:{'js/data.js':{getFlowerById:id=>Boolean(id)}},localStorage:{getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)}});
+ vm.runInContext(preferencesSource,context);
+ return {preferences:context.__mods['js/preferences.js'],values};
 }
 test('all 51 flower records preserve required facts and all 45 existing flower meanings',()=>{
  const after=runtime().mods['js/data.js'];
@@ -19,7 +26,8 @@ test('all 51 flower records preserve required facts and all 45 existing flower m
 });
 test('all 200 genuine event records and evidence remain identical in standalone and server data',async()=>{
  const copy=await readFile(new URL('../data/verified-events.json',import.meta.url));
- assert.equal(createHash('sha256').update(copy).digest('hex'),'159921b470fcc304bff1c888d7e629e9e7f3ecf71ec9d070b3c34095cb5a415b');
+ const canonicalCopy=copy.toString('utf8').replace(/\r\n/g,'\n');
+ assert.equal(createHash('sha256').update(canonicalCopy).digest('hex'),'159921b470fcc304bff1c888d7e629e9e7f3ecf71ec9d070b3c34095cb5a415b');
  const {mods}=runtime(html,'file:');
  assert.equal(JSON.stringify(mods['js/eventSnapshot.js'].EVENT_SNAPSHOT),JSON.stringify(JSON.parse(copy)));
  const rows=await mods['js/eventService.js'].getEvents();
@@ -56,10 +64,10 @@ test('event flowers sort by the actual Korean display name and feature summaries
  assert.equal(v.identificationSummary({flowerFeatures:'푸른 꽃.'}),'푸른 꽃.');
 });
 test('V47 preferences keep supported values and ignore removed launch-alert and pollen settings',()=>{
- const {mods,values}=runtime(),p=mods['js/preferences.js'];
+ const {preferences:p,values}=preferencesRuntime();
  const old={region:'강원',theme:'dark',recentEnabled:false,bloomAlerts:true,savedAlerts:true,pollen:true};
  values.set('flower-info.settings.v42',JSON.stringify(old));
- assert.deepEqual(JSON.parse(JSON.stringify(p.loadSettings())),{region:'강원',theme:'dark',recentEnabled:false,bodyTextSize:'medium'});
+ assert.deepEqual(JSON.parse(JSON.stringify(p.loadSettings())),{region:'강원',theme:'dark',recentEnabled:false,bodyTextSize:'medium',eventNotificationsEnabled:true,locationEnabled:true});
  assert.equal('pollen' in p.loadSettings(),false);
  assert.equal('bloomAlerts' in p.loadSettings(),false);
  assert.equal('savedAlerts' in p.loadSettings(),false);
@@ -93,5 +101,6 @@ test('event failure keeps its alert and retry action without the removed exclama
  assert.equal(result.children.length,2);
  assert.equal(result.children[0].className,'event-error-copy');
  assert.equal(result.children[0].children[0].text,'행사를 불러오지 못했어요.');
+ assert.equal(result.children[0].children[1].text,'연결 오류');
  assert.equal(result.children[1].action,'retry-events');
 });

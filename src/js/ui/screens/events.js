@@ -20,7 +20,7 @@ function filterEvents(state) {
 
 function renderEvents(state) {
   const main = el('main', { className: 'screen', id: 'main-content' }, [
-    pageHeader('Event guide', '꽃 보러 가기', '지금 갈 수 있는 꽃 행사와 정원을 찾아봐요.')
+    pageHeader('', '꽃 행사', '지금 갈 수 있는 꽃 행사와 정원을 찾아봐요.')
   ]);
   const snapshot = state.events.find(event => event.source === 'verified-snapshot');
   const quality = state.events[0]?.collectionQuality;
@@ -40,10 +40,10 @@ function renderEvents(state) {
 
   const eventDateSection = el('section', { className: 'event-date-field', 'aria-labelledby': 'event-date-filter-label' }, [
     el('div', { className: 'event-date-field-heading' }, [
-      el('span', { id: 'event-date-filter-label', text: '찾아볼 날짜 (선택 사항)' }),
-      button('날짜 비우기', 'clear-event-date', { kind: 'tertiary', disabled: !state.eventFilter.date, extraClass: 'event-date-clear' })
+      el('span', { id: 'event-date-filter-label', text: '날짜 선택' }),
+      button('선택 해제', 'clear-event-date', { kind: 'tertiary', disabled: !state.eventFilter.date, extraClass: 'event-date-clear' })
     ]),
-    el('p', { id: 'event-date-filter-note', className: 'event-date-filter-note', text: '날짜를 선택하면 해당 날짜에 열리는 행사만 보여줘요. 날짜를 비우면 기간 제한을 해제해요.' }),
+    el('p', { id: 'event-date-filter-note', className: 'event-date-filter-note', text: '날짜를 선택하면 해당 날짜에 열리는 행사만 보여줘요. 선택을 해제하면 모든 날짜의 행사를 볼 수 있어요.' }),
     __mods['js/calendar.js'].renderEventFilterCalendar(state)
   ]);
   main.append(eventDateSection);

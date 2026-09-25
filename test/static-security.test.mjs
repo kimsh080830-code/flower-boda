@@ -17,7 +17,7 @@ test('HTTP public file boundary', { timeout: 20000 }, async (t) => {
   await copyFile(new URL('../server.mjs', import.meta.url), path.join(root, 'server.mjs'));
   await mkdir(path.join(root,'lib'));
   await copyFile(new URL('../lib/event-quality.mjs', import.meta.url), path.join(root, 'lib/event-quality.mjs'));
-  const pages = ['꽃을보다_V61_dev.html'];
+  const pages = ['index.html'];
   for (const name of pages) await writeFile(path.join(root, name), `<h1>${name}</h1>`);
   const privateFiles = [
     '.env', '.env.example', 'package.json', 'package-lock.json', 'README.md',
@@ -66,11 +66,12 @@ test('HTTP public file boundary', { timeout: 20000 }, async (t) => {
     });
   }
   await t.test('published pages support GET, HEAD, query strings and URL encoding', async () => {
-    for (const target of ['/', ...pages.map((name) => `/${encodeURIComponent(name)}`), '/index.html?v=43', '/%69ndex.html']) {
+    for (const target of ['/', ...pages.map((name) => `/${encodeURIComponent(name)}`), `/${encodeURIComponent('꽃을보다_V61_dev.html')}`, '/index.html?v=43', '/%69ndex.html']) {
       const result = await request(target);
       assert.equal(result.status, 200, target);
       assert.match(result.body, /^<h1>/);
       assert.equal(result.headers['x-content-type-options'], 'nosniff');
+      assert.equal(result.headers['permissions-policy'], 'geolocation=(self), microphone=()');
       const head = await request(target, 'HEAD');
       assert.equal(head.status, 200, target);
       assert.equal(head.body, '');
@@ -117,5 +118,28 @@ test('HTTP public file boundary', { timeout: 20000 }, async (t) => {
     assert.equal((await request('/', 'POST')).status, 405);
     assert.equal((await request('/api/events', 'POST')).status, 405);
     assert.equal((await request('/api/events', 'GET', { Origin: 'https://other.example' })).status, 403);
+  });
+  await t.test('GitHub Pages DEV can call APIs through a restricted CORS policy', async () => {
+    const origin = 'https://kimsh080830-code.github.io';
+    const preflight = await request('/api/events', 'OPTIONS', {
+      Origin: origin,
+      'Access-Control-Request-Method': 'GET',
+      'Access-Control-Request-Headers': 'accept'
+    });
+    assert.equal(preflight.status, 204);
+    assert.equal(preflight.headers['access-control-allow-origin'], origin);
+    assert.match(preflight.headers['access-control-allow-methods'], /GET/);
+    assert.match(preflight.headers['access-control-allow-headers'], /Content-Type/i);
+    assert.match(preflight.headers.vary, /Origin/);
+
+    const apiResponse = await request('/api/events', 'GET', { Origin: origin, Accept: 'application/json' });
+    assert.equal(apiResponse.status, 503);
+    assert.equal(apiResponse.headers['access-control-allow-origin'], origin);
+
+    const rejected = await request('/api/events', 'OPTIONS', {
+      Origin: 'https://other.example',
+      'Access-Control-Request-Method': 'GET'
+    });
+    assert.equal(rejected.status, 403);
   });
 });

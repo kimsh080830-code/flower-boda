@@ -17,7 +17,7 @@ function filterEncyclopedia(state) {
 
 function renderEncyclopedia(state) {
   const main = el('main', { className: 'screen', id: 'main-content' }, [
-    pageHeader('Botanical index', '꽃 도감', '이름이나 특징으로 가볍게 찾아봐요.', `${FLOWERS.length}종`)
+    pageHeader('', '꽃 도감', '이름이나 특징으로 가볍게 찾아봐요.', `${FLOWERS.length}종`)
   ]);
   main.append(el('div', { className: `search-field search-prominent ${state.searchQuery ? 'has-clear' : ''}` }, [
     el('span', { className: 'search-glyph', 'aria-hidden': 'true' }),

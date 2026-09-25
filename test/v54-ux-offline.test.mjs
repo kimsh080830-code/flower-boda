@@ -17,8 +17,8 @@ const [main, shell, prefs, settings, components, dom, events, styles, build, dev
 ]);
 
 test('main tab swipe follows bottom-nav order, is finite, and excludes horizontal gesture zones and Android edges', () => {
-  assert.match(main, /const MAIN_NAV_TABS = \['events', 'home', 'encyclopedia'\]/);
-  assert.match(shell, /\['events', 'nav-calendar', '행사'\][\s\S]*\['home', 'nav-home', '홈'\][\s\S]*\['encyclopedia', 'nav-book', '도감'\]/);
+  assert.match(main, /const MAIN_NAV_TABS = \['events', 'map', 'home', 'encyclopedia', 'my'\]/);
+  assert.match(shell, /\['events', 'nav-calendar', '행사'\][\s\S]*\['map', 'nav-map', '지도'\][\s\S]*\['home', 'nav-home', '홈'\][\s\S]*\['encyclopedia', 'nav-book', '도감'\][\s\S]*\['my', 'nav-my', 'MY'\]/);
   assert.match(main, /nextIndex < 0 \|\| nextIndex >= MAIN_NAV_TABS\.length/);
   assert.match(main, /MAIN_TAB_SWIPE_EXCLUDE/);
   assert.match(main, /data-bloom-calendar-swipe/);

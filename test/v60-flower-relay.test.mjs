@@ -123,8 +123,8 @@ test('empty and shortage DEV fixtures are memory-only representations',()=>{
 test('home inserts relay between the protected feature and weekly flowers',()=>{
   const feature=homeSource.indexOf("if (representative) main.append(homeFeature");
   const relay=homeSource.indexOf('main.append(renderFlowerRelay(state))');
-  const weekly=homeSource.indexOf("sectionHeader('이번 주 볼 꽃'");
-  const places=homeSource.indexOf("sectionHeader('꽃 보러 가기'");
+  const weekly=homeSource.indexOf("sectionHeader('이번 주 꽃'");
+  const places=homeSource.indexOf("sectionHeader('꽃 행사'");
   assert.ok(feature>=0 && feature<relay && relay<weekly && weekly<places);
   assert.match(homeSource,/className:'flower-relay-placeholder','aria-hidden':'true'/);
   assert.doesNotMatch(relaySource,/image\(|<svg|\.webp|emoji/i);

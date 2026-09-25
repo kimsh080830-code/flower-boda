@@ -250,9 +250,15 @@ async function analyzeViaBackend(preprocessed, signal) {
   try {
     response = await fetch(APP_CONFIG.API.identify, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' }, signal });
   } catch (error) {
-    throw new FlowerServiceError('NETWORK', '인터넷 연결을 확인하고 다시 시도해보세요.', error);
+    throw new FlowerServiceError('NETWORK', APP_CONFIG.IS_RENDER_API
+      ? 'Render 사진 분석 서버가 준비 중이거나 연결이 지연되고 있어요. 잠시 후 다시 시도해 주세요.'
+      : '인터넷 연결을 확인하고 다시 시도해보세요.', error);
   }
   if (!response.ok) {
+    const contentType = response.headers?.get?.('content-type') || '';
+    if (APP_CONFIG.IS_RENDER_API && [502, 503, 504].includes(response.status) && !/application\/json/i.test(contentType)) {
+      throw new FlowerServiceError('API_WAKING', 'Render 사진 분석 서버가 준비 중이에요. 잠시 기다린 뒤 다시 시도해 주세요.');
+    }
     const unavailable = [404, 501, 502, 503, 504].includes(response.status);
     throw new FlowerServiceError(unavailable ? 'API_UNAVAILABLE' : 'API_ERROR', unavailable ? '사진 분석 서버를 사용할 수 없어요. 연결과 API 설정을 확인해 주세요.' : '꽃 찾기에 잠시 문제가 있어요. 다시 시도해보세요.');
   }
