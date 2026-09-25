@@ -1,5 +1,16 @@
 # 프로젝트 상태
 
+## 2026-09-25 · 베타 blocker 검수
+
+- 작업 브랜치: `dev` (`main` 미수정, 원격 push 없음)
+- 수정한 blocker: 로컬 서버 루트와 이전 DEV 파일 별칭이 존재하지 않는 파일로 매핑되어 404 발생. 두 경로를 `index.html`에 연결하고, 이 브랜치 소스로 빌드한 번들을 함께 갱신함.
+- 수정한 blocker: 응답의 `Permissions-Policy`가 geolocation을 차단해 로컬 지도에서 위치 권한을 쓸 수 없었음. 같은 출처만 허용하도록 수정함.
+- 수정 파일: `server.mjs`, `test/static-security.test.mjs`, 빌드 산출물 `index.html`, 데이터 감사 기록 `data/data-audit-v61.json`.
+- 회귀 테스트: 기본 문서/별칭과 위치 정책 확인을 `test/static-security.test.mjs`에 추가.
+- 검증: 전체 테스트 265개 통과, DEV 빌드 성공, 데이터 감사 0 오류·0 이슈. 390px 핵심 흐름·위치 성공/거부/오류·Leaflet 코스·탭 스와이프·사진 분석 결과/실패 확인, JS page error 0건.
+- 남은 베타 확인: 로컬 `TOUR_API_KEY`와 `.env`가 없어 API는 9월 3일 확인한 200개 스냅샷(만료)을 반환하며 행사 목록은 빈 상태. `PLANTNET_API_KEY`도 설정되지 않아 실제 사진 분석은 503 상태. 빈 데이터/오류 UI는 동작하지만 배포 환경 API 자격 증명과 최신 행사 공급을 확인해야 함.
+- 다음 작업: 베타 실행 환경에서 행사 API와 PlantNet API 설정 및 실제 행사 상세 → 지도 흐름을 확인.
+
 ## 2026-09-25 · 하단 탭 순서 조정
 
 - 작업 브랜치: `dev` (`main` 미수정, 원격 push 없음)

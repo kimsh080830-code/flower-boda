@@ -35,9 +35,9 @@ const MAX_BODY = 13 * 1024 * 1024;
 // Only explicitly published files may be served; new files stay private by default.
 // Resolve filenames from this map, never directly from a request path.
 const PUBLIC_FILES = new Map([
-  ['/', '꽃을보다_V61_dev.html'],
-  ['/index.html', '꽃을보다_V61_dev.html'],
-  ['/꽃을보다_V61_dev.html', '꽃을보다_V61_dev.html'],
+  ['/', 'index.html'],
+  ['/index.html', 'index.html'],
+  ['/꽃을보다_V61_dev.html', 'index.html'],
 
 ]);
 
@@ -236,7 +236,7 @@ const server=http.createServer(async (req,res)=>{
   res.setHeader('X-Content-Type-Options','nosniff');
   res.setHeader('Referrer-Policy','strict-origin-when-cross-origin');
   res.setHeader('X-Frame-Options','SAMEORIGIN');
-  res.setHeader('Permissions-Policy','geolocation=(), microphone=()');
+  res.setHeader('Permissions-Policy','geolocation=(self), microphone=()');
 
   let url;
   try { url=new URL(req.url||'/','http://localhost'); }
