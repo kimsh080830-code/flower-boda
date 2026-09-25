@@ -4,9 +4,9 @@ import vm from 'node:vm';
 import test from 'node:test';
 
 const html = await readFile(new URL('../index.html',import.meta.url),'utf8');
-function frontend(fetch = async () => { throw new Error('offline'); }) {
+function frontend(fetch = async () => { throw new Error('offline'); }, isRenderApi = false) {
   const context = vm.createContext({ URL,URLSearchParams,Date,Intl,setTimeout,clearTimeout,DOMException,fetch,__mods:{
-    'js/config.js':{ APP_CONFIG:{ DEMO_MODE:false,API:{ events:'/api/events',eventDetail:'/api/event-detail' },EVENT_CACHE_TTL_MS:1000 } },
+    'js/config.js':{ APP_CONFIG:{ DEMO_MODE:false,IS_RENDER_API:isRenderApi,API_BASE_URL:isRenderApi?'https://flower-boda-api-dev.onrender.com':'',API:{ events:isRenderApi?'https://flower-boda-api-dev.onrender.com/api/events':'/api/events',eventDetail:isRenderApi?'https://flower-boda-api-dev.onrender.com/api/event-detail':'/api/event-detail' },EVENT_CACHE_TTL_MS:1000 } },
     'js/data.js':{ DEMO_EVENTS:[],FLOWERS:[{ id:'rose',nameKo:'장미',eventKeywords:[] }],getFlowerById:(id)=>id==='rose'?{ id:'rose',nameKo:'장미',eventKeywords:[] }:null },
     'js/storage.js':{ getCache:()=>null,setCache:()=>true },
     'js/runtimeHooks.js':{ hooks:{ shouldForceNetworkFailure:()=>false } },
@@ -64,6 +64,22 @@ test('stale snapshots and incidental flower street names are excluded from recom
 test('a missing events array does not become an empty successful feed', async () => {
   const { events } = frontend(async () => ({ ok:true,json:async()=>({ message:'broken' }) }));
   await assert.rejects(events.getEvents(),/INVALID_RESPONSE/);
+});
+
+test('Render gateway wake-up pages are distinct from JSON API failures', async () => {
+  const waking = frontend(async () => ({ ok:false,status:503,json:async()=>{ throw new Error('HTML gateway page'); } }), true);
+  await assert.rejects(waking.events.getEvents(), (error) => /Render 행사 서버가 준비 중/.test(error.userMessage));
+
+  const serverError = frontend(async () => ({ ok:false,status:502,json:async()=>({ message:'TourAPI 요청을 확인하지 못했어요.' }) }), true);
+  await assert.rejects(serverError.events.getEvents(), (error) => error.userMessage === 'TourAPI 요청을 확인하지 못했어요.');
+});
+
+test('Render event detail wake-up keeps the event and exposes a retryable notice', async () => {
+  const { events } = frontend(async () => ({ ok:false,status:503,json:async()=>{ throw new Error('HTML gateway page'); } }), true);
+  const event = events.normalizeEvent({ contentid:'1',title:'장미축제',startDate:'20260901',endDate:'20261001' });
+  const detail = await events.getEventDetail(event);
+  assert.match(detail.detailError,/Render 행사 서버가 준비 중/);
+  assert.equal(detail.title,event.title);
 });
 
 test('selected-date overlap includes both endpoints and rejects malformed dates', () => {
