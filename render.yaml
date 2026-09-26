@@ -3,7 +3,7 @@ services:
     name: flower-boda-api-dev
     runtime: node
     plan: free
-    branch: dev
+    branch: main
     buildCommand: npm install
     startCommand: npm start
     envVars:
