@@ -1,5 +1,15 @@
 # 프로젝트 상태
 
+## 2026-09-26 · Render 루트 PROD 서빙
+
+- 작업 브랜치: `dev` (`main` 미수정). Render build에서 PROD 산출물을 만들고 서버 `/`, `/index.html`만 해당 산출물로 서빙하도록 조정.
+- 사전 체크포인트: `checkpoints/flower-boda-render/20260926-before-render-root-prod-8093ccc.zip` (clean `dev` 기준, SHA-256 `09fcc56cbb28ee34eae7e52c7c7b568accc3b0a3191e2eecfc4c0e2122c8737f`). 표준 백업 스크립트는 기존 `dev-worktree/index.html`의 자격정보 휴리스틱으로 중단되어 Git archive 체크포인트로 대체.
+- 수정 파일: `render.yaml`, `server.mjs`, `test/static-security.test.mjs`, `test/v59-build-dev-tools.test.mjs`, `PROJECT_STATUS.md`.
+- 검증: `node --test test/*.test.mjs` 274/274 통과, `node audit-data.mjs` 0 errors / 0 issues, `node build.mjs --mode=prod` 성공. npm CLI가 없어 동일 Node 스크립트로 확인.
+- PROD 아티팩트에서 DEV 플래그 true, payload, DEV 모듈/UI 문구/스타일 부재를 확인하고, 정적 서빙 통합 테스트와 기존 API 라우팅 테스트 통과.
+- 변경 범위: `render.yaml`, `server.mjs`, 관련 정적 서빙/PROD 분리 테스트, 이 상태 기록. main은 수정하지 않음. 단일 dev 전용 커밋 후 `origin/dev`에만 push.
+- 남은 작업: 없음.
+
 ## 2026-09-25 · 베타 blocker 검수
 
 - 작업 브랜치: `dev` (`main` 미수정, 원격 push 없음)
