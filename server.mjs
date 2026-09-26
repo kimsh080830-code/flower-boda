@@ -50,6 +50,77 @@ function jsonError(res, status, code, message) { sendJson(res, status, { error:c
 // Upstream errors may contain full request URLs, including API credentials.
 // Log only a fixed operation label and status; never log the error or response body.
 function logApiFailure(operation, status) { console.error(`[server] ${operation} failed (${status})`); }
+function markTourError(error, stage, code) {
+  if (error && typeof error === 'object') {
+    error.tourDiagnosticStage = stage;
+    error.tourDiagnosticCode = code;
+  }
+  return error;
+}
+function safeTourDiagnosticText(value, maxLength = 160) {
+  let text = String(value ?? '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim();
+  const credentials = [TOUR_API_KEY];
+  if (TOUR_API_KEY) {
+    credentials.push(encodeURIComponent(TOUR_API_KEY));
+    credentials.push(new URLSearchParams({ serviceKey:TOUR_API_KEY }).toString().slice('serviceKey='.length));
+  }
+  for (const credential of new Set(credentials.filter(Boolean))) text = text.split(credential).join('[redacted]');
+  return text
+    .replace(/https?:\/\/[^\s<>"']+/gi, '[redacted-url]')
+    .replace(/\b(servicekey|api[-_]?key|authorization)\s*[:=]\s*[^\s,&]+/gi, '$1=[redacted]')
+    .slice(0, maxLength);
+}
+function safeTourContentType(value) {
+  const mediaType = String(value || '').split(';', 1)[0].trim().toLowerCase();
+  return /^[a-z0-9!#$&^_.+-]+\/[a-z0-9!#$&^_.+-]+$/.test(mediaType) ? mediaType : 'unknown';
+}
+function tourResponseFormat(contentType, body) {
+  if (/\bjson\b/i.test(contentType)) return 'json';
+  if (/\bxml\b/i.test(contentType)) return 'xml';
+  const trimmed = String(body).trimStart();
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) return 'json';
+  if (trimmed.startsWith('<')) return 'xml';
+  return 'unknown';
+}
+function extractTourXmlValue(body, tag) {
+  const match = String(body).match(new RegExp(`<(?:(?:[\\w.-]+):)?${tag}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/(?:(?:[\\w.-]+):)?${tag}\\s*>`, 'i'));
+  if (!match) return '';
+  const value = match[1].replace(/<[^>]*>/g, '').replace(/&quot;/gi, '"').replace(/&#39;|&apos;/gi, "'")
+    .replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>');
+  return safeTourDiagnosticText(value);
+}
+function tourResponseDiagnostic(endpoint, stage, response, contentType, format, details = {}) {
+  const header = details.payload?.response?.header;
+  const resultCode = header?.resultCode == null ? '' : safeTourDiagnosticText(header.resultCode, 40);
+  const resultMsg = header?.resultMsg == null ? '' : safeTourDiagnosticText(header.resultMsg);
+  const diagnostic = {
+    stage,
+    httpStatus:response.status,
+    contentType:safeTourContentType(contentType),
+    format,
+    ...(resultCode ? { resultCode } : {}),
+    ...(resultMsg ? { resultMsg } : {}),
+    ...(format === 'xml' ? {
+      returnAuthMsg:extractTourXmlValue(details.body, 'returnAuthMsg'),
+      returnReasonCode:extractTourXmlValue(details.body, 'returnReasonCode')
+    } : {}),
+    jsonParseFailed:Boolean(details.jsonParseFailed)
+  };
+  console.error(`[server] TourAPI ${safeTourDiagnosticText(endpoint, 40)} ${JSON.stringify(diagnostic)}`);
+}
+const TOUR_PAGINATION_ERRORS = new Set([
+  'TOUR_COLLECTION_CHANGED', 'TOUR_INCOMPLETE_PAGE', 'TOUR_INVALID_PAGE_SIZE', 'TOUR_INCOMPLETE_COLLECTION'
+]);
+function logTourFailure(operation, error) {
+  const message = String(error?.message || '');
+  const stage = error?.tourDiagnosticStage || (TOUR_PAGINATION_ERRORS.has(message) ? 'pagination-quality' : 'response-validation');
+  const knownCodes = new Set([...TOUR_PAGINATION_ERRORS, 'TOUR_HTTP_FAILED', 'TOUR_FETCH_FAILED', 'TOUR_BODY_READ_FAILED',
+    'TOUR_JSON_PARSE_FAILED', 'TOUR_XML_RESPONSE', 'TOUR_INVALID_STATUS', 'TOUR_INVALID_BODY', 'TOUR_MISSING_ITEMS',
+    'TOUR_INVALID_ITEMS', 'TOUR_COLLECTION_FAILED']);
+  const code = knownCodes.has(error?.tourDiagnosticCode) ? error.tourDiagnosticCode
+    : knownCodes.has(message) ? message : 'TOUR_COLLECTION_FAILED';
+  console.error(`[server] TourAPI ${operation} ${JSON.stringify({ stage, code })}`);
+}
 
 async function readRequestBody(req, maxBytes = MAX_BODY) {
   const chunks = []; let size = 0;
@@ -103,10 +174,45 @@ function tourItems(payload) {
   return Array.isArray(item) ? item : item && typeof item === 'object' ? [item] : [];
 }
 async function fetchTour(endpoint, params, signal) {
-  const response = await fetch(`https://apis.data.go.kr/B551011/KorService2/${endpoint}?${params}`, { signal, headers:{ Accept:'application/json' } });
-  if (!response.ok) throw new Error(`TOUR_HTTP_${response.status}`);
-  const payload = await response.json();
-  inspectTourPage(payload);
+  let response;
+  try {
+    response = await fetch(`https://apis.data.go.kr/B551011/KorService2/${endpoint}?${params}`, { signal, headers:{ Accept:'application/json' } });
+  } catch (error) {
+    throw markTourError(error, 'upstream-http', 'TOUR_FETCH_FAILED');
+  }
+  const contentType = response.headers.get('content-type') || '';
+  let body;
+  try { body = await response.text(); }
+  catch (error) {
+    tourResponseDiagnostic(endpoint, 'upstream-format', response, contentType, 'unknown', { body:'', jsonParseFailed:true });
+    throw markTourError(error, 'upstream-format', 'TOUR_BODY_READ_FAILED');
+  }
+  const format = tourResponseFormat(contentType, body);
+  if (!response.ok) {
+    let payload, jsonParseFailed = false;
+    if (format === 'json') {
+      try { payload = JSON.parse(body); }
+      catch { jsonParseFailed = true; }
+    }
+    tourResponseDiagnostic(endpoint, 'upstream-http', response, contentType, format, { payload, body, jsonParseFailed });
+    throw markTourError(new Error('TOUR_HTTP_FAILED'), 'upstream-http', 'TOUR_HTTP_FAILED');
+  }
+  let payload;
+  try { payload = JSON.parse(body); }
+  catch (error) {
+    tourResponseDiagnostic(endpoint, 'upstream-format', response, contentType, format, { body, jsonParseFailed:true });
+    throw markTourError(error, 'upstream-format', format === 'xml' ? 'TOUR_XML_RESPONSE' : 'TOUR_JSON_PARSE_FAILED');
+  }
+  if (String(payload?.response?.header?.resultCode ?? '') !== '0000') {
+    tourResponseDiagnostic(endpoint, 'tour-result-code', response, contentType, format, { payload, body });
+    throw markTourError(new Error('TOUR_INVALID_STATUS'), 'tour-result-code', 'TOUR_INVALID_STATUS');
+  }
+  try { inspectTourPage(payload); }
+  catch (error) {
+    tourResponseDiagnostic(endpoint, 'response-validation', response, contentType, format, { payload, body });
+    throw markTourError(error, 'response-validation', error?.message);
+  }
+  tourResponseDiagnostic(endpoint, 'upstream-response', response, contentType, format, { payload, body });
   return payload;
 }
 function decodeHtml(text='') {
@@ -199,7 +305,7 @@ async function handleEvents(_req,res) {
     sendJson(res,200,payload);
   } catch (error) {
     const status = error?.name==='AbortError'?504:502;
-    logApiFailure('events',status); jsonError(res,status,'TOUR_EVENTS_ERROR','행사 전체 목록을 확인하지 못했어요. 잠시 후 다시 시도해 주세요.');
+    logApiFailure('events',status); logTourFailure('events',error); jsonError(res,status,'TOUR_EVENTS_ERROR','행사 전체 목록을 확인하지 못했어요. 잠시 후 다시 시도해 주세요.');
   } finally { clearTimeout(timeout); }
 }
 
@@ -236,7 +342,7 @@ async function handleEventDetail(url,res) {
       verification:{ status:'detail-checked',checkedAt:new Date().toISOString(),issues:[],method:'TourAPI 상세 응답의 행사 ID·기간·장소 확인' } });
   } catch (error) {
     const status = error?.name==='AbortError'?504:502;
-    logApiFailure('event detail',status); jsonError(res,status,'TOUR_DETAIL_ERROR','행사 상세 정보를 불러오지 못했어요.');
+    logApiFailure('event detail',status); logTourFailure('event-detail',error); jsonError(res,status,'TOUR_DETAIL_ERROR','행사 상세 정보를 불러오지 못했어요.');
   } finally { clearTimeout(timeout); }
 }
 
@@ -285,3 +391,4 @@ server.requestTimeout = 60000;
 server.headersTimeout = 10000;
 server.keepAliveTimeout = 5000;
 server.listen(PORT,'0.0.0.0',()=>console.log(`Flower Guide server: http://localhost:${server.address().port}`));
+
