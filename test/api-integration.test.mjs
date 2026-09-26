@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const fixtureKey = 'TEST_ONLY_PRIVATE_API_CREDENTIAL';
 const event = (id) => ({ contentid: String(id), title: `장미축제 ${id}`, eventstartdate: '20260901', eventenddate: '20260930', addr1: '서울특별시 중구', mapx: '126.978', mapy: '37.566' });
-const envelope = (items, total = items.length) => ({ response: { header: { resultCode: '0000' }, body: { totalCount: total, items: { item: items } } } });
+const envelope = (items, total = items.length) => ({ response: { header: { resultCode: '0000', resultMsg: 'OK' }, body: { totalCount: total, items: { item: items } } } });
 const identified = { results: [{ score: 0.83, species: { scientificNameWithoutAuthor: 'Rosa rugosa', commonNames: ['해당화'] } }] };
 
 // Real HTTP requests exercise the application and a local mock upstream. This is
@@ -22,11 +22,16 @@ test('API HTTP integration with a local mock upstream (not live API verification
     const operation = url.pathname.includes('/identify/') ? 'identify' : url.pathname.endsWith('searchFestival2') ? 'events' : 'detail';
     seen.push({ operation, url, body: Buffer.concat(chunks).toString() });
     const current = mode[operation];
-    const send = (payload, status = 200) => { res.writeHead(status, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(payload)); };
+    const send = (payload, status = 200, contentType = 'application/json') => { res.writeHead(status, { 'Content-Type': contentType }); res.end(JSON.stringify(payload)); };
     if (current === 'timeout') { res.writeHead(200, { 'Content-Type': 'application/json' }); res.flushHeaders(); return; }
     if (current === 'http-error') return send({ error: fixtureKey }, 429);
+    if (current === 'http-500') return send({ response: { header: { resultCode: '99', resultMsg: fixtureKey } } }, 500);
+    if (current === 'xml-error') {
+      res.writeHead(200, { 'Content-Type': 'application/xml; charset=utf-8' });
+      return res.end(`<response><cmmMsgHeader><returnAuthMsg>${fixtureKey}</returnAuthMsg><returnReasonCode>30</returnReasonCode></cmmMsgHeader></response>`);
+    }
     if (current === 'network-error') { res.setHeader('x-test-throw', 'yes'); return send({}); }
-    if (current === 'malformed') { res.end('not json'); return; }
+    if (current === 'malformed') { res.writeHead(200, { 'Content-Type': 'application/json' }); res.end('not json'); return; }
     if (current === 'invalid') return send({ response: { header: { resultCode: '30', resultMsg: fixtureKey } } });
     if (operation === 'identify') return send(current === 'empty' ? { results: [] } : identified);
     if (operation === 'events') {
@@ -98,6 +103,7 @@ test('API HTTP integration with a local mock upstream (not live API verification
     assert.equal(new Set(result.body.events.map(item => item.contentid)).size, 2201);
     assert.equal(result.body.quality.pages, 12);
     assert.equal(result.body.quality.truncated, false);
+    assert.match(logs, /"stage":"upstream-response".*"httpStatus":200.*"format":"json".*"resultCode":"0000".*"resultMsg":"OK"/);
     const calls = seen.filter(item => item.operation === 'events');
     assert.deepEqual(calls.map(item => Number(item.url.searchParams.get('pageNo'))), Array.from({ length: 12 }, (_, i) => i + 1));
     assert.ok(calls.every(item => item.url.searchParams.get('serviceKey') === fixtureKey));
@@ -112,6 +118,25 @@ test('API HTTP integration with a local mock upstream (not live API verification
       assert.equal(result.body.error, 'TOUR_EVENTS_ERROR');
       assert.equal(result.body.events, undefined);
     }
+    mode.events = 'success';
+  });
+  await t.test('TourAPI safe diagnostics classify HTTP, XML, malformed JSON, result-code and success responses', async () => {
+    const verify = async (value, checks, expectedStatus = 502) => {
+      mode.events = value;
+      const start = logs.length;
+      const result = await request('/api/events');
+      const diagnostic = logs.slice(start);
+      assert.equal(result.status, expectedStatus, value);
+      for (const check of checks) assert.match(diagnostic, check, value);
+      assert.ok(!diagnostic.includes(fixtureKey), `${value}: diagnostic must redact credentials`);
+      assert.ok(!diagnostic.includes('https://apis.data.go.kr/'), `${value}: diagnostic must not log request URLs`);
+      assert.ok(!diagnostic.includes('serviceKey=') && !diagnostic.includes('api-key='), `${value}: diagnostic must not log API parameters`);
+    };
+    await verify('http-500', [/"stage":"upstream-http"/, /"httpStatus":500/, /"contentType":"application\/json"/, /"format":"json"/, /"resultCode":"99"/, /"resultMsg":"\[redacted\]"/]);
+    await verify('xml-error', [/"stage":"upstream-format"/, /"httpStatus":200/, /"format":"xml"/, /"returnAuthMsg":"\[redacted\]"/, /"returnReasonCode":"30"/, /"jsonParseFailed":true/]);
+    await verify('malformed', [/"stage":"upstream-format"/, /"httpStatus":200/, /"format":"json"/, /"jsonParseFailed":true/]);
+    await verify('invalid', [/"stage":"tour-result-code"/, /"httpStatus":200/, /"format":"json"/, /"resultCode":"30"/, /"resultMsg":"\[redacted\]"/]);
+    await verify('empty', [/"stage":"upstream-response"/, /"httpStatus":200/, /"format":"json"/, /"resultCode":"0000"/, /"resultMsg":"OK"/], 200);
     mode.events = 'success';
   });
   await t.test('detail merges real upstream fields and rejects invalid, mismatched, empty and failed detail responses', async () => {
@@ -162,3 +187,4 @@ test('API HTTP integration with a local mock upstream (not live API verification
     assert.equal(results[0].body.error, 'PLANTNET_TIMEOUT');
   });
 });
+
