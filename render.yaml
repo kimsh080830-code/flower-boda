@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     branch: dev
-    buildCommand: npm install
+    buildCommand: npm install && npm run build:prod
     startCommand: npm start
     envVars:
       - key: EVENTS_SOURCE

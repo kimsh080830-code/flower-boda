@@ -49,10 +49,12 @@ test('DEV includes tools and PROD physically excludes their modules, UI text, pa
   assert.equal(configFrom(dev).DEV_MODE,true);
 
   assert.match(prod,/globalThis\.__FLOWER_APP_DEV__=false/);
+  assert.doesNotMatch(prod,/globalThis\.__FLOWER_APP_DEV__=true/);
   assert.doesNotMatch(prod,/globalThis\.__FLOWER_APP_DEV_PAYLOAD__=/);
   assert.doesNotMatch(prod,/__mods\["js\/devTools\.js"\]/);
   assert.doesNotMatch(prod,/__mods\["js\/ui\/screens\/devTools\.js"\]/);
-  assert.doesNotMatch(prod,/DEV · 통합 테스트 도구|가상 날짜|30일 시뮬레이션|\.dev-tools-panel/);
+  assert.doesNotMatch(prod,/DEV · 통합 테스트 도구|가상 날짜|30일 시뮬레이션|개발자 도구|\.dev-tools-panel|\.dev-long-text-fixture/);
+  assert.equal(prod.includes(devStyles.trim()),false);
   assert.doesNotMatch(prod,/devTodayFlowerDateMode|syncDevTodayFlowerDate|startDevTodayFlowerDateTracking/);
   assert.equal(configFrom(prod).DEV_MODE,false);
 });
