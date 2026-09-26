@@ -35,8 +35,8 @@ const MAX_BODY = 13 * 1024 * 1024;
 // Only explicitly published files may be served; new files stay private by default.
 // Resolve filenames from this map, never directly from a request path.
 const PUBLIC_FILES = new Map([
-  ['/', 'index.html'],
-  ['/index.html', 'index.html'],
+  ['/', 'index.prod.html'],
+  ['/index.html', 'index.prod.html'],
   ['/꽃을보다_V61_dev.html', 'index.html'],
 
 ]);

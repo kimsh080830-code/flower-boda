@@ -18,7 +18,10 @@ test('HTTP public file boundary', { timeout: 20000 }, async (t) => {
   await mkdir(path.join(root,'lib'));
   await copyFile(new URL('../lib/event-quality.mjs', import.meta.url), path.join(root, 'lib/event-quality.mjs'));
   const pages = ['index.html'];
-  for (const name of pages) await writeFile(path.join(root, name), `<h1>${name}</h1>`);
+  const devHtml = '<h1>DEV_BUILD_SENTINEL</h1><script>globalThis.__FLOWER_APP_DEV__=true;globalThis.__FLOWER_APP_DEV_PAYLOAD__={};__mods["js/devTools.js"];</script><style>.dev-tools-panel{}</style>';
+  const prodHtml = '<h1>PROD_BUILD_SENTINEL</h1><script>globalThis.__FLOWER_APP_DEV__=false;</script>';
+  await writeFile(path.join(root, 'index.html'), devHtml);
+  await writeFile(path.join(root, 'index.prod.html'), prodHtml);
   const privateFiles = [
     '.env', '.env.example', 'package.json', 'package-lock.json', 'README.md',
     'TEST_REPORT.md', 'server.mjs.bak', 'config.json', 'database.sqlite',
@@ -77,6 +80,20 @@ test('HTTP public file boundary', { timeout: 20000 }, async (t) => {
       assert.equal(head.body, '');
       assert.equal(head.headers['content-length'], result.headers['content-length']);
     }
+  });
+  await t.test('Render root and /index.html serve PROD while the DEV alias remains unchanged', async () => {
+    for (const target of ['/', '/index.html']) {
+      const result = await request(target);
+      assert.equal(result.status, 200, target);
+      assert.equal(result.body, prodHtml);
+      assert.match(result.body, /PROD_BUILD_SENTINEL/);
+      assert.doesNotMatch(result.body, /__FLOWER_APP_DEV__=true|__FLOWER_APP_DEV_PAYLOAD__|devTools\.js|ui\/screens\/devTools\.js|개발자 도구|DEV_BUILD_SENTINEL|\.dev-tools-panel|dev-styles\.css/);
+    }
+
+    const devAlias = await request(`/${encodeURIComponent('꽃을보다_V61_dev.html')}`);
+    assert.equal(devAlias.status, 200);
+    assert.equal(devAlias.body, devHtml);
+    assert.match(devAlias.body, /__FLOWER_APP_DEV__=true/);
   });
   await t.test('private files and alternate path spellings are denied for GET and HEAD', async () => {
     const targets = [
